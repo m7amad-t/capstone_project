@@ -5,19 +5,19 @@ import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:toastification/toastification.dart';
 
-abstract class SnackBarMessages {
+abstract class AppSnackBarMessages {
   final String title;
   final String message;
   final Icon icon;
   final Color color;
   final ToastificationType type; 
-  SnackBarMessages(this.title, this.message, this.icon, this.color , this.type);
+  AppSnackBarMessages(this.title, this.message, this.icon, this.color , this.type);
 }
 
 double _iconSize = AppSizes.s50; 
 
 // success snackbar message 
-class SuccessSnackBar extends SnackBarMessages {
+class SuccessSnackBar extends AppSnackBarMessages {
   SuccessSnackBar({required String title, required String message})
       : super(
           title,
@@ -29,7 +29,7 @@ class SuccessSnackBar extends SnackBarMessages {
 }
 
 // failed snackbar message 
-class FailedSnackBar extends SnackBarMessages {
+class FailedSnackBar extends AppSnackBarMessages {
   FailedSnackBar({required String title, required String message})
       : super(
           title,
@@ -41,7 +41,7 @@ class FailedSnackBar extends SnackBarMessages {
 }
 
 // warning snackbar message 
-class WarningSnackBar extends SnackBarMessages {
+class WarningSnackBar extends AppSnackBarMessages {
   WarningSnackBar({required String title, required String message})
       : super(
           title,
@@ -53,7 +53,7 @@ class WarningSnackBar extends SnackBarMessages {
 }
 
 // info snackbar message 
-class InfoSnackBar extends SnackBarMessages {
+class InfoSnackBar extends AppSnackBarMessages {
   InfoSnackBar({required String title, required String message})
       : super(
           title,

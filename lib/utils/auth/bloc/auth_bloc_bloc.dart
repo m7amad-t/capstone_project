@@ -8,7 +8,7 @@ part 'auth_bloc_event.dart';
 part 'auth_bloc_state.dart';
 
 class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
-  AuthBloc() : super(Ideal()) {
+  AuthBloc() : super(InitAuthState()) {
     // on logout event
     on<Logout>((event, emit) async {
       // emit lading state

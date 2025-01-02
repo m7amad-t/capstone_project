@@ -25,6 +25,12 @@ extension CustomLocalization on BuildContext {
   String get languageName => L10n.getTitle(Localizations.localeOf(this).toString());
   
 
+  String get getlangCode => Localizations.localeOf(this).toString();
+  
+  TextDirection get direction => getlangCode == "en" ? TextDirection.ltr : TextDirection.rtl; 
+  
+  bool get fromLTR => getlangCode == "en"; 
+
   Locale get local => Localizations.localeOf(this);
 }
 

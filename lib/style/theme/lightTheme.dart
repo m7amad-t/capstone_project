@@ -18,7 +18,7 @@ class AppColorsLight {
   static const Color borderInput = Color(0xFFBBBBBB);
   static const Color error = AppColors.error;
   static const Color overPimary = AppColors.onPrimary;
-
+  static const Color cardColor = Color.fromARGB(255, 183, 223, 255);
 }
 
 ThemeData lightModeThemeData(Locale locale) {
@@ -28,13 +28,12 @@ ThemeData lightModeThemeData(Locale locale) {
       : GoogleFonts.ibmPlexSansArabicTextTheme();
 
   return ThemeData(
-
     brightness: Brightness.light,
     primaryColor: AppColorsLight.primary,
     appBarTheme: AppBarTheme(
       iconTheme: IconThemeData(
-        size: AppSizes.s30, 
-        color : AppColorsLight.overPimary, 
+        size: AppSizes.s30,
+        color: AppColorsLight.overPimary,
       ),
       backgroundColor: AppColorsLight.primary,
       surfaceTintColor: Colors.transparent,
@@ -129,7 +128,7 @@ ThemeData lightModeThemeData(Locale locale) {
     shadowColor: Colors.grey.shade400,
     splashColor: AppColorsLight.primary.withOpacity(0.3),
     canvasColor: AppColorsLight.surfacePrimary,
-    cardColor: AppColorsLight.surfacePrimary,
+    cardColor: AppColorsLight.cardColor,
     cardTheme: CardTheme(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -138,10 +137,10 @@ ThemeData lightModeThemeData(Locale locale) {
           ),
         ),
       ),
-      color: AppColorsLight.surfacePrimary,
-      shadowColor: AppColorsLight.primary,
+      color: const Color.fromARGB(255, 183, 223, 255),
+      // shadowColor: AppColorsLight.primary,
       elevation: AppSizes.s5,
-      surfaceTintColor: AppColorsLight.primary,
+      // surfaceTintColor: AppColorsLight.primary,
     ),
     textTheme: selectedFont.copyWith(
       titleLarge: selectedFont.titleLarge?.copyWith(
@@ -177,7 +176,7 @@ ThemeData lightModeThemeData(Locale locale) {
         color: AppColorsLight.textPrimary,
       ),
       bodySmall: selectedFont.bodySmall?.copyWith(
-        fontSize: AppFontSizes.f12,
+        fontSize: AppFontSizes.f14,
         color: AppColorsLight.textPrimary,
       ),
       labelLarge: selectedFont.labelLarge?.copyWith(
@@ -245,12 +244,11 @@ ThemeData lightModeThemeData(Locale locale) {
       color: AppColorsLight.surfacePrimary,
     ),
     textButtonTheme: TextButtonThemeData(
-
       style: TextButton.styleFrom(
         textStyle: selectedFont.displayLarge?.copyWith(
-        fontSize: AppFontSizes.f18,
-        color: AppColorsLight.surfacePrimary,
-      ),
+          fontSize: AppFontSizes.f18,
+          color: AppColorsLight.surfacePrimary,
+        ),
         backgroundColor: AppColorsLight.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -262,7 +260,29 @@ ThemeData lightModeThemeData(Locale locale) {
           vertical: AppPaddings.p10,
         ),
         foregroundColor: AppColorsLight.surfacePrimary,
-        
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: selectedFont.displayLarge?.copyWith(
+          fontSize: AppFontSizes.f18,
+          color: AppColorsLight.primary,
+        ),
+        backgroundColor: AppColorsLight.surfacePrimary,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: AppColorsLight.primary,
+            strokeAlign: AppSizes.s1,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(AppSizes.s8),
+          ),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppPaddings.p30,
+          vertical: AppPaddings.p10,
+        ),
+        foregroundColor: AppColorsLight.primary,
       ),
     ),
   );

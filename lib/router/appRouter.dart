@@ -2,10 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_owner/pages/home/ui/homePage.dart';
-import 'package:shop_owner/pages/login/ui/loginPage.dart';
+import 'package:shop_owner/pages/authed/home/ui/homePage.dart';
+import 'package:shop_owner/pages/notAuthed/login/ui/loginPage.dart';
 import 'package:shop_owner/router/navigationService.dart';
 import 'package:shop_owner/router/routes.dart';
+import 'package:shop_owner/utils/auth/userModel.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 
 class AppRouter {
@@ -25,8 +26,7 @@ class AppRouter {
               child: HomePage(),
             ),
           ),
-          
-          
+
           // login route
           GoRoute(
             path: AppRoutes.login,
@@ -35,12 +35,15 @@ class AppRouter {
               child: LoginPage(),
             ),
           ),
-        
-
         ],
         redirect: (context, state) {
-          if(state.fullPath == AppRoutes.login){
-            // if(context.read<>)
+          // check if user is logged in
+          final bool isUserInjected = locator.isRegistered<User>();
+
+          if (isUserInjected) {
+            return AppRoutes.home;
+          } else {
+            return AppRoutes.login;
           }
         },
       );

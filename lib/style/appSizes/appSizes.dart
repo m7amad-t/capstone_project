@@ -25,6 +25,19 @@ class AppSizes{
   static double s40 = 40.0 ; 
   static double s45 = 45.0 ; 
   static double s50 = 50.0 ; 
+  static double s60 = 60.0 ; 
+  static double s70 = 70.0 ; 
+  static double s80 = 80.0 ; 
+  static double s90 = 90.0 ; 
+  static double s100 = 100.0 ; 
+  static double s110 = 110.0 ; 
+  static double s120 = 120.0 ; 
+  static double s130 = 130.0 ; 
+  static double s140 = 140.0 ; 
+  static double s150 = 150.0 ; 
+  static double s200 = 200.0 ; 
+  static double s250 = 250.0 ; 
+  static double s300 = 300.0 ; 
   static double infinity = double.infinity ; 
 
 }

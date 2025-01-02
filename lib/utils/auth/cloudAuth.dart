@@ -1,4 +1,4 @@
-import 'package:shop_owner/pages/login/logic/model/loginModel.dart';
+import 'package:shop_owner/pages/notAuthed/login/logic/model/loginModel.dart';
 import 'package:shop_owner/utils/auth/userModel.dart';
 
 class CloudAuth {

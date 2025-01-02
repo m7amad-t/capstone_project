@@ -1,9 +1,13 @@
-
 // ignore_for_file: file_names, no_leading_underscores_for_local_identifiers
 
+import 'dart:typed_data';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shop_owner/l10n/l10n.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -106,16 +110,32 @@ Future<void> showChangeLanguage(BuildContext context) async {
   );
 }
 
+
+  Future<Uint8List?> pickImageFromGallery() async {
+    final ImagePicker _picker = ImagePicker();
+
+    // Let the user pick an image
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Read the image as bytes
+      final Uint8List imageBytes = await pickedFile.readAsBytes();
+      return imageBytes;
+      // Return the image as a MemoryImage
+      // return MemoryImage(imageBytes);
+    }
+
+    // If no image is selected, return null
+    return null;
+  }
+
 Future<void> showLogoutConfirmation(BuildContext context) async {
   await showDialog(
-
-    
     context: context,
     barrierDismissible: true,
     builder: (BuildContext context) {
       final _textStyle = Theme.of(context).textTheme;
       return AlertDialog(
-        
         backgroundColor: Colors.transparent,
         elevation: 0,
         content: Card(
@@ -144,10 +164,10 @@ Future<void> showLogoutConfirmation(BuildContext context) async {
                   children: [
                     TextButton(
                       onPressed: () {
-                        context.read<AuthBloc>().add(Logout()); 
-                           if(Navigator.of(context).canPop()){
+                        if (Navigator.of(context).canPop()) {
                           Navigator.of(context).pop();
                         }
+                        context.read<AuthBloc>().add(Logout());
                       },
                       style: const ButtonStyle(
                         backgroundColor:
@@ -161,7 +181,7 @@ Future<void> showLogoutConfirmation(BuildContext context) async {
                     // dispose button
                     TextButton(
                       onPressed: () {
-                        if(Navigator.of(context).canPop()){
+                        if (Navigator.of(context).canPop()) {
                           Navigator.of(context).pop();
                         }
                       },
@@ -184,7 +204,7 @@ Future<void> showLogoutConfirmation(BuildContext context) async {
   );
 }
 
-void showSnackBar({required SnackBarMessages message}) {
+void showSnackBar({required AppSnackBarMessages message}) {
   toastification.show(
     dragToClose: true,
     dismissDirection: DismissDirection.down,

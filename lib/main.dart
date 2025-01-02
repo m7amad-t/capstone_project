@@ -7,10 +7,18 @@ import 'package:shop_owner/l10n/kurdish_cupertino_localization_deligate.dart';
 import 'package:shop_owner/l10n/kurdish_material_localization_delegate.dart';
 import 'package:shop_owner/l10n/kurdish_widget_localization_deligate.dart';
 import 'package:shop_owner/l10n/l10n.dart';
-import 'package:shop_owner/pages/home/ui/homePage.dart';
-import 'package:shop_owner/pages/login/logic/bloc/login_bloc_bloc.dart';
-import 'package:shop_owner/pages/login/ui/loginPage.dart';
+import 'package:shop_owner/pages/authed/expensesTrackig/ui/expensesTrackingPage.dart';
+import 'package:shop_owner/pages/authed/home/ui/homePage.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/productManagementPage.dart';
+import 'package:shop_owner/pages/authed/profile/ui/profilepage.dart';
+import 'package:shop_owner/pages/authed/saleAnalytics/ui/saleAnalyticsPage.dart';
+import 'package:shop_owner/pages/authed/saleTracking/ui/saleTrackingPage.dart';
+import 'package:shop_owner/pages/authed/settings/ui/settingPage.dart';
+import 'package:shop_owner/pages/notAuthed/login/logic/bloc/login_bloc_bloc.dart';
+import 'package:shop_owner/pages/notAuthed/login/ui/loginPage.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/style/languages/logic/bloc/language_bloc_bloc.dart';
 import 'package:shop_owner/style/theme/darkTheme.dart';
 import 'package:shop_owner/style/theme/lightTheme.dart';
@@ -45,6 +53,9 @@ void main() async {
             create: (_) => LanguageBloc(),
           ),
           BlocProvider(
+            create: (_) => ProductBloc(),
+          ),
+          BlocProvider(
             create: (_) => AuthBloc()..add(AuthUser()),
           ),
         ],
@@ -56,7 +67,7 @@ void main() async {
                 setUpLocator(context);
 
                 return MaterialApp(
-                  showSemanticsDebugger: false,
+                  debugShowCheckedModeBanner: false,
                   theme: lightModeThemeData(languageState.local),
                   darkTheme: darkModeThemeData(languageState.local),
                   themeMode: themeState.mode,
@@ -71,6 +82,22 @@ void main() async {
                     KurdishWidgetLocalizations.delegate,
                     KurdishCupertinoLocalizations.delegate,
                   ],
+                  routes: {
+                    AppRoutes.home: (context) => const HomePage(),
+                    AppRoutes.login: (context) => const LoginPage(),
+                    AppRoutes.saleTracking: (context) =>
+                        const SaleTrackingPage(),
+                    AppRoutes.saleAnalytics: (context) =>
+                        const SaleAnalyticPage(),
+                    AppRoutes.productManagement: (context) =>
+                        const ProductManagementPage(),
+                    AppRoutes.expensesTracking: (context) =>
+                        const ExpensesTracking(),
+                    AppRoutes.profile: (context) => const ProfilePage(),
+                    AppRoutes.settings: (context) => const SettingPage(),
+
+                    // add more routes here
+                  },
                   home: const App(),
                 );
               },
@@ -101,12 +128,19 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBloc, AuthBlocState>(
       buildWhen: (oldState, newState) {
+        if (newState is Loading && oldState is InitAuthState) {
+          return true;
+        }
+
+        if (newState is Loading && oldState is! Loading) {
+          return false;
+        }
         return oldState != newState;
       },
       builder: (context, state) {
         if (state is UserAuthed) {
           return const HomePage();
-        } else if (state is FailedToAuth) {
+        } else if (state is FailedToAuth || state is LoggedOut) {
           return const LoginPage();
         }
         return Scaffold(

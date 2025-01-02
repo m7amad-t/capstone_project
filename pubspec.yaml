@@ -48,6 +48,10 @@ dependencies:
   go_router: ^14.6.2
   flutter_secure_storage: ^9.2.2
   toastification: ^2.3.0
+  get: ^4.6.6
+  image_picker: ^1.1.2
+  cached_network_image: ^3.4.1
+  flutter_cache_manager: ^3.4.1
 
 dev_dependencies:
   intl_utils: ^2.0.0 # This helps to generate localization files

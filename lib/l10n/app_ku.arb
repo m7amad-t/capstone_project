@@ -60,7 +60,36 @@
     "expenses" : "خەرجی",    
     "expenses_tracking" : "خەرجیەکان",
     "product_management" : "ڕێخستنی بەرهەمەکان",    
+    "product" : "بەرهەم",    
+    "product_name" : "ناوی بەرهەم",    
+    "enter_product_name" : "ناوی بەرهەم بنووسە",    
     "sign_in" : "چونەژورەوە",
-    "sign_out" : "چونەدەرەوە"
+    "sign_out" : "چونەدەرەوە",
+    "order_by" : "ڕیزکردن بە پێی",
+    "order_by_name" : "ناو",
+    "order_by_price" : "نرخ",
+    "order_by_default" : "بنەڕەتی",
+    "order_by_quantity" : "بڕ",
+    "price" : "نرخ",
+    "price_high_to_low" : "لە زۆرەوە بۆ کەم",
+    "price_low_to_high" : "لە کەمەوە بۆ زۆر",
+    "quantity" : "بڕ",
+    "quantity_low_to_high" : "لە کەمەوە بۆ زۆر",
+    "quantity_high_to_low" : "لە زۆرەوە بۆ کەم",
+    "name_a_to_z" : "ئ-ی",
+    "name_z_to_a" : "ی-ئ",
+    "description" : "وەسف",
+    "category" : "کاتیگۆری",
+    "updating" : "نوێ کردنەوە",
+    "inserted_successfuly" : "بەسەرکەوتووی زیادکرا",
+    "uploading" : "زیادکردن",
+    "product_updated_successfuly" : "بەسەرکەتووی بەرهەمەکە نوێ کرایەوە",
+    "enter_name" : "ناو بنووسە",
+    "enter_price" : "نرخ بنووسە",
+    "enter_valid_price" : "نرخی درووست بنووسە",
+    "enter_quantity" : "بڕ بنووسە",
+    "enter_valid_quantity" : "بڕی درووست بنووسە"
+
+    
   }
   

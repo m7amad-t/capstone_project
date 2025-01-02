@@ -10,7 +10,7 @@ class AppColorsDark {
   static const Color textPrimary = Colors.white;
   static Color textSecondary = Colors.grey[400]!;
   static Color textPlaceholder = Colors.grey[500]!;
-  static const Color surfacePrimary = Color.fromARGB(255, 22, 0, 35);
+  static const Color surfacePrimary = Color.fromARGB(255, 3, 0, 20);
   static const Color surfaceSecondary = Color(0xFF2C2C2C);
   static const Color surfaceAccent = Color(0xFF333333);
   static const Color borderPrimary = Color(0xFF444444);
@@ -18,6 +18,8 @@ class AppColorsDark {
   static const Color borderInput = Color(0xFF555555);
   static const Color error = AppColors.error;
   static const Color overPimary = AppColors.onPrimary;
+  static const Color cardColor = Color.fromARGB(255, 0, 18, 33);
+
 }
 
 ThemeData darkModeThemeData(Locale locale) {
@@ -46,8 +48,7 @@ ThemeData darkModeThemeData(Locale locale) {
         
       ),
     ),
-    scaffoldBackgroundColor: AppColorsDark.primary
-        .withAlpha(30), // Background color with 30% opacity
+    scaffoldBackgroundColor: AppColorsDark.surfacePrimary, // Background color with 30% opacity
     tabBarTheme: TabBarTheme(
       labelColor: AppColorsDark.textPrimary,
       unselectedLabelColor: AppColorsDark.textSecondary,
@@ -128,7 +129,7 @@ ThemeData darkModeThemeData(Locale locale) {
     shadowColor: Colors.grey.shade800,
     splashColor: AppColorsDark.primary.withOpacity(0.3),
     canvasColor: AppColorsDark.surfacePrimary,
-    cardColor: AppColorsDark.surfacePrimary,
+    cardColor: AppColorsDark.cardColor,
     cardTheme: CardTheme(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -137,10 +138,10 @@ ThemeData darkModeThemeData(Locale locale) {
           ),
         ),
       ),
-      color: AppColorsDark.surfacePrimary,
-      shadowColor: AppColorsDark.primary,
+      color: AppColorsDark.cardColor,
+      // shadowColor: AppColorsDark.primary,
       elevation: AppSizes.s5,
-      surfaceTintColor: AppColorsDark.primary,
+      // surfaceTintColor: AppColorsDark.primary,
     ),
     textTheme: selectedFont.copyWith(
       titleLarge: selectedFont.titleLarge?.copyWith(
@@ -176,7 +177,7 @@ ThemeData darkModeThemeData(Locale locale) {
         color: AppColorsDark.textPrimary,
       ),
       bodySmall: selectedFont.bodySmall?.copyWith(
-        fontSize: AppFontSizes.f12,
+        fontSize: AppFontSizes.f14,
         color: AppColorsDark.textPrimary,
       ),
       labelLarge: selectedFont.labelLarge?.copyWith(
@@ -264,5 +265,29 @@ ThemeData darkModeThemeData(Locale locale) {
         foregroundColor: AppColorsDark.textPrimary,
       ),
     ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: selectedFont.displayLarge?.copyWith(
+          fontSize: AppFontSizes.f18,
+          color: AppColorsDark.primary,
+        ),
+        backgroundColor: AppColorsDark.surfacePrimary,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: AppColorsDark.primary,
+            strokeAlign: AppSizes.s1,
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(AppSizes.s8),
+          ),
+        ),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppPaddings.p30,
+          vertical: AppPaddings.p10,
+        ),
+        foregroundColor: AppColorsDark.primary,
+      ),
+    ),
+ 
   );
 }
