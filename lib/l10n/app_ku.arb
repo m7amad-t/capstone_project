@@ -88,7 +88,12 @@
     "enter_price" : "نرخ بنووسە",
     "enter_valid_price" : "نرخی درووست بنووسە",
     "enter_quantity" : "بڕ بنووسە",
-    "enter_valid_quantity" : "بڕی درووست بنووسە"
+    "enter_valid_quantity" : "بڕی درووست بنووسە", 
+    "ru_sure_want_to_delete" : "دڵنیایت لە سڕینەوەی؟",
+    "product_deleted_successfully" : "بەرهەمەکە بە سەرکوتووت سڕایەوە",
+    "deleted_successfully" : "بە سەرکوتووت سڕایەوە",
+    "deleted" : "سڕینەوە"
+
 
     
   }

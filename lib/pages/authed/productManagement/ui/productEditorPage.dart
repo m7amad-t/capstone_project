@@ -38,9 +38,8 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
 
   ProductCategoryModel? _selectedCategory;
 
-
-  // product from key 
-  late final GlobalKey<FormState> _fromKey ; 
+  // product from key
+  late final GlobalKey<FormState> _fromKey;
 
   late final bool _isUpdating;
   @override
@@ -68,10 +67,10 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
   Uint8List? _newImage;
 
   Future<void> _saveB_callback() async {
-print("callback "); 
-    if(!_fromKey.currentState!.validate()){
-      print("from is not validate"); 
-      return ; 
+    print("callback ");
+    if (!_fromKey.currentState!.validate()) {
+      print("from is not validate");
+      return;
     }
     // todo : collect values
     // todo : FOR the UI part just relaod products , or update the existing one, one ensert new one
@@ -112,17 +111,36 @@ print("callback ");
       ),
     );
   }
+  
+  Future<void> _deleteB_callback() async {
+   
+    await showDeleteProductConfirmation (
+      context,
+      product,
+      
+    );
+
+    // wait for one second
+    await Future.delayed(const Duration(seconds: 1));
+    // // pop loading dialog
+    // if (Navigator.of(context).canPop()) {
+    //   Navigator.of(context).pop();
+    // }
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final _textStyle = Theme.of(context).textTheme;
     final isRTL = context.fromLTR;
-    final String suffix = _isUpdating ? context.translate.edit : context.translate.add ; 
+    final String suffix =
+        _isUpdating ? context.translate.edit : context.translate.add;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-         // ignore: prefer_interpolation_to_compose_strings
-         suffix + " " + context.translate.product,
+          // ignore: prefer_interpolation_to_compose_strings
+          suffix + " " + context.translate.product,
         ),
       ),
       body: GestureDetector(
@@ -135,16 +153,15 @@ print("callback ");
             children: [
               // top section , background image and avatar
               _topSecton(),
-          
+
               gap(height: AppSizes.s20),
-          
+
               // controllers section
               Container(
                 padding: EdgeInsets.symmetric(horizontal: AppSizes.s10),
                 child: _bodySection(isRTL, _textStyle),
               ),
-          
-              
+
               // trailling gap
               SizedBox(height: AppSizes.s200),
             ],
@@ -244,7 +261,7 @@ print("callback ");
   // body section
   Widget _bodySection(isRTL, _textStyle) {
     return Form(
-      key : _fromKey, 
+      key: _fromKey,
       child: Column(
         children: [
           _nameControllerSection(_textStyle),
@@ -257,7 +274,7 @@ print("callback ");
           gap(height: AppSizes.s10),
           _quantityControllerSection(isRTL, _textStyle),
           gap(height: AppSizes.s30),
-      
+
           // save button
           Row(
             children: [
@@ -265,6 +282,23 @@ print("callback ");
                 child: TextButton(
                   onPressed: _saveB_callback,
                   child: Text(context.translate.save),
+                ),
+              ),
+            ],
+          ),
+          gap(height: AppSizes.s30),
+          // delete button
+          if(_isUpdating)
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: _deleteB_callback,
+                  style: const ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(AppColors.error)
+                  ),
+                  child: Text(context.translate.deleted),
+
                 ),
               ),
             ],
@@ -278,13 +312,12 @@ print("callback ");
   Widget _nameControllerSection(_textStyle) {
     return // name controller section
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           flex: 3,
           child: Padding(
             padding: EdgeInsets.only(top: AppSizes.s14),
-
             child: Text(
               context.translate.product_name,
               style: _textStyle.bodySmall,
@@ -295,10 +328,10 @@ print("callback ");
           flex: 8,
           child: TextFormField(
             validator: (value) {
-              if(value == null || value.isEmpty){
+              if (value == null || value.isEmpty) {
                 return context.translate.enter_name;
               }
-              return null; 
+              return null;
             },
             style: _textStyle.bodySmall,
             controller: _nameController,
@@ -316,7 +349,7 @@ print("callback ");
     return // name controller section
         // price section
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           flex: 3,
@@ -332,16 +365,16 @@ print("callback ");
           flex: 8,
           child: TextFormField(
             validator: (value) {
-              if(value == null || value.isEmpty){
+              if (value == null || value.isEmpty) {
                 return context.translate.enter_price;
               }
-              if(int.tryParse(value) == null){
+              if (int.tryParse(value) == null) {
                 return context.translate.enter_valid_price;
               }
-              if(int.parse(value) < 0){
+              if (int.parse(value) < 0) {
                 return context.translate.enter_valid_price;
               }
-              return null; 
+              return null;
             },
             style: _textStyle.bodySmall,
             controller: _priceController,
@@ -470,8 +503,12 @@ print("callback ");
                   flex: 2,
                   child: InkWell(
                     onTap: () {
-                      _quantityController.text =
-                          (int.parse(_quantityController.text.isEmpty ? "0"  :_quantityController.text) + 1).toString();
+                      _quantityController.text = (int.parse(
+                                  _quantityController.text.isEmpty
+                                      ? "0"
+                                      : _quantityController.text) +
+                              1)
+                          .toString();
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -503,17 +540,17 @@ print("callback ");
                   flex: 5,
                   child: TextFormField(
                     validator: (value) {
-                      if(value == null || value.isEmpty){
+                      if (value == null || value.isEmpty) {
                         return context.translate.enter_quantity;
                       }
-                      if(int.tryParse(value) == null){
+                      if (int.tryParse(value) == null) {
                         return context.translate.enter_valid_quantity;
                       }
-                      if(int.parse(value) < 0){
+                      if (int.parse(value) < 0) {
                         return context.translate.enter_valid_quantity;
                       }
 
-                      return null; 
+                      return null;
                     },
                     textAlign: TextAlign.center,
                     controller: _quantityController,
@@ -547,8 +584,8 @@ print("callback ");
                   flex: 2,
                   child: InkWell(
                     onTap: () {
-                      if(int.parse(_quantityController.text)<=0){
-                        return ; 
+                      if (int.parse(_quantityController.text) <= 0) {
+                        return;
                       }
                       _quantityController.text =
                           (int.parse(_quantityController.text) - 1).toString();

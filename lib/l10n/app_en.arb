@@ -88,7 +88,12 @@
     "enter_price" : "Enter price",
     "enter_valid_price" : "Enter valid price",
     "enter_quantity" : "Enter quantity",
-    "enter_valid_quantity" : "Enter valid quantity"
+    "enter_valid_quantity" : "Enter valid quantity",
+    "ru_sure_want_to_delete" : "Are you sure you want to delete?",
+    "product_deleted_successfully" : "Product deleted successfully",
+    "deleted_successfully" : "Deleted successfully",
+    "deleted" : "Deleted"
+
 
   }
   

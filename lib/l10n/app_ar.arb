@@ -88,5 +88,10 @@
   "enter_price": "أدخل السعر",
   "enter_valid_price": "أدخل سعر صحيح",
   "enter_quantity": "أدخل الكمية",
-  "enter_valid_quantity": "أدخل كمية صحيحة"
+  "enter_valid_quantity": "أدخل كمية صحيحة",
+  "ru_sure_want_to_delete": "هل أنت متأكد أنك تريد الحذف؟",
+  "product_deleted_successfully": "تم حذف المنتج بنجاح",
+  "deleted_successfully": "تم الحذف بنجاح",
+  "deleted" : "الحذف"
+
 }

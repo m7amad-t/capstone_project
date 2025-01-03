@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shop_owner/l10n/l10n.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -110,24 +111,24 @@ Future<void> showChangeLanguage(BuildContext context) async {
   );
 }
 
+Future<Uint8List?> pickImageFromGallery() async {
+  final ImagePicker _picker = ImagePicker();
 
-  Future<Uint8List?> pickImageFromGallery() async {
-    final ImagePicker _picker = ImagePicker();
+  // Let the user pick an image
+  final XFile? pickedFile =
+      await _picker.pickImage(source: ImageSource.gallery);
 
-    // Let the user pick an image
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      // Read the image as bytes
-      final Uint8List imageBytes = await pickedFile.readAsBytes();
-      return imageBytes;
-      // Return the image as a MemoryImage
-      // return MemoryImage(imageBytes);
-    }
-
-    // If no image is selected, return null
-    return null;
+  if (pickedFile != null) {
+    // Read the image as bytes
+    final Uint8List imageBytes = await pickedFile.readAsBytes();
+    return imageBytes;
+    // Return the image as a MemoryImage
+    // return MemoryImage(imageBytes);
   }
+
+  // If no image is selected, return null
+  return null;
+}
 
 Future<void> showLogoutConfirmation(BuildContext context) async {
   await showDialog(
@@ -168,6 +169,93 @@ Future<void> showLogoutConfirmation(BuildContext context) async {
                           Navigator.of(context).pop();
                         }
                         context.read<AuthBloc>().add(Logout());
+                      },
+                      style: const ButtonStyle(
+                        backgroundColor:
+                            WidgetStatePropertyAll(AppColors.error),
+                      ),
+                      child: Text(
+                        context.translate.yes,
+                      ),
+                    ),
+
+                    // dispose button
+                    TextButton(
+                      onPressed: () {
+                        if (Navigator.of(context).canPop()) {
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      style: const ButtonStyle(
+                        backgroundColor:
+                            WidgetStatePropertyAll(AppColors.success),
+                      ),
+                      child: Text(
+                        context.translate.no,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Future<void> showDeleteProductConfirmation(
+    BuildContext context, ProductModel product) async {
+  await showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      final _textStyle = Theme.of(context).textTheme;
+      return AlertDialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        content: Card(
+          elevation: 1,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: locator<DynamicSizes>().p90,
+              maxWidth: locator<DynamicSizes>().p90,
+              maxHeight: locator<DynamicSizes>().p50,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  context.translate.ru_sure_want_to_delete ,
+                  style: _textStyle.displayMedium,
+                ),
+
+                gap(height: AppSizes.s20),
+                // confirm button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        if (Navigator.of(context).canPop()) {
+                          Navigator.of(context).pop();
+                        }
+                        if (Navigator.of(context).canPop()) {
+                          Navigator.of(context).pop();
+                        }
+                        // todo : send delete product event to bloc
+
+                        // show snackbar
+                        showSnackBar(
+                          message: SuccessSnackBar(
+                            title:
+                                context.translate.product_deleted_successfully,
+                            message:
+                                context.translate.product_deleted_successfully,
+                          ),
+                        );
+
                       },
                       style: const ButtonStyle(
                         backgroundColor:
