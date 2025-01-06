@@ -168,7 +168,7 @@ Future<void> showLogoutConfirmation(BuildContext context) async {
                         if (Navigator.of(context).canPop()) {
                           Navigator.of(context).pop();
                         }
-                        context.read<AuthBloc>().add(Logout());
+                        context.read<AuthBloc>().add(Logout(context: context));
                       },
                       style: const ButtonStyle(
                         backgroundColor:

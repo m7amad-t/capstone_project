@@ -52,6 +52,10 @@ dependencies:
   image_picker: ^1.1.2
   cached_network_image: ^3.4.1
   flutter_cache_manager: ^3.4.1
+  salomon_bottom_bar: ^3.3.2
+  flutter_material_design_icons: ^1.1.7447
+  shared_preferences: ^2.3.5
+  badges: ^3.1.2
 
 dev_dependencies:
   intl_utils: ^2.0.0 # This helps to generate localization files

@@ -1,19 +1,22 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names, use_build_context_synchronously
+
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
+import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/shared/imageDisplayer.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
 import 'package:shop_owner/shared/uiHelper.dart';
-import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 import 'package:shop_owner/utils/inputFormater.dart';
-import 'package:toastification/toastification.dart';
 
 class ProductEditorPage extends StatefulWidget {
   final ProductModel? product;
@@ -49,8 +52,16 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
     _isUpdating = widget.product != null;
     product = widget.product ??
         const ProductModel(
-            name: "", price: 0, imageUrl: '', description: '', quantity: 0);
-    _selectedCategory = widget.categories.first;
+          id : -1,
+          name: "",
+          price: 0,
+          imageUrl: '',
+          description: '',
+          quantity: 0,
+        );
+    if (widget.categories.isNotEmpty) {
+      _selectedCategory = widget.categories.first;
+    }
     _nameController = TextEditingController();
     _priceController = TextEditingController();
     _descController = TextEditingController();
@@ -67,9 +78,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
   Uint8List? _newImage;
 
   Future<void> _saveB_callback() async {
-    print("callback ");
     if (!_fromKey.currentState!.validate()) {
-      print("from is not validate");
       return;
     }
     // todo : collect values
@@ -79,71 +88,50 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
 
     String loadingDialog =
         _isUpdating ? context.translate.updating : context.translate.uploading;
-    // for now just show a laoding , and then send a snackbar message
-    showLoadingDialog(
-      context,
-      "$loadingDialog ${context.translate.product}",
-    );
 
+    // show loading dialog
+    locator<AppDialogs>()
+        .showCostumTextLoading("$loadingDialog ${context.translate.product}");
     // wait for one second
     await Future.delayed(const Duration(seconds: 1));
-    // pop loading dialog
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
-    }
+
+    // pop the loading dialog
+    locator<AppDialogs>().disposeAnyActiveDialogs();
 
     // navigate back to product management screen
-    // pop loading dialog
-    if (Navigator.of(context).canPop()) {
-      Navigator.of(context).pop();
+    if (GoRouter.of(context).canPop()) {
+      GoRouter.of(context).pop();
     }
     // snackbar title
     String title = _isUpdating
         ? context.translate.product_updated_successfuly
-        : context.translate.inserted_successfuly;
-    String message = _isUpdating
-        ? context.translate.product_updated_successfuly
-        : context.translate.inserted_successfuly;
+        : context.translate.inserted_succesfully;
     showSnackBar(
       message: SuccessSnackBar(
         title: title,
-        message: message,
+        message: title,
       ),
     );
   }
-  
+
   Future<void> _deleteB_callback() async {
-   
-    await showDeleteProductConfirmation (
-      context,
-      product,
-      
-    );
+    locator<AppDialogs>().showDeleteProductConfirmation(product: product);
 
     // wait for one second
     await Future.delayed(const Duration(seconds: 1));
-    // // pop loading dialog
-    // if (Navigator.of(context).canPop()) {
-    //   Navigator.of(context).pop();
-    // }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
+
+
     final _textStyle = Theme.of(context).textTheme;
     final isRTL = context.fromLTR;
-    final String suffix =
-        _isUpdating ? context.translate.edit : context.translate.add;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          // ignore: prefer_interpolation_to_compose_strings
-          suffix + " " + context.translate.product,
-        ),
-      ),
-      body: GestureDetector(
+     
+      body: 
+      GestureDetector(
         onTap: () {
           // unfocus any focused element
           FocusManager.instance.primaryFocus?.unfocus();
@@ -288,21 +276,20 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
           ),
           gap(height: AppSizes.s30),
           // delete button
-          if(_isUpdating)
-          Row(
-            children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: _deleteB_callback,
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(AppColors.error)
+          if (_isUpdating)
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: _deleteB_callback,
+                    style: const ButtonStyle(
+                        backgroundColor:
+                            WidgetStatePropertyAll(AppColors.error)),
+                    child: Text(context.translate.deleted),
                   ),
-                  child: Text(context.translate.deleted),
-
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
         ],
       ),
     );

@@ -64,6 +64,7 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     _usernameTEC = TextEditingController();
     _passwordTEC = TextEditingController();
+    setupAppDialogs(context); 
   }
 
   @override

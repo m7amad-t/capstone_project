@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_owner/main.dart';
 import 'package:shop_owner/pages/authed/home/logic/models/featureModel.dart';
 import 'package:shop_owner/pages/authed/home/ui/components/featureCard.dart';
 import 'package:shop_owner/router/routes.dart';
@@ -9,6 +10,7 @@ import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/shared/drawer.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
+import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class HomePage extends StatelessWidget {
@@ -42,13 +44,16 @@ class HomePage extends StatelessWidget {
         path: AppRoutes.saleAnalytics,
       ),
     ];
+    
+    double maxGridItemWidth = 180 ; 
+    // screen width 
+    double screenWidth = MediaQuery.of(context).size.width ;
+
+    // caluculate proper number of items in one row 
+    int itemsPerRow = (screenWidth / maxGridItemWidth).floor();
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.translate.home_screen),
-        centerTitle: true,
-      ),
-      drawer: appDrawer(context),
+  
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: AppPaddings.p10,
@@ -60,7 +65,7 @@ class HomePage extends StatelessWidget {
             crossAxisSpacing: AppSizes.s10,
             mainAxisSpacing: AppSizes.s10,
             childAspectRatio: 1,
-            crossAxisCount: 2,
+            crossAxisCount: itemsPerRow,
           ),
           itemCount: _features.length,
           itemBuilder: (context, index) => FeatureCard(

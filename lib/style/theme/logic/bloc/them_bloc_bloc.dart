@@ -1,11 +1,11 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'them_bloc_event.dart';
 part 'them_bloc_state.dart';
 
-class ThemeBloc extends Bloc<ThemeBlocEvent, ThemeBlocState> {
+class ThemeBloc extends HydratedBloc<ThemeBlocEvent, ThemeBlocState> {
   ThemeBloc() : super(const AppThemeData(mode: ThemeMode.light)) {
     on<ChangeTheme>((event, emit) {
       // get current theme mode
@@ -21,5 +21,28 @@ class ThemeBloc extends Bloc<ThemeBlocEvent, ThemeBlocState> {
       // send new mode to UI (rebuild UI)
       emit(AppThemeData(mode: themeMode));
     });
+  }
+  
+  @override
+  ThemeBlocState? fromJson(Map<String, dynamic> json) {
+   if(json['themeMode']==1){
+    return const AppThemeData(mode: ThemeMode.light); 
+   } else {
+    return const AppThemeData(mode: ThemeMode.dark); 
+
+   }
+  }
+  
+  @override
+  Map<String, dynamic>? toJson(ThemeBlocState state) {
+    if(state is AppThemeData){
+      if(state.mode == ThemeMode.light){
+        return {'themeMode': 1};
+      }else {
+        return {'themeMode': 0};
+      }
+    }
+
+    return {'themeMode': 1};
   }
 }

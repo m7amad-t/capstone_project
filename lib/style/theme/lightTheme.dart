@@ -5,20 +5,21 @@ import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/fontSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
 
+
 class AppColorsLight {
   static const Color primary = AppColors.primary;
-  static const Color textPrimary = Colors.black;
-  static Color textSecondary = Colors.grey[800]!;
-  static Color textPlaceholder = Colors.grey[600]!;
-  static const Color surfacePrimary = Color(0xFFFFFFFF);
-  static const Color surfaceSecondary = Color(0xFFF5F5F5);
-  static const Color surfaceAccent = Color(0xFFE0E0E0);
-  static const Color borderPrimary = Color(0xFFDDDDDD);
+  static const Color textPrimary = Colors.black; // Default for light mode
+  static Color textSecondary = Colors.grey[700]!;
+  static Color textPlaceholder = Colors.grey[500]!;
+  static const Color surfacePrimary = Color(0xFFF5F5F5); // Light gray for backgrounds
+  static const Color surfaceSecondary = Color(0xFFFFFFFF); // Pure white for cards
+  static const Color surfaceAccent = Color(0xFFFAFAFA); // Slightly off-white
+  static const Color borderPrimary = Color(0xFFE0E0E0); // Subtle border
   static const Color borderBrand = AppColors.borderBrand;
-  static const Color borderInput = Color(0xFFBBBBBB);
+  static const Color borderInput = Color(0xFFCCCCCC); // Soft gray for inputs
   static const Color error = AppColors.error;
-  static const Color overPimary = AppColors.onPrimary;
-  static const Color cardColor = Color.fromARGB(255, 183, 223, 255);
+  static const Color overPrimary = AppColors.onPrimary;
+  static const Color cardColor = Color(0xFFFFFFFF); // Clean white for elevated cards
 }
 
 ThemeData lightModeThemeData(Locale locale) {
@@ -31,9 +32,10 @@ ThemeData lightModeThemeData(Locale locale) {
     brightness: Brightness.light,
     primaryColor: AppColorsLight.primary,
     appBarTheme: AppBarTheme(
+
       iconTheme: IconThemeData(
         size: AppSizes.s30,
-        color: AppColorsLight.overPimary,
+        color: AppColorsLight.overPrimary,
       ),
       backgroundColor: AppColorsLight.primary,
       surfaceTintColor: Colors.transparent,
@@ -43,7 +45,7 @@ ThemeData lightModeThemeData(Locale locale) {
         fontFamily: isEnglish
             ? GoogleFonts.nunitoSans().fontFamily
             : GoogleFonts.ibmPlexSansArabic().fontFamily,
-        color: AppColorsLight.overPimary,
+        color: AppColorsLight.overPrimary,
         fontWeight: FontWeight.w600,
       ),
     ),
@@ -137,7 +139,7 @@ ThemeData lightModeThemeData(Locale locale) {
           ),
         ),
       ),
-      color: const Color.fromARGB(255, 183, 223, 255),
+      color: AppColorsLight.cardColor,
       // shadowColor: AppColorsLight.primary,
       elevation: AppSizes.s5,
       // surfaceTintColor: AppColorsLight.primary,

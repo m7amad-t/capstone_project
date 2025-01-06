@@ -6,8 +6,9 @@ import 'package:shop_owner/utils/di/contextDI.dart';
 class NavigationService {
   // navigator service key
   final GlobalKey<NavigatorState> _navigatorState = GlobalKey<NavigatorState>(
-    debugLabel: 'navigaton service',
+    debugLabel: 'root navigator',
   );
+
 
   GlobalKey<NavigatorState> get key => _navigatorState;
 
@@ -33,38 +34,8 @@ class NavigationService {
     return _navigatorState.currentState?.popUntil((route) => route.isFirst);
   }
 
-  showLoadingDialog(String text) async {
-    showDialog(
-      context: _navigatorState.currentState!.context,
-      barrierDismissible:
-          false, // Prevents dialog from being dismissed by tapping outside
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          content: Card(
-            elevation: 1,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: locator<DynamicSizes>().p50,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const RepaintBoundary(
-                    child: CircularProgressIndicator(),
-                  ),
-                  gap(height: 10),
-                  Text(
-                    text,
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+  // method to show dialogs 
+  void showDialog(BuildContext context, Widget child) {
+   
   }
 }

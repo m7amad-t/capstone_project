@@ -59,7 +59,7 @@
     "sale_analytics" : "شیکاری فرۆشتن",    
     "expenses" : "خەرجی",    
     "expenses_tracking" : "خەرجیەکان",
-    "product_management" : "ڕێخستنی بەرهەمەکان",    
+    "product_management" : "ڕێکخستنی بەرهەمەکان",    
     "product" : "بەرهەم",    
     "product_name" : "ناوی بەرهەم",    
     "enter_product_name" : "ناوی بەرهەم بنووسە",    
@@ -80,6 +80,19 @@
     "name_z_to_a" : "ی-ئ",
     "description" : "وەسف",
     "category" : "کاتیگۆری",
+    "category_management" : "ڕیکخسنی کاتیگۆریەکان",
+    "category_name" : "ناوی کاتیگۆری",
+    "enter_category_name" : "ناوی کاتیگۆری بنووسە",
+    "updated_succesfully" : "بەسەرکەتووی نوێ کرایەوە",
+    "inserted_succesfully" : "بەسەرکەتووی زیاد کرا",
+    "no_category_found" : "هیج کاتیگۆریەک نەدۆزرایەوە",
+    "no_category_found_note" : "پێویستە هەموو بەرهەمێک کاتیگۆری هەبێت",
+
+    "deleting_category_warning" : "ناتوانیت ئەم کاتیگۆریە بسڕیتەوە چونکە ئایتمی هەیە!",
+
+    "categories" : "کاتیگۆریەکان",
+    "edit_category" : "دەسکاری کردنی کاتیگۆری",
+    "insert_category" : "دروستکردنی کاتیگۆری",
     "updating" : "نوێ کردنەوە",
     "inserted_successfuly" : "بەسەرکەوتووی زیادکرا",
     "uploading" : "زیادکردن",
@@ -92,7 +105,9 @@
     "ru_sure_want_to_delete" : "دڵنیایت لە سڕینەوەی؟",
     "product_deleted_successfully" : "بەرهەمەکە بە سەرکوتووت سڕایەوە",
     "deleted_successfully" : "بە سەرکوتووت سڕایەوە",
-    "deleted" : "سڕینەوە"
+    "deleted" : "سڕینەوە",
+    "error" : "هەڵەیەک ڕوویدا"
+
 
 
     

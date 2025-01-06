@@ -80,6 +80,17 @@
   "name_z_to_a": "ي-أ",
   "description": "الوصف",
   "category": "تصنيف",
+  "category_management" : "إدارة التصنيفات",
+  "no_category_found" : "لم يتم العثور على تصنيف",
+  "no_category_found_note" : "لا يوجد تصنيف متاح. يرجى إضافة تصنيف جديد",
+  "category_name" : "اسم التصنيف", 
+  "enter_category_name" : "أدخل اسم التصنيف",
+  "updated_succesfully" : "تم التحديث بنجاح",
+  "inserted_succesfully" : "تم الإدخال بنجاح",
+  "deleting_category_warning" : "لا يمكنك حذف هذا التصنيف لأنه يحتوي على منتجات!",
+  "categories": "تصنيفات",
+  "edit_category": "تحرير التصنيف",
+  "insert_category": "إنشاء تصنيف جديد",
   "updating": "تحديث",
   "uploading": "جارٍ التحميل",
   "product_updated_successfuly": "تم تحديث المنتج بنجاح",
@@ -92,6 +103,8 @@
   "ru_sure_want_to_delete": "هل أنت متأكد أنك تريد الحذف؟",
   "product_deleted_successfully": "تم حذف المنتج بنجاح",
   "deleted_successfully": "تم الحذف بنجاح",
-  "deleted" : "الحذف"
+  "deleted" : "الحذف",
+  "error" : "حدث خطأ"
+
 
 }

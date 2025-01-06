@@ -2,13 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:shop_owner/pages/authed/home/logic/models/featureModel.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:shop_owner/router/routes.dart'; 
 class FeatureCard extends StatelessWidget {
   final AppFeature feature;
   const FeatureCard({super.key, required this.feature});
 
   void _tapCallBack(context) {
-    Navigator.of(context).pushNamed(feature.path); 
+    GoRouter.of(context).push(feature.path);  
   }
 
   @override

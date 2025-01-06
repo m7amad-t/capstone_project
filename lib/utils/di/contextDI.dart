@@ -4,12 +4,24 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shop_owner/router/navigationService.dart';
+import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/utils/auth/authService.dart';
 
 final locator = GetIt.instance;
 
-void setUpLocator(BuildContext context) {
+void setupAppDialogs (BuildContext context){
+
+  // if it already injeced remove it and inject new one with new context ; 
+  // register appDialogs size class
+  if (locator.isRegistered<AppDialogs>()) {
+    locator.unregister<AppDialogs>();
+  } 
+    locator.registerSingleton(AppDialogs(context: context));
+  
+}
+
+void setupAppDynamicSizes (BuildContext context){
   // register daynamic size class
   if (locator.isRegistered<DynamicSizes>()) {
     return;
@@ -17,12 +29,19 @@ void setUpLocator(BuildContext context) {
     locator.registerSingleton(DynamicSizes(context: context));
   }
 
+} 
+
+void setUpLocator() {
+
+
   // register navigation service class
   if (locator.isRegistered<NavigationService>()) {
     return;
   } else {
     locator.registerSingleton<NavigationService>(NavigationService());
   }
+
+
 
 
 

@@ -7,19 +7,18 @@ import 'package:shop_owner/style/theme/appColors.dart';
 
 class AppColorsDark {
   static const Color primary = AppColors.primary;
-  static const Color textPrimary = Colors.white;
+  static const Color textPrimary = Colors.white; // High contrast for dark mode
   static Color textSecondary = Colors.grey[400]!;
   static Color textPlaceholder = Colors.grey[500]!;
-  static const Color surfacePrimary = Color.fromARGB(255, 3, 0, 20);
-  static const Color surfaceSecondary = Color(0xFF2C2C2C);
-  static const Color surfaceAccent = Color(0xFF333333);
-  static const Color borderPrimary = Color(0xFF444444);
+  static const Color surfacePrimary = Color(0xFF121212); // Dark gray for backgrounds
+  static const Color surfaceSecondary = Color(0xFF1E1E1E); // Slightly lighter surface
+  static const Color surfaceAccent = Color(0xFF212121); // Accent surface
+  static const Color borderPrimary = Color(0xFF2C2C2C); // Subtle border
   static const Color borderBrand = AppColors.borderBrand;
-  static const Color borderInput = Color(0xFF555555);
+  static const Color borderInput = Color(0xFF3C3C3C); // Slightly lighter for inputs
   static const Color error = AppColors.error;
-  static const Color overPimary = AppColors.onPrimary;
-  static const Color cardColor = Color.fromARGB(255, 0, 18, 33);
-
+  static const Color overPrimary = AppColors.onPrimary;
+  static const Color cardColor = Color(0xFF1C1C1C); // For elevated cards in dark mode
 }
 
 ThemeData darkModeThemeData(Locale locale) {
@@ -34,7 +33,7 @@ ThemeData darkModeThemeData(Locale locale) {
     appBarTheme: AppBarTheme(
             iconTheme: IconThemeData(
         size: AppSizes.s30, 
-        color : AppColorsDark.overPimary, 
+        color : AppColorsDark.overPrimary, 
       ),
       backgroundColor: AppColorsDark.primary,
       surfaceTintColor:AppColorsDark.primary,
@@ -43,7 +42,7 @@ ThemeData darkModeThemeData(Locale locale) {
         fontFamily: isEnglish
             ? GoogleFonts.nunitoSans().fontFamily
             : GoogleFonts.ibmPlexSansArabic().fontFamily,
-        color: AppColorsDark.overPimary,
+        color: AppColorsDark.overPrimary,
         fontWeight: FontWeight.w600,
         
       ),

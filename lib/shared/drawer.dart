@@ -13,103 +13,121 @@ import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 Widget appDrawer(BuildContext context) {
   final _textStyle = Theme.of(context).textTheme;
+  // get proper height for drawer 
+  double preferredHeight = 650; // or more..
+  // get screen height
+  double screenHeight = MediaQuery.of(context).size.height;
 
-  return Drawer(
-    child: Column(
-      children: [
-        // top gap
-        Expanded(
-          flex: 1,
-          child: Container(),
-        ),
+  if(screenHeight > preferredHeight){
+    preferredHeight = screenHeight;
+  }
 
-        // prfile section
-        Expanded(
-          flex: 3,
-          child: GestureDetector(
-            onTap: () {
-              // todo : navigate user to profile page
-            },
-            child: Column(
-              children: [
-                // avatar
-                Expanded(
-                  flex: 5,
-                  child: CircleAvatar(
-                    radius: AppSizes.infinity,
-                    // this replace to actual user avatar if it necessary
-                    child: Image.asset(AssetPaths.user),
-                  ),
-                ),
-
-                // name
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      locator<User>().name,
-                      style: _textStyle.displayLarge,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+  return SizedBox(
+    height: screenHeight,
+    child: SingleChildScrollView(
+      child: ConstrainedBox(
+         constraints: BoxConstraints(
+            maxHeight: preferredHeight,
           ),
-        ),
-
-        // list tiles
-        Expanded(
-          flex: 5,
+        child: Drawer(
           child: Column(
             children: [
-              // app theme mode
-              ListTile(
-                leading: Text(
-                  context.translate.light_mode,
-                  style: _textStyle.displayLarge,
-                ),
-                trailing: CupertinoSwitch(
-                  value: Theme.of(context).brightness == Brightness.light,
-                  activeColor: Theme.of(context).primaryColor,
-                  onChanged: (value) => context
-                      .read<ThemeBloc>()
-                      .add(ChangeTheme(context: context)),
-                ),
+              // top gap
+              Expanded(
+                flex: 1,
+                child: Container(),
               ),
-
-              // app language
-              changeLanguageTile(),
-            ],
-          ),
-        ),
-        // logout section
-        Expanded(
-          flex: 1,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: AppSizes.s20),
-                width: AppSizes.infinity,
-                height: AppSizes.s50,
-                child: TextButton(
-                  onPressed: () {
-                    showLogoutConfirmation(context);
+              
+              // prfile section
+              Expanded(
+                flex: 3,
+                child: GestureDetector(
+                  onTap: () {
+                    // todo : navigate user to profile page
                   },
-                  style: const ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(AppColors.error),
-                  ),
-                  child: Text(
-                    context.translate.log_out,
+                  child: Column(
+                    children: [
+                      // avatar
+                      Expanded(
+                        flex: 5,
+                        child: CircleAvatar(
+                          radius: AppSizes.infinity,
+                          // this replace to actual user avatar if it necessary
+                          child: Image.asset(AssetPaths.user),
+                        ),
+                      ),
+              
+                      // name
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            locator<User>().name,
+                            style: _textStyle.displayLarge,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
+              
+              // list tiles
+              Expanded(
+                flex: 5,
+                child: Column(
+                  children: [
+                    // app theme mode
+                    ListTile(
+                      leading: Text(
+                        context.translate.light_mode,
+                        style: _textStyle.displayLarge,
+                      ),
+                      trailing: CupertinoSwitch(
+                        value: Theme.of(context).brightness == Brightness.light,
+                        activeColor: Theme.of(context).primaryColor,
+                        onChanged: (value) => context
+                            .read<ThemeBloc>()
+                            .add(ChangeTheme(context: context)),
+                      ),
+                    ),
+              
+                    // app language
+                    changeLanguageTile(),
+                  ],
+                ),
+              ),
+              // logout section
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: AppSizes.s20),
+                      width: AppSizes.infinity,
+                      height: AppSizes.s50,
+                      child: TextButton(
+                        onPressed: () {
+                          showLogoutConfirmation(context);
+                        },
+                        style: const ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(AppColors.error),
+                        ),
+                        child: Text(
+                          context.translate.log_out,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // trailing gap
+              Expanded(flex: 1, child: Container()),
             ],
           ),
         ),
-        // trailing gap
-        Expanded(flex: 1, child: Container()),
-      ],
+      ),
     ),
   );
 }

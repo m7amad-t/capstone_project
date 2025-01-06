@@ -79,7 +79,18 @@
     "name_a_to_z" : "A-Z",
     "name_z_to_a" : "Z-A",
     "description" : "Description",
+    "no_category_found" : "No category found",
+    "no_category_found_note" : "All product must have a category",
     "category" : "Category",
+    "category_management" : "Category management",
+    "category_name" : "Category name",  
+    "updated_succesfully" : "Updated successfully",
+    "inserted_succesfully" : "Inserted successfully",
+    "enter_category_name" : "Enter category name",
+    "deleting_category_warning" : "You can't delete this category because it has products!",
+    "categories" : "Categories",
+    "edit_category" : "Edit category",
+    "insert_category" : "Create new category",
     "updating" : "Updating",
     "uploading" : "Uploading",
     "inserted_successfuly" : "Inserted successfuly",
@@ -92,7 +103,8 @@
     "ru_sure_want_to_delete" : "Are you sure you want to delete?",
     "product_deleted_successfully" : "Product deleted successfully",
     "deleted_successfully" : "Deleted successfully",
-    "deleted" : "Deleted"
+    "deleted" : "Deleted",
+    "error" : "Error occured"
 
 
   }

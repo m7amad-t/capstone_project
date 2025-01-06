@@ -1,10 +1,10 @@
-
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_owner/pages/notAuthed/login/logic/model/loginModel.dart';
+import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/uiHelper.dart';
 import 'package:shop_owner/utils/auth/authService.dart';
@@ -20,22 +20,24 @@ part 'login_bloc_state.dart';
 class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
   LoginBloc() : super(Ideal()) {
 
-    on<Login>((event, emit) async {
+    Future<void> _onLogin (Login event , emit)async{
+
       // fake the login flow :::
-
-      // show a loading dialog
-      showLoadingDialog(event.context, event.context.translate.login);
-
+      locator<AppDialogs>().showSigningIn();
+      
+      
       // simulate a delay for the login process
       final CloudAuth authService = CloudAuth();
-
+     
       final User? user = await authService.auth(event.model);
 
+
       if (user == null) {
+
         // emit error
         emit(FailedToLogin());
 
-        popCurrent(event.context);
+        locator<AppDialogs>().disposeAnyActiveDialogs();
         // send snakbar
         showSnackBar(
           message: FailedSnackBar(
@@ -52,7 +54,8 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
       await locator<AuthService>().signUser(user);
 
       // pop loading dialog
-      popCurrent(event.context);
+      locator<AppDialogs>().disposeAnyActiveDialogs();
+
       // send snackabr
       showSnackBar(
         message: SuccessSnackBar(
@@ -60,8 +63,11 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
           message: event.context.translate.login_successful,
         ),
       );
-      // call auth bloc to auth curent user , redirect user to home page 
-      event.context.read<AuthBloc>().add(AuthUser()); 
-    });
+      // call auth bloc to auth curent user , redirect user to home page
+      event.context.read<AuthBloc>().add(AuthUser(context: event.context));
+    }
+    
+  
+    on<Login>(_onLogin);
   }
 }

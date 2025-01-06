@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/service/productServices.dart';
-import 'package:shop_owner/shared/drawer.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 part 'product_bloc_event.dart';
