@@ -1,9 +1,12 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names, use_build_context_synchronously
 
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/shared/appDialogs.dart';
@@ -52,7 +55,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
     _isUpdating = widget.product != null;
     product = widget.product ??
         const ProductModel(
-          id : -1,
+          id: -1,
           name: "",
           price: 0,
           imageUrl: '',
@@ -77,12 +80,49 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
 
   Uint8List? _newImage;
 
+
+  Map<String , dynamic> _getUpdatedFields (){
+     // check if its updaiting or inserting..
+
+    Map<String, dynamic> update = {};
+
+    // get name field text
+    String currentName = _nameController.text;
+
+    // get quantity field text
+    int currentQuantity = int.parse(_quantityController.text);
+
+    // get quantity field text
+    double currentPrice = double.parse(_priceController.text);
+
+    // description
+    String currentDescription = _descController.text;
+
+    // check with orignal if its changed , add it to the update map
+    if (currentName != product.name) {
+      update['name'] = currentName;
+    }
+    if (currentQuantity != product.quantity) {
+      update['quantity'] = currentQuantity;
+    }
+    if (currentPrice != product.price) {
+      update['price'] = currentPrice;
+    }
+    if (currentDescription != product.description) {
+      update['description'] = currentDescription;
+    }
+
+    return update; 
+  }
+
   Future<void> _saveB_callback() async {
     if (!_fromKey.currentState!.validate()) {
       return;
     }
     // todo : collect values
     // todo : FOR the UI part just relaod products , or update the existing one, one ensert new one
+
+   
 
     // if product is not provided then create new one , else update the one how provided,
 
@@ -92,8 +132,45 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
     // show loading dialog
     locator<AppDialogs>()
         .showCostumTextLoading("$loadingDialog ${context.translate.product}");
-    // wait for one second
+
+    // in here send the request to backend and wait for the ressult..
+
+
+    // wait for one second : to simulate the reall world example
     await Future.delayed(const Duration(seconds: 1));
+    
+    if(_isUpdating){
+      context.read<ProductBloc>().add(UpdateProduct(
+          product: product,
+          toUpdate: _getUpdatedFields(),
+        ));
+    }else {
+
+      // get random values for the id between 100 to 1000
+      final random=  Random();
+      int newID =100+ random.nextInt(10000);   
+
+      // create a product model with those data 
+      product = ProductModel(
+        id: newID,  //siging a random ID to not messing with the existing ones 
+        name: _nameController.text,
+        price: double.parse(_priceController.text),
+        imageUrl: 'new url , it come with the response from the backend',
+        description: _descController.text,
+        quantity: int.parse(_quantityController.text),
+      );
+
+      final _category = _selectedCategory ?? widget.categories.first; 
+      // send the request to backend and wait for the response..
+
+      // if product is not provided then create new one , else update the one how provided,
+      context.read<ProductBloc>().add(InsertProduct(product: product , category: _category));
+
+    }
+    
+    // update UI based on the response from backend
+
+    
 
     // pop the loading dialog
     locator<AppDialogs>().disposeAnyActiveDialogs();
@@ -118,20 +195,16 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
     locator<AppDialogs>().showDeleteProductConfirmation(product: product);
 
     // wait for one second
-    await Future.delayed(const Duration(seconds: 1));
+    // await Future.delayed(const Duration(seconds: 1));
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     final _textStyle = Theme.of(context).textTheme;
     final isRTL = context.fromLTR;
 
     return Scaffold(
-     
-      body: 
-      GestureDetector(
+      body: GestureDetector(
         onTap: () {
           // unfocus any focused element
           FocusManager.instance.primaryFocus?.unfocus();
@@ -283,8 +356,10 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
                   child: TextButton(
                     onPressed: _deleteB_callback,
                     style: const ButtonStyle(
-                        backgroundColor:
-                            WidgetStatePropertyAll(AppColors.error)),
+                      backgroundColor: WidgetStatePropertyAll(
+                        AppColors.error,
+                      ),
+                    ),
                     child: Text(context.translate.deleted),
                   ),
                 ),
@@ -355,10 +430,10 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
               if (value == null || value.isEmpty) {
                 return context.translate.enter_price;
               }
-              if (int.tryParse(value) == null) {
+              if (double.tryParse(value) == null) {
                 return context.translate.enter_valid_price;
               }
-              if (int.parse(value) < 0) {
+              if (double.parse(value) < 0) {
                 return context.translate.enter_valid_price;
               }
               return null;
@@ -366,7 +441,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
             style: _textStyle.bodySmall,
             controller: _priceController,
             inputFormatters: [
-              AppInputFormatter.numbersOnly,
+              AppInputFormatter.price,
             ],
             keyboardType: TextInputType.number,
             decoration: InputDecoration(

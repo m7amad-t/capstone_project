@@ -1,20 +1,23 @@
 part of 'cart_bloc_bloc.dart';
 
 sealed class CartBlocState extends Equatable {
-  const CartBlocState();
+  final List<CartModel> cartData ;
+
+  const CartBlocState({required this.cartData});
   
   @override
-  List<Object> get props => [];
+  List<Object> get props => [cartData];
 }
 
-final class LoadingCart extends CartBlocState {}
+final class LoadingCart extends CartBlocState {
+  const LoadingCart({required super.cartData});
+}
 
 
 final class GotCart extends CartBlocState {
-  final List<CartModel> cartData ;
   final ProductModel? updatedItem ; 
   final bool isAllUpdated ; 
-  const GotCart({ this.updatedItem,required this.isAllUpdated, required this.cartData}); 
+  const GotCart({ this.updatedItem,required this.isAllUpdated, required super.cartData}); 
 
   @override
   List<Object> get props => [cartData , isAllUpdated,];
@@ -23,9 +26,8 @@ final class GotCart extends CartBlocState {
 
 final class CartItemUpdated extends CartBlocState {
   final ProductModel updatedItem ; 
-  final List<CartModel> cart; 
-  const CartItemUpdated({required this.updatedItem , required this.cart}); 
+  const CartItemUpdated({required this.updatedItem , required super.cartData}); 
 
   @override
-  List<Object> get props => [updatedItem,cart];
+  List<Object> get props => [updatedItem,cartData];
 }

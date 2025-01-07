@@ -9,6 +9,7 @@ import 'package:shop_owner/pages/authed/saleTracking/logic/bloc/cart_bloc_bloc.d
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/cardModel.dart';
 import 'package:shop_owner/shared/imageDisplayer.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
@@ -16,8 +17,10 @@ import 'package:shop_owner/utils/inputFormater.dart';
 
 class MenuCard extends StatefulWidget {
   final ProductModel product;
+  final bool showMoreDetails;
   const MenuCard({
     super.key,
+    this.showMoreDetails = false,
     required this.product,
   });
 
@@ -94,9 +97,10 @@ class _MenuCardState extends State<MenuCard> {
         return false;
       },
       builder: (context, state) {
+        final _textStyle = Theme.of(context).textTheme;
         return ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: AppSizes.s150,
+            maxHeight: widget.showMoreDetails ? AppSizes.s250 : AppSizes.s150,
             maxWidth: AppSizes.s300,
           ),
           child: Card(
@@ -105,13 +109,85 @@ class _MenuCardState extends State<MenuCard> {
                 Expanded(
                   flex: 2,
                   child: productCardMainSection(
-                    product: widget.product,
-                    isLTR: isLTR,
-                    isCart: true
-                  ),
+                      product: widget.product, isLTR: isLTR, isCart: true),
                 ),
+                if (widget.showMoreDetails)
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Expanded(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AppPaddings.p18,
+                                    vertical: AppPaddings.p10),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(AppSizes.s8),
+                                  color: AppColors.primary.withAlpha(100),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "total",
+                                      style: _textStyle.bodyMedium!
+                                          .copyWith(color: AppColors.primary),
+                                    ),
+                                    gap(width: AppSizes.s10),
+                                    Text(
+                                      _getTotal(state),
+                                      style: _textStyle.bodyMedium!.copyWith(
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                             
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: AppPaddings.p18,
+                                      vertical: AppPaddings.p10),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.circular(AppSizes.s8),
+                                    color: AppColors.primary.withAlpha(100),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Discount",
+                                        style: _textStyle.bodyMedium!
+                                            .copyWith(color: AppColors.primary),
+                                      ),
+                                      gap(width: AppSizes.s10),
+                                      Text(
+                                        _getDiscount(state),
+                                        style: _textStyle.bodyMedium!.copyWith(
+                                          color: AppColors.error,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ))
+                        ],
+                      ),
+                    ),
+                  ),
                 Expanded(
                   child: Container(
+                    alignment: Alignment.bottomCenter,
                     child: _getProperWidget(state),
                   ),
                 ),
@@ -121,6 +197,37 @@ class _MenuCardState extends State<MenuCard> {
         );
       },
     );
+  }
+
+  String _getTotal(CartBlocState state) {
+    // first find the element
+    late final CartModel? cartItem;
+    for (final element in state.cartData) {
+      if (element.product.id == widget.product.id) {
+        cartItem = element;
+      }
+    }
+
+    if (cartItem == null) return "\$??";
+
+    double subTotal = widget.product.price * cartItem.quantity;
+    double total = subTotal * (1 - cartItem.discount);
+
+    return "\$${total.toStringAsFixed(2)}";
+  }
+
+  String _getDiscount(CartBlocState state) {
+    // first find the element
+    late final CartModel? cartItem;
+    for (final element in state.cartData) {
+      if (element.product.id == widget.product.id) {
+        cartItem = element;
+      }
+    }
+
+    if (cartItem == null) return "%??";
+
+    return "${cartItem.discount}%";
   }
 
   Widget _loadingCart() {
@@ -303,7 +410,7 @@ class _MenuCardState extends State<MenuCard> {
       return _addToCart();
     } else if (state is CartItemUpdated) {
       // check if item is already in cart
-      for (final element in state.cart) {
+      for (final element in state.cartData) {
         if (element.product.id == widget.product.id) {
           _quantityController.text = element.quantity.toString();
           return _cartController(element);

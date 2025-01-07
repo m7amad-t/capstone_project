@@ -311,6 +311,9 @@ void showSnackBar({required AppSnackBarMessages message}) {
     autoCloseDuration: const Duration(seconds: 5),
     icon: message.icon,
     primaryColor: message.color,
+    borderSide: const BorderSide(
+      color : Colors.transparent , 
+    )
   );
 }
 

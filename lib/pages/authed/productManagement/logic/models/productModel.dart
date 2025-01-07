@@ -40,6 +40,18 @@ class ProductModel extends Equatable {
     };
   }
 
+
+  ProductModel update (Map<String , dynamic> data){
+    return ProductModel(
+      id: data['id']?? id,
+      name: data['name']?? name,
+      price: data['price']?? price,
+      imageUrl: data['imageUrl']?? imageUrl,
+      description: data['description']?? description,
+      quantity: data['quantity']?? quantity,
+    );
+  }
+
   // to json
   String get  toJson {
     return jsonEncode(toJsonMap); 

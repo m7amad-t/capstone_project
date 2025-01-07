@@ -93,7 +93,7 @@ class _RootPageState extends State<RootPage> {
                     show = state.cartData.isNotEmpty; 
                   }
                   if(state is CartItemUpdated){
-                    show = state.cart.isNotEmpty; 
+                    show = state.cartData.isNotEmpty; 
                   }
         
                   return badges.Badge(
@@ -104,15 +104,24 @@ class _RootPageState extends State<RootPage> {
                   );
                 },
               ),
-              title: Text("Search"),
+              title: const Text("Cart"),
               selectedColor: AppColors.primary,
+              activeIcon: const Icon(Icons.shopping_cart_rounded)
             ),
         
-            /// Profile
+            // analytics
             SalomonBottomBarItem(
               icon: const Icon(Icons.analytics_outlined),
-              title: Text("Profile"),
+              title: const Text("Analytics"),
               selectedColor: AppColors.primary,
+            ),
+            
+            // expenses
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.receipt_outlined),
+              title: const Text("Expenses"),
+              selectedColor: AppColors.primary,
+              activeIcon: const Icon(Icons.receipt_rounded),
             ),
           ],
         ),

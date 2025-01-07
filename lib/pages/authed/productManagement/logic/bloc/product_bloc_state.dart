@@ -16,10 +16,12 @@ class GotProducts extends ProductBlocState {
   final List<ProductModel> products;
   final ORDER_PRODUCT_BY orderby;
   final ProductCategoryModel? selectedCategory ; 
-
-  const GotProducts({required this.orderby,required this.selectedCategory, required this.categories , required this.products});
+  final ProductModel? updatedProduct ; 
+  const GotProducts({required this.orderby,required this.selectedCategory, required this.categories , required this.products , this.updatedProduct, });
 
   @override
-  List<Object> get props => [categories , products ,  orderby  ,selectedCategory ?? [] ];
+  List<Object> get props => [...categories , ...products ,  orderby , updatedProduct ?? []  ,selectedCategory ?? []  ,products.length , categories.length];
 }
+
+
 

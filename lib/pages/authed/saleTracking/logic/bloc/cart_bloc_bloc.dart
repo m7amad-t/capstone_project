@@ -2,6 +2,9 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartLocalService.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/cardModel.dart';
@@ -12,7 +15,7 @@ part 'cart_bloc_event.dart';
 part 'cart_bloc_state.dart';
 
 class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
-  CartBloc() : super(LoadingCart()) {
+  CartBloc() : super(const LoadingCart(cartData: [])) {
     List<CartModel> _cartData = [];
 
     Future<void> _loadCart() async {
@@ -26,7 +29,7 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
     }
 
     Future<void> _onLoadcart(LoadCart event, emit) async {
-      emit(LoadingCart());
+      emit(const LoadingCart(cartData: []));
       await _loadCart();
       emit(
         GotCart(cartData: [..._cartData], isAllUpdated: true),
@@ -36,43 +39,47 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
     Future<void> _onAddItemToCart(AddItemToCart event, emit) async {
       // get the item
       final ProductModel product = event.product;
-     
-   
-      // check if product already in cart
-      if(event.quantity != null){
-        // get the quantity 
-        int quantity = event.quantity ?? 0 ;
 
-        if(quantity <= 0 ){
-          for(int i = 0; i < _cartData.length ; i++){
-            if(_cartData[i].product.id == product.id){
+      // check if product already in cart
+      if (event.quantity != null) {
+        // get the quantity
+        int quantity = event.quantity ?? 0;
+
+        if (quantity <= 0) {
+          for (int i = 0; i < _cartData.length; i++) {
+            if (_cartData[i].product.id == product.id) {
               // remove the item from the cart
               _cartData.removeAt(i);
-              return emit(GotCart(isAllUpdated: true, cartData: [..._cartData])); 
+              _saveCart();
+              return emit(
+                  GotCart(isAllUpdated: true, cartData: [..._cartData]));
             }
           }
         }
-        // update quantity to the incomming quantity 
-        if(quantity > product.quantity){
-          showSnackBar(message: WarningSnackBar(title: "out of stok", message: "out of stok"));
+        // update quantity to the incomming quantity
+        if (quantity > product.quantity) {
+          showSnackBar(
+              message: WarningSnackBar(
+                  title: "out of stok", message: "out of stok"));
           return emit(
             CartItemUpdated(
               updatedItem: product,
-              cart: [..._cartData],
+              cartData: [..._cartData],
             ),
-          );  
-        }else {
-          // find the cartModel 
-          for(int i = 0 ; i<_cartData.length ;i++){
-            if(_cartData[i].product.id == product.id){
-              final temp = _cartData[i]; 
-              _cartData.removeAt(i); 
+          );
+        } else {
+          // find the cartModel
+          for (int i = 0; i < _cartData.length; i++) {
+            if (_cartData[i].product.id == product.id) {
+              final temp = _cartData[i];
+              _cartData.removeAt(i);
               // add updaetd item to the cart
-              _cartData.add(temp.copyWith({'quantity'  : quantity}));  
-              return emit(CartItemUpdated(updatedItem: product, cart: [..._cartData])); 
+              _cartData.add(temp.copyWith({'quantity': quantity}));
+              _saveCart();
+              return emit(CartItemUpdated(
+                  updatedItem: product, cartData: [..._cartData]));
             }
           }
-
         }
       }
 
@@ -110,7 +117,7 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
           return emit(
             CartItemUpdated(
               updatedItem: event.product,
-              cart: [..._cartData],
+              cartData: [..._cartData],
             ),
           );
         }
@@ -138,7 +145,7 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
       _cartData.removeWhere((element) => element.product.id == product.id);
       await _saveCart();
       return emit(GotCart(
-          cartData: [..._cartData], updatedItem: product, isAllUpdated: false));
+          cartData: [..._cartData], updatedItem: product, isAllUpdated: true));
     }
 
     Future<void> _onDecrementQuantity(DecrementQuantity event, emit) async {
@@ -148,25 +155,29 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
         if (_cartData[i].product.id == product.id) {
           if (_cartData[i].quantity == 1) {
             _cartData.removeAt(i);
+
             await _saveCart();
             return emit(
               GotCart(
                 cartData: [..._cartData],
-                updatedItem: event.product,
+                updatedItem: null,
                 isAllUpdated: true,
               ),
             );
           }
-          final temp= _cartData[i].dicrement();
-          _cartData.removeAt(i); 
-          _cartData.add(temp);
+
+          final temp = _cartData[i].dicrement();
+          _cartData[i] = temp;
+
+          // _cartData.insert(i, temp);
           await _saveCart();
           return emit(CartItemUpdated(
-            cart: [..._cartData],
+            cartData: [..._cartData],
             updatedItem: event.product,
           ));
         }
       }
+      emit(GotCart(isAllUpdated: true, cartData: [..._cartData]));
     }
 
     Future<void> _onClearCart(ClearCart event, emit) async {
@@ -180,18 +191,49 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
       if (_cartData.isEmpty) {
         // show a snackbar
         showSnackBar(
-            message: WarningSnackBar(
-                title: "Cart is empty", message: "Add some items to cart"));
+          message: WarningSnackBar(
+            title: "Cart is empty",
+            message: "Add some items to cart",
+          ),
+        );
         return;
       }
 
-      // show a snackbar
-      showSnackBar(
-          message: SuccessSnackBar(
-              title: "Order placed", message: "Order placed successfully"));
+      // update stok of each those items that are in this cart
+      for (final item in _cartData) {
+        // get new stok
+        final newStok = item.product.quantity - item.quantity;
+
+        // update product in product list
+        event.context.read<ProductBloc>().add(
+              UpdateProduct(
+                product: item.product,
+                toUpdate: {
+                  'quantity': newStok,
+                },
+              ),
+            );
+      }
+      // build UI again..
+      event.context.read<ProductBloc>().add(LoadProducts());
+
       _cartData = [];
       await _saveCart();
-      return emit(GotCart(cartData: [..._cartData], isAllUpdated: false));
+
+      // show a snackbar
+      showSnackBar(
+        message: SuccessSnackBar(
+          title: "Order placed",
+          message: "Order placed successfully",
+        ),
+      );
+
+      return emit(
+        GotCart(
+          cartData: [..._cartData],
+          isAllUpdated: true,
+        ),
+      );
     }
 
     // laod cart event listener

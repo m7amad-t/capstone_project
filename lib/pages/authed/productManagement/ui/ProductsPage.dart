@@ -45,6 +45,8 @@ class _ProductsPageState extends State<ProductsPage> {
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     // lock rotation to portrait
@@ -54,9 +56,12 @@ class _ProductsPageState extends State<ProductsPage> {
 
 
     final TextTheme _textStyle = Theme.of(context).textTheme;
-    return BlocBuilder<ProductBloc, ProductBlocState>(
+    return BlocConsumer<ProductBloc, ProductBlocState>(
+      listener: (context, state) {
+        print('----- product page got new state...'); 
+      },
       builder: (context, state) {
- 
+        
         if (state is LoadingProducts) {
           return const Scaffold(
             body:  Center(

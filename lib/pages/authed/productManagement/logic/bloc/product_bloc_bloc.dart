@@ -16,6 +16,10 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
     late List<ProductCategoryModel> _categories;
     late List<ProductModel> _products;
     ProductCategoryModel? _lastSelectedCategory;
+    ORDER_PRODUCT_BY? _lastOrderBy;
+
+    String _lastQuery = "";
+    final ProductModelService _service = ProductModelService();
 
     bool _isProductsFetched() {
       try {
@@ -26,11 +30,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
       }
     }
 
-    ORDER_PRODUCT_BY? _lastOrderBy;
-
-    String _lastQuery = "";
-    final ProductModelService _service = ProductModelService();
-    on<ProductBlocEvent>((event, emit) {});
+    // on<ProductBlocEvent>((event, emit) {});
 
     // fucntion to order the products
     List<ProductModel> _order(
@@ -68,27 +68,27 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
     // fucntion to return those by name
     List<ProductModel> _queryByName(List<ProductModel> products) {
-      if(_lastQuery.isEmpty){
+      if (_lastQuery.isEmpty) {
         return products;
       }
       products = products.where((product) {
         return product.name.toLowerCase().contains(_lastQuery.toLowerCase());
       }).toList();
-      if(_lastOrderBy == null || _lastOrderBy == ORDER_PRODUCT_BY.DEFAULT){
-        products = _order(products, ORDER_PRODUCT_BY.NAME); 
-        _lastOrderBy = _lastOrderBy = ORDER_PRODUCT_BY.NAME; 
+      if (_lastOrderBy == null || _lastOrderBy == ORDER_PRODUCT_BY.DEFAULT) {
+        products = _order(products, ORDER_PRODUCT_BY.NAME);
+        _lastOrderBy = _lastOrderBy = ORDER_PRODUCT_BY.NAME;
       }
       return products;
     }
 
     Future<void> _onLoadProducts(event, emit) async {
-      _lastSelectedCategory = null; 
+      _lastSelectedCategory = null;
       if (_isProductsFetched()) {
-        List<ProductModel> products = _products..toList(); 
+        List<ProductModel> products = _products..toList();
 
-        products = _order(products, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT); 
+        products = _order(products, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
         products = _queryByName(products);
-        return emit(GotProducts(  
+        return emit(GotProducts(
           categories: _categories,
           products: products,
           orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
@@ -220,6 +220,226 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
       }
     }
 
+   
+
+    Future<void> _onUpdate(UpdateProduct event, emit) async {
+      try {
+        List<ProductCategoryModel> categories = List.from(_categories);
+        List<ProductModel> products = List.from(_products);
+
+        final productIndex =
+            products.indexWhere((p) => p.id == event.product.id);
+        if (productIndex != -1) {
+          products[productIndex] =
+              products[productIndex].update(event.toUpdate);
+        }
+
+        for (int i = 0; i < categories.length; i++) {
+          final categoryItems = List<ProductModel>.from(categories[i].items);
+          final itemIndex =
+              categoryItems.indexWhere((p) => p.id == event.product.id);
+
+          if (itemIndex != -1) {
+            categoryItems[itemIndex] = products[productIndex];
+            categories[i] = categories[i].updateItems(categoryItems);
+          }
+        }
+
+        _products = List.from(products);
+        _categories = List.from(categories);
+
+        // Apply filters if necessary
+        List<ProductModel> filteredProducts = List.from(_products);
+
+        if (_lastSelectedCategory != null) {
+          // find the last selected category in updated list
+          final updatedIndex = _categories.indexWhere(
+              (element) => element.name == _lastSelectedCategory!.name);
+          if (updatedIndex != -1) {
+            filteredProducts.clear();
+            filteredProducts.addAll(_categories[updatedIndex].items);
+          }
+        }
+
+        // Apply ordering
+        if (_lastOrderBy != null) {
+          filteredProducts = _order(filteredProducts, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
+        }
+
+        // Apply search query if exists
+        if (_lastQuery.isNotEmpty) {
+          filteredProducts = _queryByName(filteredProducts);
+        }
+
+        // Emit new state with updated data
+        return emit(GotProducts(
+          orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
+          selectedCategory: _lastSelectedCategory,
+          products: filteredProducts,
+          categories: categories,
+          // updatedProduct: products[productIndex],
+        ));
+      } catch (e) {
+        FailedToLoad();
+      }
+    }
+
+    Future<void> _onDelete(DeleteProduct event, emit) async {
+      try {
+        print('event is delete item');
+        // delete it from main list List<ProductCategoryModel>
+        for (int i = 0; i < _categories.length; i++) {
+          // check if this category have the targeted product
+          for (int j = 0; j < _categories[i].items.length; j++) {
+            if (_categories[i].items[j].id == event.product.id) {
+              _categories[i].items.removeAt(j);
+              print('item have been deleted in main screen');
+            }
+          }
+        }
+
+        // remove the product from main list List<ProductModel>
+        _products.removeWhere((product) => product.id == event.product.id);
+        List<ProductModel> products = _products;
+        // applay last filter if there is any..
+        if (_lastSelectedCategory != null) {
+          products = _lastSelectedCategory!.items;
+        }
+
+        products = _order(products, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
+        products = _queryByName(products);
+
+        emit(GotProducts(
+          orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
+          selectedCategory: _lastSelectedCategory,
+          products: products,
+          categories: _categories,
+        ));
+      } catch (e) {
+        FailedToLoad();
+      }
+    }
+
+    Future<void> _onInsert(InsertProduct event, emit) async {
+      try {
+        print(event);
+        print(event.category);
+        print(event.product);
+
+        // delete it from main list List<ProductCategoryModel>
+        for (int i = 0; i < _categories.length; i++) {
+          if (_categories[i].name == event.category.name) {
+            print('the category have been founded');
+            _categories[i] = _categories[i]
+                .updateItems([..._categories[i].items, event.product]);
+            print(_categories[i].items.length);
+          }
+        }
+
+        // remove the product from main list List<ProductModel>
+        _products.add(event.product);
+        List<ProductModel> products = _products;
+        // applay last filter if there is any..
+        if (_lastSelectedCategory != null) {
+          products = _lastSelectedCategory!.items;
+        }
+
+        products = _order(products, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
+        products = _queryByName(products);
+
+        emit(GotProducts(
+          orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
+          selectedCategory: _lastSelectedCategory,
+          products: products,
+          categories: _categories,
+        ));
+      } catch (e) {
+        FailedToLoad();
+      }
+    }
+
+    Future<void> _onInsertCategory(InsertCategory event, emit) async {
+      try {
+        // add new category to main list List<ProductCategoryModel>
+        _categories.add(event.category);
+
+        // get the last product list to send it back just like last order and filters
+        List<ProductModel> products = _products;
+        // applay last filter if there is any..
+        if (_lastSelectedCategory != null) {
+          products = _lastSelectedCategory!.items;
+        }
+
+        products = _order(products, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
+        products = _queryByName(products);
+
+        emit(GotProducts(
+          orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
+          selectedCategory: _lastSelectedCategory,
+          products: products,
+          categories: _categories,
+        ));
+      } catch (e) {
+        FailedToLoad();
+      }
+    }
+
+    Future<void> _onUpdateCategory(UpdateCategory event, emit) async {
+      try {
+        // find the category
+        for (int i = 0; i < _categories.length; i++) {
+          if (_categories[i].name == event.category.name) {
+            _categories[i] = _categories[i].update(event.update);
+          }
+        }
+        // get the last product list to send it back just like last order and filters
+        List<ProductModel> products = _products;
+        // applay last filter if there is any..
+        if (_lastSelectedCategory != null) {
+          products = _lastSelectedCategory!.items;
+        }
+
+        products = _order(products, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
+        products = _queryByName(products);
+
+        emit(GotProducts(
+          orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
+          selectedCategory: _lastSelectedCategory,
+          products: products,
+          categories: _categories,
+        ));
+      } catch (e) {
+        FailedToLoad();
+      }
+    }
+
+    Future<void> _onDeleteCategory(DeleteCategory event, emit) async {
+      try {
+        // delete the category
+        _categories
+            .removeWhere((element) => element.name == event.category.name);
+
+        // get the last product list to send it back just like last order and filters
+        List<ProductModel> products = _products;
+        // applay last filter if there is any..
+        if (_lastSelectedCategory != null) {
+          products = _lastSelectedCategory!.items;
+        }
+
+        products = _order(products, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
+        products = _queryByName(products);
+
+        emit(GotProducts(
+          orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
+          selectedCategory: _lastSelectedCategory,
+          products: products,
+          categories: _categories,
+        ));
+      } catch (e) {
+        FailedToLoad();
+      }
+    }
+
     // event listeners
     on<LoadProducts>(_onLoadProducts);
 
@@ -230,5 +450,17 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
     on<OrderBy>(_onOrderBy);
 
     on<SearchProductByName>(_onSearchByName);
+
+    on<DeleteProduct>(_onDelete);
+
+    on<UpdateProduct>(_onUpdate);
+
+    on<InsertProduct>(_onInsert);
+
+    on<InsertCategory>(_onInsertCategory);
+
+    on<UpdateCategory>(_onUpdateCategory);
+
+    on<DeleteCategory>(_onDeleteCategory);
   }
 }

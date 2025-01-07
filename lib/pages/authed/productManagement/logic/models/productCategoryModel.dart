@@ -10,25 +10,47 @@ class ProductCategoryModel extends Equatable {
   // from json
   factory ProductCategoryModel.fromJson(Map<String, dynamic> json) {
     
-    List<ProductModel> _items = [];
+    List<ProductModel> items = [];
     for(final item in json['items']) {
-      _items.add(ProductModel.fromJson(item));
+      items.add(ProductModel.fromJson(item));
     }
     return ProductCategoryModel(
       name: json['name'],
-      items: _items,
+      items: items,
     );
   }
   // from json
   static List<ProductCategoryModel> inListFromJson(Map<String, dynamic> json) {
-    List<ProductCategoryModel> _list = [];
+    List<ProductCategoryModel> list = [];
 
     for(final category in json['categories']) {
-      _list.add(ProductCategoryModel.fromJson(category));
+      list.add(ProductCategoryModel.fromJson(category));
     }
 
-    return _list;
+    return list;
   
+  }
+
+
+  
+
+  
+
+
+  // update items 
+  ProductCategoryModel updateItems(List<ProductModel> products){
+    return ProductCategoryModel(
+      name: name,
+      items: products , 
+    );
+  }
+
+  // udpate 
+  ProductCategoryModel update(Map<String , dynamic> map){
+    return ProductCategoryModel(
+      name: map['name']?? name,
+      items: items , 
+    );
   }
 
   @override
@@ -44,5 +66,5 @@ class ProductCategoryModel extends Equatable {
   }
 
   @override
-  List<Object?> get props => [name, items.length];
+  List<Object?> get props => [name, items.length , ...items];
 }

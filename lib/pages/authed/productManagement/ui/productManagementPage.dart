@@ -85,19 +85,19 @@ class ProductManagementPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
-              flex: 5,
+              flex: 2,
               child: Container(
                 alignment: Alignment.center,
                 child: feature['icon'],
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
                   feature['name'],
-                  style: _textStyle.displayMedium,
+                  style: _textStyle.bodyMedium,
                 ),
               ),
             ),

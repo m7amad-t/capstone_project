@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/l10n/l10n.dart';
 import 'package:shop_owner/pages/authed/expensesTrackig/ui/expensesTrackingPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/router/navigationService.dart';
@@ -34,17 +35,16 @@ class AppDialogs extends AppDialogsBase {
 
   // ignore: non_constant_identifier_names
   final ButtonStyle _secondary_b_style = const ButtonStyle(
-                      side: WidgetStatePropertyAll(
-                        BorderSide(
-                          color: AppColors.error,
-                        ),
-                      ),
-                      backgroundColor: WidgetStatePropertyAll(
-                        Colors.transparent,
-                      ),
-                      foregroundColor: WidgetStatePropertyAll(AppColors.error),
-                    );
-
+    side: WidgetStatePropertyAll(
+      BorderSide(
+        color: AppColors.error,
+      ),
+    ),
+    backgroundColor: WidgetStatePropertyAll(
+      Colors.transparent,
+    ),
+    foregroundColor: WidgetStatePropertyAll(AppColors.error),
+  );
 
   AlertDialog _showDialog(Widget child) {
     return AlertDialog(
@@ -176,7 +176,6 @@ class AppDialogs extends AppDialogsBase {
   Future<void> showLogoutConfiramtion({
     bool isDismissable = true,
   }) async {
-
     anyDialogVisible = true;
     await showDialog(
       barrierDismissible: isDismissable,
@@ -240,7 +239,6 @@ class AppDialogs extends AppDialogsBase {
     anyDialogVisible = false;
   }
 
-
   Future<void> showDeleteProductConfirmation({
     required ProductModel product,
     bool isDismissable = true,
@@ -250,6 +248,7 @@ class AppDialogs extends AppDialogsBase {
       barrierDismissible: isDismissable,
       context: super.context,
       builder: (context) {
+        context = super.context;
         final _textStyle = Theme.of(context).textTheme;
         return _showDialog(
           Column(
@@ -267,17 +266,22 @@ class AppDialogs extends AppDialogsBase {
                 children: [
                   // accept button
                   TextButton(
-                    onPressed: () {
-                      disposeAnyActiveDialogs();
-                      // todo : send delete product event to bloc
-                      // navigate back to product management page
-                      // if(GoRouter.of(context).canPop()){
-                      //   Navigator.of(context).pop();
-                      // }
+                    onPressed: () async {
+                      context.read<ProductBloc>().add(
+                            DeleteProduct(product: product),
+                          );
 
-                      GoRouter.of(context).pop(); 
-                      // GoRouter.of(context).pop(); 
-                      // GoRouter.of(context).pop(); 
+                      disposeAnyActiveDialogs();
+                      anyDialogVisible = true;
+
+                      // send the request to backend
+                      // simulating it
+                      showLoadingDialog(super.context, 'deleting');
+                      await Future.delayed(const Duration(seconds: 2));
+                      disposeAnyActiveDialogs();
+                      GoRouter.of(context).pop();
+                      GoRouter.of(context).pop();
+
                       // show snackbar
                       showSnackBar(
                         message: SuccessSnackBar(
@@ -288,7 +292,7 @@ class AppDialogs extends AppDialogsBase {
                         ),
                       );
                     },
-                    style: _secondary_b_style, 
+                    style: _secondary_b_style,
                     child: Text(
                       context.translate.yes,
                     ),
@@ -299,9 +303,7 @@ class AppDialogs extends AppDialogsBase {
                     onPressed: () {
                       disposeAnyActiveDialogs();
                     },
-                    style: const ButtonStyle(
-                      
-                        ),
+                    style: const ButtonStyle(),
                     child: Text(
                       context.translate.no,
                     ),
@@ -343,21 +345,34 @@ class AppDialogs extends AppDialogsBase {
                 children: [
                   // accept button
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       disposeAnyActiveDialogs();
-
-                      locator<NavigationService>().pop();
+                      // send the request to backend
+                      // simulating it
+                      showLoadingDialog(super.context, 'deleting');
+                      await Future.delayed(const Duration(seconds: 2));
+                      super.context.read<ProductBloc>().add(
+                            DeleteCategory(
+                              category: category,
+                            ),
+                          );
                       // show snackbar
+
+                      GoRouter.of(super.context).pop();
+                      GoRouter.of(super.context).pop();
+                      // GoRouter.of(super.context).pop();
                       showSnackBar(
                         message: SuccessSnackBar(
                           title:
-                              "${context.translate.product_deleted_successfully} ${category.name}",
-                          message:
-                              context.translate.product_deleted_successfully,
+                              "${super.context.translate.product_deleted_successfully} ${category.name}",
+                          message: super
+                              .context
+                              .translate
+                              .product_deleted_successfully,
                         ),
                       );
                     },
-                    style: _secondary_b_style, 
+                    style: _secondary_b_style,
                     child: Text(
                       context.translate.yes,
                     ),
@@ -368,7 +383,6 @@ class AppDialogs extends AppDialogsBase {
                     onPressed: () {
                       disposeAnyActiveDialogs();
                     },
-                 
                     child: Text(
                       context.translate.no,
                     ),
@@ -399,7 +413,7 @@ class AppDialogs extends AppDialogsBase {
               Text(
                 context.translate.deleting_category_warning,
                 style: _textStyle.displayMedium!.copyWith(
-                  color: AppColors.warning,
+                  color: AppColors.error,
                 ),
               ),
 
@@ -428,10 +442,92 @@ class AppDialogs extends AppDialogsBase {
     anyDialogVisible = false;
   }
 
+
+
+    Future<void> showPlaceOrderConfirmation({
+    required ProductCategoryModel category,
+    bool isDismissable = true,
+  }) async {
+    anyDialogVisible = true;
+    await showDialog(
+      barrierDismissible: isDismissable,
+      context: super.context,
+      builder: (context) {
+        final _textStyle = Theme.of(context).textTheme;
+        return _showDialog(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                context.translate.ru_sure_want_to_delete,
+                style: _textStyle.displayMedium,
+              ),
+
+              gap(height: AppSizes.s20),
+
+              // confirm button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // accept button
+                  TextButton(
+                    onPressed: () async {
+                      disposeAnyActiveDialogs();
+                      // send the request to backend
+                      // simulating it
+                      showLoadingDialog(super.context, 'deleting');
+                      await Future.delayed(const Duration(seconds: 2));
+                      super.context.read<ProductBloc>().add(
+                            DeleteCategory(
+                              category: category,
+                            ),
+                          );
+                      // show snackbar
+
+                      GoRouter.of(super.context).pop();
+                      GoRouter.of(super.context).pop();
+                      // GoRouter.of(super.context).pop();
+                      showSnackBar(
+                        message: SuccessSnackBar(
+                          title:
+                              "${super.context.translate.product_deleted_successfully} ${category.name}",
+                          message: super
+                              .context
+                              .translate
+                              .product_deleted_successfully,
+                        ),
+                      );
+                    },
+                    style: _secondary_b_style,
+                    child: Text(
+                      context.translate.yes,
+                    ),
+                  ),
+
+                  // dispose button
+                  TextButton(
+                    onPressed: () {
+                      disposeAnyActiveDialogs();
+                    },
+                    child: Text(
+                      context.translate.no,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    anyDialogVisible = false;
+  }
+
+
   void disposeAnyActiveDialogs() {
     if (anyDialogVisible) {
       anyDialogVisible = false;
-      locator<NavigationService>().pop(); 
+      locator<NavigationService>().pop();
     }
   }
 }

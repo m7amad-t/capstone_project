@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_owner/pages/authed/cart/ui/cartPage.dart';
 import 'package:shop_owner/pages/authed/home/ui/homePage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/CategoriesPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/ProductsPage.dart';
@@ -19,7 +20,6 @@ import 'package:shop_owner/utils/di/contextDI.dart';
 class AppRouter {
   final GlobalKey<NavigatorState> _navigatorKey =
       locator<NavigationService>().key;
-
 
   GoRouter get router => GoRouter(
         debugLogDiagnostics: true,
@@ -46,7 +46,7 @@ class AppRouter {
               key: state.pageKey,
               child: LoginPage(key: state.pageKey),
             ),
-          ),  
+          ),
 
           // // product management screen
           // GoRoute(
@@ -71,7 +71,7 @@ class AppRouter {
           //     //     );
           //     //   },
           //     // ),
-              
+
           //     // product
           //     GoRoute(
           //       path: AppRoutes.product,
@@ -159,7 +159,6 @@ class AppRouter {
           //       ],
           //     ),
 
-           
           //   ],
           // ),
 
@@ -170,7 +169,7 @@ class AppRouter {
               child: navigationShell,
             ),
             branches: [
-              // First tab - Home
+              // First tab - Sale tracking
               StatefulShellBranch(
                 routes: [
                   GoRoute(
@@ -231,10 +230,9 @@ class AppRouter {
                               );
                             },
                           ),
-                          
                         ],
                       ),
-                    
+
                       // Category
                       GoRoute(
                         path: AppRoutes.category,
@@ -273,11 +271,22 @@ class AppRouter {
                               );
                             },
                           ),
-                          
                         ],
                       ),
-                    
                     ],
+                  ),
+                ],
+              ),
+
+              // First tab - Cart
+              StatefulShellBranch(
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.cart,
+                    pageBuilder: (context, state) => NoTransitionPage(
+                      key: state.pageKey,
+                      child: CartPage(key: state.pageKey),
+                    ),
                   ),
                 ],
               ),

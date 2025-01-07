@@ -1,7 +1,9 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
@@ -46,7 +48,6 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
     final _textStyle = Theme.of(context).textTheme;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-   
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -70,7 +71,6 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
       return;
     }
 
-    
     // todo : collect values
     // todo : FOR the UI part just relaod products , or update the existing one, one ensert new one
 
@@ -82,21 +82,44 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
     // show loading dialog
     locator<AppDialogs>()
         .showCostumTextLoading("$loadingDialog ${context.translate.product}");
+
     // wait for one second
     await Future.delayed(const Duration(seconds: 2));
+    // check if its updating or inserting
+    if (_isUpdating) {
+      // check if name is udpated
+      if (_nameController.text != widget.category!.name) {
+        context.read<ProductBloc>().add(
+              UpdateCategory(
+                category: widget.category!,
+                update: {'name': _nameController.text},
+              ),
+            );
+      }
+    } else {
+      // insert new category
+      context.read<ProductBloc>().add(
+            InsertCategory(
+              category: ProductCategoryModel(
+                name: _nameController.text,
+                items: const [],
+              ),
+            ),
+          );
+    }
 
     // pop the loading dialog
     locator<AppDialogs>().disposeAnyActiveDialogs();
 
     // navigate back to product management screen
     if (GoRouter.of(context).canPop()) {
-      GoRouter.of(context).pop(); 
+      GoRouter.of(context).pop();
     }
     // snackbar title
     String title = _isUpdating
         ? context.translate.updated_succesfully
         : context.translate.inserted_successfuly;
-   
+
     showSnackBar(
       message: SuccessSnackBar(
         title: title,

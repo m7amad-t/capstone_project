@@ -46,7 +46,8 @@ class DecrementQuantity extends CartBlocEvent {
 }
 
 class PlaceOrder extends CartBlocEvent {
-  const PlaceOrder();
+  final BuildContext context; 
+  const PlaceOrder({required this.context});
 }
 
 class ClearCart extends CartBlocEvent {

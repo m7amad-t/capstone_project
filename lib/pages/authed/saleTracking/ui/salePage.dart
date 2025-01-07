@@ -27,11 +27,13 @@ class SalePage extends StatefulWidget {
 class _SalePageState extends State<SalePage> {
   bool _showOrderOptions = false;
   late final TextEditingController _queryController;
+ 
   @override
   void initState() {
     super.initState();
+
     _queryController = TextEditingController();
-    context.read<ProductBloc>().add(LoadProducts());
+    context.read<ProductBloc>().add(ReloadProduct());
     context.read<CartBloc>().add(const LoadCart());
   }
 
@@ -47,7 +49,10 @@ class _SalePageState extends State<SalePage> {
   @override
   Widget build(BuildContext context) {
     final TextTheme _textStyle = Theme.of(context).textTheme;
-    return BlocBuilder<ProductBloc, ProductBlocState>(
+    return BlocConsumer<ProductBloc, ProductBlocState>(
+      listener: (context, state) {
+        print("i got new state...."); 
+      },
       builder: (context, state) {
         if (state is LoadingProducts) {
           return const Scaffold(

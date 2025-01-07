@@ -376,6 +376,7 @@ Widget productCardMainSection({
                             _trimName(product),
                             style: _textStyle.bodyMedium!.copyWith(
                               fontWeight: FontWeight.bold,
+
                             ),
                           ),
                         ),
@@ -398,7 +399,9 @@ Widget productCardMainSection({
                   alignment: Alignment.center,
                   child: Text(
                     product.quantity.toString(),
-                    style: _textStyle.bodyLarge,
+                    style: _textStyle.bodyLarge!.copyWith(
+                      color: _getStockColor(product.quantity,_textStyle )
+                    ),
                   ),
                 ),
               ),

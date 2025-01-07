@@ -73,3 +73,67 @@ class SearchProductByName extends ProductBlocEvent {
   @override
   List<Object> get props => [query];
 }
+
+class UpdateProduct extends ProductBlocEvent {
+  final ProductModel product;
+  final Map<String , dynamic> toUpdate;
+
+  const UpdateProduct({required this.product, required this.toUpdate}); 
+
+  @override
+  List<Object> get props => [product, toUpdate];
+}
+
+class DeleteProduct extends ProductBlocEvent {
+  final ProductModel product;
+
+  const  DeleteProduct({required this.product});
+
+
+  @override
+  List<Object> get props => [product];
+}
+
+class InsertProduct extends ProductBlocEvent {
+  final ProductModel product;
+  final ProductCategoryModel category ; 
+
+  const  InsertProduct({required this.product , required this.category});
+
+
+  @override
+  List<Object> get props => [product];
+}
+
+
+class InsertCategory extends ProductBlocEvent {
+  final ProductCategoryModel category ; 
+
+  const  InsertCategory({required this.category});
+
+
+  @override
+  List<Object> get props => [category];
+}
+
+class UpdateCategory extends ProductBlocEvent {
+  final ProductCategoryModel category ; 
+  final Map<String , dynamic> update ; 
+
+  const  UpdateCategory({required this.category , required this.update});
+
+
+  @override
+  List<Object> get props => [category , update];
+}
+class DeleteCategory extends ProductBlocEvent {
+  final ProductCategoryModel category ;
+
+  const  DeleteCategory({required this.category}); 
+
+
+
+  @override
+  List<Object> get props => [category];
+}
+
