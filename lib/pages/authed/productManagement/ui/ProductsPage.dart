@@ -9,7 +9,10 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/components/ProductFilterSection.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/components/ProductListViewTopShadow.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/components/productCard.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/components/productsOrderBySection.dart';
 import 'package:shop_owner/router/extraTemplates/productManagementExtra.dart';
 import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
@@ -36,6 +39,12 @@ class _ProductsPageState extends State<ProductsPage> {
     context.read<ProductBloc>().add(LoadProducts());
   }
 
+  @override
+  void dispose() {
+    _queryController.dispose();
+    super.dispose();
+  }
+
   Timer? _debounce;
 
   void _debounceSearch(String query) {
@@ -45,47 +54,44 @@ class _ProductsPageState extends State<ProductsPage> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // lock rotation to portrait
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,      
+      DeviceOrientation.portraitUp,
     ]);
-
 
     final TextTheme _textStyle = Theme.of(context).textTheme;
     return BlocConsumer<ProductBloc, ProductBlocState>(
-      listener: (context, state) {
-        print('----- product page got new state...'); 
-      },
+      listener: (context, state) {},
       builder: (context, state) {
-        
         if (state is LoadingProducts) {
           return const Scaffold(
-            body:  Center(
-                child: RepaintBoundary(
-              child: CircularProgressIndicator(),
-            )),
+            body: Center(
+              child: RepaintBoundary(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
         }
 
         bool gotProductsAndHaveCategory =
             state is GotProducts && state.categories.isNotEmpty;
+        if (state is GotProducts) {
+          _queryController.text = state.lastQuery;
+        }
 
         return Scaffold(
-          
           floatingActionButton: !gotProductsAndHaveCategory
               ? null
               : FloatingActionButton(
                   onPressed: () {
                     GoRouter.of(context).push(
-                      AppRoutes.productManagement
-                      +"/"+
-                      AppRoutes.product
-                      +"/"+
-                      AppRoutes.addProduct,
+                      AppRoutes.productManagement +
+                          "/" +
+                          AppRoutes.product +
+                          "/" +
+                          AppRoutes.addProduct,
                       extra: AddNewProductExtra(categories: state.categories)
                           .getExtra,
                     );
@@ -116,13 +122,13 @@ class _ProductsPageState extends State<ProductsPage> {
 
   Widget _noCategory() {
     return Center(
-      child: Text(context.translate.no_data_found),
+      child: Text("Not category "),
     );
   }
 
   Widget _failed() {
     return Expanded(
-      child: Text(context.translate.error),
+      child: Text("Failed to load"),
     );
   }
 
@@ -142,35 +148,13 @@ class _ProductsPageState extends State<ProductsPage> {
           // filter options
           if (_showOrderOptions)
             // filter section
-            Expanded(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: locator<DynamicSizes>().p100,
-                ),
-                child: Container(
-                  child: _orderByOptionSection(context, state),
-                ),
-              ),
+            const Expanded(
+              child: ProductOrderOptionSection(),
             ),
 
           // filter section
-          Expanded(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: locator<DynamicSizes>().p100,
-              ),
-              child: Container(
-                margin: EdgeInsets.only(
-                  bottom: AppSizes.s5,
-                  top: AppSizes.s5,
-                ),
-                child: _productFilterSection(
-                  context,
-                  state,
-                  _textStyle,
-                ),
-              ),
-            ),
+          const Expanded(
+            child: ProductFilterSection(),
           ),
 
           // product section
@@ -179,28 +163,8 @@ class _ProductsPageState extends State<ProductsPage> {
             child: Stack(
               children: [
                 _productListSection(context, state),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Theme.of(context).scaffoldBackgroundColor,
-                          Theme.of(context)
-                              .scaffoldBackgroundColor
-                              .withOpacity(0.0),
-                        ],
-                      ),
-                    ),
-                    child: Container(
-                      height: AppSizes.s50,
-                    ),
-                  ),
-                ),
+              // top shadow 
+              const ProductListTopShadow()
               ],
             ),
           ),

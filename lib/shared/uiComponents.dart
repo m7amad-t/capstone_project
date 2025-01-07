@@ -105,18 +105,32 @@ Color _getStockColor(int stok, TextTheme theme) {
 
 String _trimName(ProductModel product) {
   int maxLength = 20;
-  if (product.name.length > maxLength) {
-    return '${product.name.substring(0, maxLength)}...';
+   String name = product.name; 
+  // first check if it contains enters 
+  if (product.name.contains('\n')) {
+    name = product.name.split('\n')[0];
   }
-  return product.name;
+  if (name.length > maxLength) {
+    return '${name.substring(0, maxLength)}...';
+  }
+  return name;
 }
 
 String _trimDescription(ProductModel product) {
-  int maxLength = 100;
-  if (product.description.length > maxLength) {
-    return '${product.description.substring(0, maxLength)}...';
+  String description = product.description; 
+
+  // splet lines 
+  final splet = description.split('\n'); 
+
+  if(splet.length >2){
+    description = splet[0] + '\n' + splet[1];
   }
-  return product.description;
+
+  int maxLength = 50;
+  if (description.length > maxLength) {
+    return '${description.substring(0, maxLength)}...';
+  }
+  return description;
 }
 
 Widget productCardMainSection({

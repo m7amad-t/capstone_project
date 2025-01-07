@@ -6,13 +6,13 @@ class CartModel extends Equatable{
   final ProductModel product; 
 
   final int quantity;
-  final int discount ; 
+  // final int discount ; 
 
 
   const CartModel({
     required this.product,
     required this.quantity,
-    required this.discount,
+    // required this.discount,
   });
 
 
@@ -21,7 +21,7 @@ class CartModel extends Equatable{
     return {
       'product': product.toJsonMap(),
       'quantity': quantity,
-      'discount': discount,
+      // 'discount': discount,
     };
   }
   
@@ -56,7 +56,7 @@ class CartModel extends Equatable{
     return CartModel(
       product: newData['product'] ?? product,
       quantity: newData['quantity'] ?? quantity,
-      discount: newData['discount'] ?? discount,
+      // discount: newData['discount'] ?? discount,
     );
   }
 
@@ -65,7 +65,7 @@ class CartModel extends Equatable{
     return CartModel(
       product: product,
       quantity: quantity+1,
-      discount: discount,
+      // discount: discount,
     );
   }
   
@@ -74,7 +74,7 @@ class CartModel extends Equatable{
     return CartModel(
       product: product,
       quantity: quantity-1,
-      discount: discount,
+      // discount: discount,
     );
   }
  
@@ -83,7 +83,7 @@ class CartModel extends Equatable{
     return CartModel(
       product: product,
       quantity: quantity,
-      discount: discount,
+      // discount: discount,
     );
   }
 
@@ -92,12 +92,12 @@ class CartModel extends Equatable{
     return CartModel(
       product: ProductModel.fromJson(data['product']),
       quantity: data['quantity'],
-      discount: data['discount'],
+      // discount: data['discount'],
     );
   }
 
   @override
-  List<Object?> get props => [product , quantity , discount];
+  List<Object?> get props => [product , quantity , ];
 
 
   @override
@@ -109,7 +109,6 @@ class CartModel extends Equatable{
 
 Product: ${product.name}
 Quantity: $quantity
-Discount: $discount
 
 -----------------
 

@@ -106,86 +106,57 @@ class _MenuCardState extends State<MenuCard> {
           child: Card(
             child: Column(
               children: [
+                // main section , which is product image, name and description...
                 Expanded(
                   flex: 2,
                   child: productCardMainSection(
                       product: widget.product, isLTR: isLTR, isCart: true),
                 ),
+
+                // advance section , which is are the total section...
                 if (widget.showMoreDetails)
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: Container(
-                      child: Column(
-                        children: [
-                          Expanded(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: AppPaddings.p18,
-                                    vertical: AppPaddings.p10),
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(AppSizes.s8),
-                                  color: AppColors.primary.withAlpha(100),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      "total",
-                                      style: _textStyle.bodyMedium!
-                                          .copyWith(color: AppColors.primary),
-                                    ),
-                                    gap(width: AppSizes.s10),
-                                    Text(
-                                      _getTotal(state),
-                                      style: _textStyle.bodyMedium!.copyWith(
-                                        color: AppColors.primary,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                      padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppPaddings.p18,
+                          vertical: AppPaddings.p10,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(AppSizes.s8),
+                          color: AppColors.primary.withAlpha(100),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "total",
+                              style: _textStyle.bodyMedium!
+                                  .copyWith(
+                                      color: AppColors.primary),
+                            ),
+                            // gap(width: AppSizes.s10),
+                            Text(
+                              _getTotal(state),
+                              style:
+                                  _textStyle.bodyMedium!.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.bold,
                               ),
-                             
-                              InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: AppPaddings.p18,
-                                      vertical: AppPaddings.p10),
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.circular(AppSizes.s8),
-                                    color: AppColors.primary.withAlpha(100),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "Discount",
-                                        style: _textStyle.bodyMedium!
-                                            .copyWith(color: AppColors.primary),
-                                      ),
-                                      gap(width: AppSizes.s10),
-                                      Text(
-                                        _getDiscount(state),
-                                        style: _textStyle.bodyMedium!.copyWith(
-                                          color: AppColors.error,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ))
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
+
+                // quantity controller
                 Expanded(
+                  flex: 1,
                   child: Container(
                     alignment: Alignment.bottomCenter,
                     child: _getProperWidget(state),
@@ -211,7 +182,7 @@ class _MenuCardState extends State<MenuCard> {
     if (cartItem == null) return "\$??";
 
     double subTotal = widget.product.price * cartItem.quantity;
-    double total = subTotal * (1 - cartItem.discount);
+    double total = subTotal * (1);
 
     return "\$${total.toStringAsFixed(2)}";
   }
@@ -227,7 +198,7 @@ class _MenuCardState extends State<MenuCard> {
 
     if (cartItem == null) return "%??";
 
-    return "${cartItem.discount}%";
+    return "${1}%";
   }
 
   Widget _loadingCart() {

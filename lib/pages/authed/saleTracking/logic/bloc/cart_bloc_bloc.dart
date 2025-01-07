@@ -4,13 +4,17 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartLocalService.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/cardModel.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:shop_owner/router/routes.dart';
+import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/uiHelper.dart';
+import 'package:shop_owner/utils/di/contextDI.dart';
 part 'cart_bloc_event.dart';
 part 'cart_bloc_state.dart';
 
@@ -32,7 +36,10 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
       emit(const LoadingCart(cartData: []));
       await _loadCart();
       emit(
-        GotCart(cartData: [..._cartData], isAllUpdated: true),
+        GotCart(
+          cartData: [..._cartData],
+          isAllUpdated: true,
+        ),
       );
     }
 
@@ -51,8 +58,10 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
               // remove the item from the cart
               _cartData.removeAt(i);
               _saveCart();
-              return emit(
-                  GotCart(isAllUpdated: true, cartData: [..._cartData]));
+              return emit(GotCart(
+                isAllUpdated: true,
+                cartData: _cartData,
+              ));
             }
           }
         }
@@ -123,8 +132,10 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
         }
       }
       // create new cart model
-      final CartModel newCartItem =
-          CartModel(product: product, quantity: 1, discount: 0);
+      final CartModel newCartItem = CartModel(
+        product: product,
+        quantity: 1,
+      );
       // add to cart data
       _cartData.add(newCartItem);
 
@@ -145,7 +156,10 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
       _cartData.removeWhere((element) => element.product.id == product.id);
       await _saveCart();
       return emit(GotCart(
-          cartData: [..._cartData], updatedItem: product, isAllUpdated: true));
+        cartData: [..._cartData],
+        updatedItem: product,
+        isAllUpdated: true,
+      ));
     }
 
     Future<void> _onDecrementQuantity(DecrementQuantity event, emit) async {
@@ -177,16 +191,36 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
           ));
         }
       }
-      emit(GotCart(isAllUpdated: true, cartData: [..._cartData]));
+      emit(
+        GotCart(
+          isAllUpdated: true,
+          cartData: [..._cartData],
+        ),
+      );
     }
 
     Future<void> _onClearCart(ClearCart event, emit) async {
       _cartData = [];
       await _saveCart();
-      return emit(GotCart(cartData: [..._cartData], isAllUpdated: true));
+      return emit(
+        GotCart(
+          cartData: [..._cartData],
+          isAllUpdated: true,
+        ),
+      );
     }
 
     Future<void> _onPlaceOrder(PlaceOrder event, emit) async {
+      // semulate the real world example
+
+      // display loading screen 
+      locator<AppDialogs>().showCostumTextLoading('Initiating the transaction..'); 
+      
+      // simulate network delay
+      await Future.delayed(const Duration(seconds: 2));
+
+
+
       // check if cart is empty
       if (_cartData.isEmpty) {
         // show a snackbar
@@ -196,6 +230,8 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
             message: "Add some items to cart",
           ),
         );
+        
+      locator<AppDialogs>().disposeAnyActiveDialogs();
         return;
       }
 
@@ -227,6 +263,13 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
           message: "Order placed successfully",
         ),
       );
+
+
+      locator<AppDialogs>().disposeAnyActiveDialogs();
+
+      GoRouter.of(event.context).go(AppRoutes.cart); 
+      // GoRouter.of(event.context).go(AppRoutes.home); 
+ 
 
       return emit(
         GotCart(

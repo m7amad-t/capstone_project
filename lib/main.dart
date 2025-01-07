@@ -89,6 +89,7 @@ class _AppState extends State<App> {
             setupAppDynamicSizes(context);
 
             return MaterialApp.router(
+              title: 'ARCHiTECH',
               debugShowCheckedModeBanner: false,
               theme: lightModeThemeData(languageState.local),
               darkTheme: darkModeThemeData(languageState.local),

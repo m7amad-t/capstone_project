@@ -9,6 +9,8 @@ import 'package:shop_owner/pages/authed/expensesTrackig/ui/expensesTrackingPage.
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/bloc/cart_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/models/cardModel.dart';
 import 'package:shop_owner/router/navigationService.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
@@ -442,9 +444,7 @@ class AppDialogs extends AppDialogsBase {
     anyDialogVisible = false;
   }
 
-
-
-    Future<void> showPlaceOrderConfirmation({
+  Future<void> showPlaceOrderConfirmation({
     required ProductCategoryModel category,
     bool isDismissable = true,
   }) async {
@@ -523,6 +523,103 @@ class AppDialogs extends AppDialogsBase {
     anyDialogVisible = false;
   }
 
+  Future<void> showCheckout({
+    bool isDismissable = true,
+  }) async {
+    anyDialogVisible = true;
+    await showDialog(
+      barrierDismissible: isDismissable,
+      context: super.context,
+      builder: (context) {
+        final _textStyle = Theme.of(context).textTheme;
+        final state = context.read<CartBloc>().state;
+        List<CartModel> rows = state.cartData;
+        return _showDialog(
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    columns: [
+                      DataColumn(
+                        label: Text(
+                          'ID',
+                          style: _textStyle.bodyMedium,
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Name',
+                          style: _textStyle.bodyMedium,
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Quantity',
+                          style: _textStyle.bodyMedium,
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Price',
+                          style: _textStyle.bodyMedium,
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Total',
+                          style: _textStyle.bodyMedium,
+                        ),
+                      ),
+                    ],
+                    rows: [
+                      for (final row in rows)
+                        DataRow(
+                          cells: [
+                            _cellData(
+                              row.product.id.toString(),
+                              _textStyle,
+                            ),
+                            _cellData(
+                              row.product.name,
+                              _textStyle,
+                            ),
+                            _cellData(
+                              row.quantity.toString(),
+                              _textStyle,
+                            ),
+                            _cellData(
+                              row.product.price.toString(),
+                              _textStyle,
+                            ),
+                            _cellData(
+                              (row.product.price * row.quantity).toString(),
+                              _textStyle,
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    anyDialogVisible = false;
+  }
+
+  DataCell _cellData(String text, TextTheme _textStyle) {
+    return DataCell(
+      Text(
+        text,
+        style: _textStyle.bodySmall,
+      ),
+    );
+  }
 
   void disposeAnyActiveDialogs() {
     if (anyDialogVisible) {

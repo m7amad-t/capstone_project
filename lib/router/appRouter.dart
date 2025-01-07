@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/cart/ui/cartPage.dart';
-import 'package:shop_owner/pages/authed/home/ui/homePage.dart';
+import 'package:shop_owner/pages/authed/cart/ui/checkoutPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/CategoriesPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/ProductsPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/categoryEditorPage.dart';
@@ -14,7 +13,6 @@ import 'package:shop_owner/pages/notAuthed/splash/splashScreen.dart';
 import 'package:shop_owner/root.dart';
 import 'package:shop_owner/router/navigationService.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/utils/auth/bloc/auth_bloc_bloc.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 
 class AppRouter {
@@ -287,6 +285,21 @@ class AppRouter {
                       key: state.pageKey,
                       child: CartPage(key: state.pageKey),
                     ),
+                    routes: <RouteBase>[
+                      GoRoute(
+                        path: AppRoutes.cartCheckout,
+                        pageBuilder: (context, state) {
+                          double discount = 0 ; 
+                          Map<String , dynamic> extra  = state.extra as Map<String, dynamic>;
+                          if(extra.containsKey('discount') && extra['discount'] != null){
+                            discount = extra['discount']; 
+                          } 
+                          return NoTransitionPage(
+                          key: state.pageKey,
+                          child: CheckoutPage(key : state.pageKey , discount: discount ,),
+                        );}
+                      ),
+                    ],
                   ),
                 ],
               ),

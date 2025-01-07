@@ -34,6 +34,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppRoutes.addCategory: context.translate.add,
       AppRoutes.editCategory: context.translate.updating,
       AppRoutes.expensesTracking: context.translate.expenses_tracking,
+      AppRoutes.cartCheckout: "Checkout",
     };
 
     for (final key in locations.keys) {

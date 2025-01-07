@@ -19,6 +19,7 @@ class AssetPaths{
   static const String selectImage = '$imageDir/choose_image.png';
   static const String product= '$imageDir/product.png';
   static const String category = '$imageDir/category.png';
+  static const String emptyCart = '$imageDir/empty_cart.png';
 
 
 

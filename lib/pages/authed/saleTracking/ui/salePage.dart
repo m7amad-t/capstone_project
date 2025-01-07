@@ -7,13 +7,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
-// import 'package:shop_owner/pages/authed/productManagement/ui/components/productCard.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/components/ProductFilterSection.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/components/ProductListViewTopShadow.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/components/productsOrderBySection.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/bloc/cart_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/components/menuCard.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
-import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
@@ -27,7 +28,7 @@ class SalePage extends StatefulWidget {
 class _SalePageState extends State<SalePage> {
   bool _showOrderOptions = false;
   late final TextEditingController _queryController;
- 
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +36,12 @@ class _SalePageState extends State<SalePage> {
     _queryController = TextEditingController();
     context.read<ProductBloc>().add(ReloadProduct());
     context.read<CartBloc>().add(const LoadCart());
+  }
+
+  @override
+  void dispose() {
+    _queryController.dispose();
+    super.dispose();
   }
 
   Timer? _debounce;
@@ -50,22 +57,21 @@ class _SalePageState extends State<SalePage> {
   Widget build(BuildContext context) {
     final TextTheme _textStyle = Theme.of(context).textTheme;
     return BlocConsumer<ProductBloc, ProductBlocState>(
-      listener: (context, state) {
-        print("i got new state...."); 
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is LoadingProducts) {
           return const Scaffold(
             body: Center(
-                child: RepaintBoundary(
-              child: CircularProgressIndicator(),
-            )),
+              child: RepaintBoundary(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
         }
-    
+
         bool gotProductsAndHaveCategory =
             state is GotProducts && state.categories.isNotEmpty;
-    
+
         return Scaffold(
           resizeToAvoidBottomInset: false,
           body: GestureDetector(
@@ -91,13 +97,13 @@ class _SalePageState extends State<SalePage> {
 
   Widget _noCategory() {
     return Center(
-      child: Text(context.translate.no_data_found),
+      child: Text("no categories found "),
     );
   }
 
   Widget _failed() {
     return Expanded(
-      child: Text(context.translate.error),
+      child: Text("Failed to Load"),
     );
   }
 
@@ -117,67 +123,22 @@ class _SalePageState extends State<SalePage> {
           // filter options
           if (_showOrderOptions)
             // filter section
-            Expanded(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: locator<DynamicSizes>().p100,
-                ),
-                child: Container(
-                  child: _orderByOptionSection(context, state),
-                ),
-              ),
+            const Expanded(
+              child: ProductOrderOptionSection(),
             ),
 
           // filter section
-          Expanded(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: locator<DynamicSizes>().p100,
-              ),
-              child: Container(
-                margin: EdgeInsets.only(
-                  bottom: AppSizes.s5,
-                  top: AppSizes.s5,
-                ),
-                child: _productFilterSection(
-                  context,
-                  state,
-                  _textStyle,
-                ),
-              ),
-            ),
+          const Expanded(
+            child: ProductFilterSection(),
           ),
-
           // product section
           Expanded(
             flex: _showOrderOptions ? 9 : 10,
             child: Stack(
               children: [
                 _productListSection(context, state),
-                Positioned(
-                  top: -10,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-
-                          Theme.of(context).scaffoldBackgroundColor,
-                          Theme.of(context)
-                              .scaffoldBackgroundColor
-                              .withOpacity(0.0),
-                        ],
-                      ),
-                    ),
-                    child: Container(
-                      height: AppSizes.s50,
-                    ),
-                  ),
-                ),
+                // product list view top shadow
+                const ProductListTopShadow()
               ],
             ),
           ),
@@ -242,197 +203,10 @@ class _SalePageState extends State<SalePage> {
     );
   }
 
-  Widget _orderByOptionSection(BuildContext context, ProductBlocState state) {
-    final TextTheme _textStyle = Theme.of(context).textTheme;
-
-    ORDER_PRODUCT_BY _initValue = ORDER_PRODUCT_BY.DEFAULT;
-    if (state is GotProducts) {
-      _initValue = state.orderby;
-    }
-
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            margin: EdgeInsets.symmetric(
-              vertical: AppSizes.s6,
-            ),
-            padding: EdgeInsets.symmetric(horizontal: AppSizes.s8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              border: Border.all(color: AppColors.primary),
-              borderRadius: BorderRadius.circular(AppSizes.s8),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<ORDER_PRODUCT_BY>(
-                value: _initValue,
-                items: [
-                  DropdownMenuItem(
-                    value: ORDER_PRODUCT_BY.DEFAULT,
-                    child: Text(
-                      context.translate.order_by_default,
-                      style: _textStyle.bodyMedium,
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: ORDER_PRODUCT_BY.NAME,
-                    child: Text(
-                      '${context.translate.name} ${context.translate.name_a_to_z}',
-                      style: _textStyle.bodyMedium,
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: ORDER_PRODUCT_BY.NAME_DESC,
-                    child: Text(
-                      '${context.translate.name} ${context.translate.name_z_to_a}',
-                      style: _textStyle.bodyMedium,
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: ORDER_PRODUCT_BY.PRICE,
-                    child: Text(
-                      context.translate.order_by_price,
-                      style: _textStyle.bodyMedium,
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: ORDER_PRODUCT_BY.PRICE_DESC,
-                    child: Text(
-                      '${context.translate.order_by_price} ${context.translate.price_low_to_high}',
-                      style: _textStyle.bodyMedium,
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: ORDER_PRODUCT_BY.QUANTITY,
-                    child: Text(
-                      '${context.translate.quantity} ${context.translate.quantity_high_to_low}',
-                      style: _textStyle.bodyMedium,
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: ORDER_PRODUCT_BY.QUANTITY_DESC,
-                    child: Text(
-                      '${context.translate.quantity} ${context.translate.quantity_low_to_high}',
-                      style: _textStyle.bodyMedium,
-                    ),
-                  ),
-                ],
-                onChanged: (value) {
-                  if (value == null) {
-                    return;
-                  }
-                  context.read<ProductBloc>().add(OrderBy(value));
-                },
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _productFilterSection(
-    BuildContext context,
-    ProductBlocState state,
-    final TextTheme _textStyle,
-  ) {
-    if (state is GotProducts) {
-      return ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        // cuz we wraped the product list we add trailing gap
-        itemCount: state.categories.length + 1,
-        itemBuilder: (context, index) {
-          ProductCategoryModel? _selectedcategory = state.selectedCategory;
-
-          if (index < state.categories.length) {
-            final ProductCategoryModel category = state.categories[index];
-            // check if category is the one how selected
-
-            final bool isMeHowSelected = _selectedcategory == null
-                ? false
-                : _selectedcategory.name == category.name;
-
-            return Container(
-              margin: EdgeInsets.only(right: AppSizes.s10),
-              child: TextButton(
-                style: ButtonStyle(
-                  side: WidgetStatePropertyAll(
-                    BorderSide(
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  backgroundColor: WidgetStatePropertyAll(
-                    isMeHowSelected
-                        ? null
-                        : Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                  padding: WidgetStatePropertyAll(
-                    EdgeInsetsDirectional.symmetric(
-                      horizontal: AppPaddings.p6,
-                      vertical: AppPaddings.p8,
-                    ),
-                  ),
-                ),
-                onPressed: () {
-                  context
-                      .read<ProductBloc>()
-                      .add(SelectCategory(category: state.categories[index]));
-                },
-                child: Text(
-                  state.categories[index].name,
-                  style: _textStyle.bodySmall!.copyWith(
-                    color: isMeHowSelected ? AppColors.onPrimary : null,
-                  ),
-                ),
-              ),
-            );
-          }
-          // all button
-          return Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: AppSizes.s10,
-            ),
-            child: TextButton(
-              style: ButtonStyle(
-                side: WidgetStatePropertyAll(
-                  BorderSide(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-                backgroundColor: WidgetStatePropertyAll(
-                  _selectedcategory == null
-                      ? null
-                      : Theme.of(context).scaffoldBackgroundColor,
-                ),
-                padding: WidgetStatePropertyAll(
-                  EdgeInsetsDirectional.symmetric(
-                    horizontal: AppPaddings.p6,
-                    vertical: AppPaddings.p8,
-                  ),
-                ),
-              ),
-              onPressed: () {
-                context.read<ProductBloc>().add(LoadProducts());
-              },
-              child: Text(
-                context.translate.all,
-                style: _textStyle.bodySmall!.copyWith(
-                  color: _selectedcategory == null ? AppColors.onPrimary : null,
-                ),
-              ),
-            ),
-          );
-        },
-      );
-    }
-    return const SizedBox();
-  }
-
   Widget _productListSection(BuildContext context, ProductBlocState state) {
     if (state is FailedToLoad) {
-      return Center(
-        child: Text(context.translate.enter_password),
+      return const Center(
+        child: Text("Failed to load"),
       );
     }
 
@@ -452,19 +226,24 @@ class _SalePageState extends State<SalePage> {
     if (state is GotProducts) {
       products = state.products;
       categories = state.categories;
+      _queryController.text = state.lastQuery;
     }
 
     if (categories.isEmpty) {
-      return Center(
-        child: Text(context.translate.no_data_found),
+      return const Center(
+        child: Text("no category found"),
+      );
+    }
+
+    if (products.isEmpty) {
+      return const Center(
+        child: Text("no product found"),
       );
     }
 
     return ListView.builder(
       shrinkWrap: true,
-      // cuz we wraped the product list we add trailing gap
       itemCount: products.length,
-      // addAutomaticKeepAlives: true,
       itemBuilder: (context, index) {
         return Container(
           margin: EdgeInsets.only(
