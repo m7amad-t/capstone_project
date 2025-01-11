@@ -11,7 +11,6 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
-     final _textStyle = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
-import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
-import 'package:shop_owner/utils/di/contextDI.dart';
 
 class NavigationService {
   // navigator service key

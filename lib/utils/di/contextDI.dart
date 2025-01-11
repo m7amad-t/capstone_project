@@ -57,6 +57,7 @@ void setUpLocator() {
         return ; 
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error in setting up locator: $e');
     }
   }

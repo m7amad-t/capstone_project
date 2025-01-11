@@ -1,14 +1,18 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, unused_local_variable, unused_element, file_names
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
+import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/shared/imageDisplayer.dart';
-import 'package:shop_owner/shared/uiHelper.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
+import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 Widget gap({double width = 0.0, double height = 0.0}) {
@@ -42,11 +46,13 @@ class _LanguageListTileState extends State<_LanguageListTile> {
     final _textStyle = Theme.of(context).textTheme;
     return ListTile(
       onTap: () async {
-        await showChangeLanguage(context);
+        locator<AppDialogs>().showChangeLanguage();
       },
       trailing: Container(
         margin: EdgeInsets.symmetric(
-            horizontal: AppSizes.s4, vertical: AppSizes.s2),
+          horizontal: AppSizes.s4,
+          vertical: AppSizes.s2,
+        ),
         height: AppSizes.s35,
         width: AppSizes.s45,
         child: Image.asset(
@@ -67,11 +73,11 @@ Widget changeLanguageTile() {
 }
 
 Widget networkImageWithPlaceholder(String imageUrl) {
-  print("image user is  : $imageUrl");
+  // print("image user is  : $imageUrl");
   return CachedNetworkImage(
     imageUrl: imageUrl,
     placeholder: (context, url) {
-      print('this is the palce holder callback secion..');
+      // print('this is the palce holder callback secion..');
 
       return Image.asset(
         AssetPaths.placeHolder, // Your placeholder image
@@ -79,7 +85,7 @@ Widget networkImageWithPlaceholder(String imageUrl) {
       );
     },
     errorWidget: (context, url, error) {
-      print(error);
+      // print(error);
       return Image.asset(
         AssetPaths.placeHolder, // Your error image
         fit: BoxFit.cover,
@@ -105,8 +111,8 @@ Color _getStockColor(int stok, TextTheme theme) {
 
 String _trimName(ProductModel product) {
   int maxLength = 20;
-   String name = product.name; 
-  // first check if it contains enters 
+  String name = product.name;
+  // first check if it contains enters
   if (product.name.contains('\n')) {
     name = product.name.split('\n')[0];
   }
@@ -117,13 +123,13 @@ String _trimName(ProductModel product) {
 }
 
 String _trimDescription(ProductModel product) {
-  String description = product.description; 
+  String description = product.description;
 
-  // splet lines 
-  final splet = description.split('\n'); 
+  // splet lines
+  final splet = description.split('\n');
 
-  if(splet.length >2){
-    description = splet[0] + '\n' + splet[1];
+  if (splet.length > 2) {
+    description = '${splet[0]}\n${splet[1]}';
   }
 
   int maxLength = 50;
@@ -133,10 +139,18 @@ String _trimDescription(ProductModel product) {
   return description;
 }
 
+Widget filterIcon() {
+  return Icon(
+    Icons.tune_rounded,
+    color: AppColors.onPrimary,
+    size: AppSizes.s24,
+  );
+}
+
 Widget productCardMainSection({
   required ProductModel product,
   required bool isLTR,
-  bool isCart = false, 
+  bool isCart = false,
 }) {
   return Builder(
     builder: (context) {
@@ -163,7 +177,7 @@ Widget productCardMainSection({
                     child: ClipRect(
                       child: ImageDisplayerWithPlaceHolder(
                         imageUrl: product.imageUrl,
-                        bottomLeft: isCart ? 0: AppSizes.s16,
+                        bottomLeft: isCart ? 0 : AppSizes.s16,
                         topLeft: AppSizes.s16,
                       ),
                     ),
@@ -322,7 +336,7 @@ Widget productCardMainSection({
                   // width: 200,
                   child: ImageDisplayerWithPlaceHolder(
                     imageUrl: product.imageUrl,
-                    bottomLeft: isCart ? 0:   AppSizes.s16 ,
+                    bottomLeft: isCart ? 0 : AppSizes.s16,
                     topLeft: AppSizes.s16,
                   ),
                   // child: Text('SLAAAAA'),
@@ -390,7 +404,6 @@ Widget productCardMainSection({
                             _trimName(product),
                             style: _textStyle.bodyMedium!.copyWith(
                               fontWeight: FontWeight.bold,
-
                             ),
                           ),
                         ),
@@ -410,11 +423,13 @@ Widget productCardMainSection({
               // quantity
               Expanded(
                 child: Container(
+                  width: 50,
                   alignment: Alignment.center,
-                  child: Text(
+                  child: AutoSizeText(
                     product.quantity.toString(),
+                    maxLines: AppSizes.s24.toInt(),
                     style: _textStyle.bodyLarge!.copyWith(
-                      color: _getStockColor(product.quantity,_textStyle )
+                      color: _getStockColor(product.quantity, _textStyle),
                     ),
                   ),
                 ),
@@ -461,4 +476,39 @@ Widget productCardMainSection({
       );
     },
   );
+}
+
+Future<DateTimeRange?> showAppDateTimeRangePicker(
+  BuildContext context,
+  DateTimeRange? current,
+) async {
+  DateTime? start;
+  DateTime? end;
+  if (current != null) {
+    start = current.start;
+    end = current.end;
+  }
+
+  final res = await showCalendarDatePicker2Dialog(
+    context: context,
+    config: CalendarDatePicker2WithActionButtonsConfig(
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      calendarType: CalendarDatePicker2Type.range,
+    ),
+    value: [start, end],
+    dialogSize: Size(
+      locator<DynamicSizes>().p90,
+      AppSizes.s400,
+    ),
+  );
+
+  if (res == null) return null;
+  if (res.length == 1 && res[0] != null) {
+    return DateTimeRange(start: res[0]!, end: res[0]!);
+  } else if (res.length == 2 && res[0] != null && res[1] != null) {
+    return DateTimeRange(start: res[0]!, end: res[1]!);
+  } else {
+    return null;
+  }
 }

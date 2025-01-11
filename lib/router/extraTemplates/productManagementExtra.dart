@@ -1,5 +1,4 @@
 
-import 'package:flutter/foundation.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 
@@ -14,6 +13,21 @@ abstract class ProductManagementSubRoutesBase{
 
   Map<String , dynamic> get getExtra ;  
 
+}
+
+class ReturnProductExtra {
+
+  final ProductModel product ;
+
+  ReturnProductExtra({required this.product});
+
+  
+  Map<String, dynamic> get getExtra {
+      return {
+        'product' : product, 
+      }; 
+    
+  }
 }
 
 
@@ -44,8 +58,8 @@ class UpdateProductExtra extends ProductManagementSubRoutesBase{
       }; 
     
   }
-
 }
+
 
 
 class AddNewCategoryExtra extends ProductManagementSubRoutesBase{

@@ -10,11 +10,13 @@ import 'package:shop_owner/pages/authed/productManagement/logic/models/productMo
 import 'package:shop_owner/pages/authed/productManagement/ui/components/ProductFilterSection.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/components/ProductListViewTopShadow.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/components/productsOrderBySection.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/bloc/cart_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/components/menuCard.dart';
+import 'package:shop_owner/shared/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
+import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
@@ -96,13 +98,13 @@ class _SalePageState extends State<SalePage> {
   }
 
   Widget _noCategory() {
-    return Center(
+    return const Center(
       child: Text("no categories found "),
     );
   }
 
   Widget _failed() {
-    return Expanded(
+    return const Expanded(
       child: Text("Failed to Load"),
     );
   }
@@ -191,9 +193,7 @@ class _SalePageState extends State<SalePage> {
                       _showOrderOptions = !_showOrderOptions;
                     });
                   },
-                  child: const Icon(
-                    Icons.tune_rounded,
-                  ),
+                  child: filterIcon(), 
                 ),
               ),
             ],

@@ -238,6 +238,7 @@ class KurdishCupertinoLocalizationsDelegate
     );
 
     return SynchronousFuture<CupertinoLocalizations>(
+
       KurdishCupertinoLocalizations(
         localeName: localeName,
         // we will set it to ar because ku is not supported yet
@@ -248,7 +249,8 @@ class KurdishCupertinoLocalizationsDelegate
         mediumDateFormat: intl.DateFormat('EEE, MMM d', localeName),
         singleDigitHourFormat: intl.DateFormat('EEEE, MMMM d, y', localeName),
         singleDigitMinuteFormat: intl.DateFormat('MMMM y', localeName),
-        singleDigitSecondFormat: intl.DateFormat('MMM d', localeName),
+        singleDigitSecondFormat: intl.DateFormat('MMM d', localeName), 
+        weekdayFormat: intl.DateFormat('EEEE', localeName),
       ),
     );
   }
@@ -263,6 +265,8 @@ class KurdishCupertinoLocalizationsDelegate
 /// an example. Everything else uses the American English (en_US) messages
 /// and formatting.
 class KurdishCupertinoLocalizations extends GlobalCupertinoLocalizations {
+
+  // ------------- old one ---------------- 
   const KurdishCupertinoLocalizations({
     super.localeName = 'ku',
     required super.fullYearFormat,
@@ -272,11 +276,12 @@ class KurdishCupertinoLocalizations extends GlobalCupertinoLocalizations {
     required super.doubleDigitMinuteFormat,
     required super.singleDigitHourFormat,
     required super.singleDigitMinuteFormat,
-    required super.singleDigitSecondFormat,
+    required super.singleDigitSecondFormat, required super.weekdayFormat,
   });
 
   static const LocalizationsDelegate<CupertinoLocalizations> delegate =
       KurdishCupertinoLocalizationsDelegate();
+
 
   @override
   String get alertDialogLabel => r'ئاگادارکردنەوە';

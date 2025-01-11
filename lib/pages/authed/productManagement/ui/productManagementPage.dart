@@ -36,6 +36,12 @@ class ProductManagementPage extends StatelessWidget {
         "path": '${AppRoutes.productManagement}/${AppRoutes.category}',
         'icon': Image.asset(AssetPaths.category)
       },
+      // categories
+      {
+        'name': 'product return',
+        "path": '${AppRoutes.productManagement}/${AppRoutes.returnProduct}',
+        'icon': Image.asset(AssetPaths.category)
+      },
     ];
 
     return Scaffold(
@@ -45,7 +51,6 @@ class ProductManagementPage extends StatelessWidget {
         child: Column(
           children: [
             GridView.builder(
-              
               padding: EdgeInsets.symmetric( vertical: AppSizes.s20 ),
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

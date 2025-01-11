@@ -2,12 +2,10 @@
 
 import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shop_owner/l10n/l10n.dart';
-import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
@@ -55,61 +53,61 @@ void showLoadingDialog(BuildContext context, String text) {
   );
 }
 
-Future<void> showChangeLanguage(BuildContext context) async {
-  await showDialog(
-    context: context,
-    barrierDismissible: true,
-    builder: (BuildContext context) {
-      final _textStyle = Theme.of(context).textTheme;
-      return AlertDialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        content: Card(
-          elevation: 1,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: locator<DynamicSizes>().p65,
-              maxWidth: locator<DynamicSizes>().p65,
-              maxHeight: locator<DynamicSizes>().p50,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (final local in L10n.all)
-                  ListTile(
-                    onTap: () {
-                      context
-                          .read<LanguageBloc>()
-                          .add(ChangeLanguage(local: local));
-                      if (Navigator.of(context).canPop()) {
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    trailing: Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: AppSizes.s4,
-                        vertical: AppSizes.s2,
-                      ),
-                      height: AppSizes.s35,
-                      width: AppSizes.s45,
-                      child: Image.asset(
-                        local.flag,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    leading: Text(
-                      local.languageName,
-                      style: _textStyle.displayLarge,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
+// Future<void> showChangeLanguage(BuildContext context) async {
+//   await showDialog(
+//     context: context,
+//     barrierDismissible: true,
+//     builder: (BuildContext context) {
+//       final _textStyle = Theme.of(context).textTheme;
+//       return AlertDialog(
+//         backgroundColor: Colors.transparent,
+//         elevation: 0,
+//         content: Card(
+//           elevation: 1,
+//           child: ConstrainedBox(
+//             constraints: BoxConstraints(
+//               minWidth: locator<DynamicSizes>().p65,
+//               maxWidth: locator<DynamicSizes>().p65,
+//               maxHeight: locator<DynamicSizes>().p50,
+//             ),
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 for (final local in L10n.all)
+//                   ListTile(
+//                     onTap: () {
+//                       context
+//                           .read<LanguageBloc>()
+//                           .add(ChangeLanguage(local: local));
+//                       if (Navigator.of(context).canPop()) {
+//                         Navigator.of(context).pop();
+//                       }
+//                     },
+//                     trailing: Container(
+//                       margin: EdgeInsets.symmetric(
+//                         horizontal: AppSizes.s4,
+//                         vertical: AppSizes.s2,
+//                       ),
+//                       height: AppSizes.s35,
+//                       width: AppSizes.s45,
+//                       child: Image.asset(
+//                         local.flag,
+//                         fit: BoxFit.cover,
+//                       ),
+//                     ),
+//                     leading: Text(
+//                       local.languageName,
+//                       style: _textStyle.displayLarge,
+//                     ),
+//                   ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }
 
 Future<Uint8List?> pickImageFromGallery() async {
   final ImagePicker _picker = ImagePicker();
@@ -130,167 +128,7 @@ Future<Uint8List?> pickImageFromGallery() async {
   return null;
 }
 
-Future<void> showLogoutConfirmation(BuildContext context) async {
-  await showDialog(
-    context: context,
-    barrierDismissible: true,
-    builder: (BuildContext context) {
-      final _textStyle = Theme.of(context).textTheme;
-      return AlertDialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        content: Card(
-          elevation: 1,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: locator<DynamicSizes>().p90,
-              maxWidth: locator<DynamicSizes>().p90,
-              maxHeight: locator<DynamicSizes>().p50,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  context.translate.are_you_sure_you_want_to_logout,
-                  style: _textStyle.displayMedium!
-                    ..copyWith(
-                      color: AppColors.error,
-                    ),
-                ),
 
-                gap(height: AppSizes.s20),
-                // confirm button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        if (Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
-                        context.read<AuthBloc>().add(Logout(context: context));
-                      },
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            WidgetStatePropertyAll(AppColors.error),
-                      ),
-                      child: Text(
-                        context.translate.yes,
-                      ),
-                    ),
-
-                    // dispose button
-                    TextButton(
-                      onPressed: () {
-                        if (Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            WidgetStatePropertyAll(AppColors.success),
-                      ),
-                      child: Text(
-                        context.translate.no,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Future<void> showDeleteProductConfirmation(
-    BuildContext context, ProductModel product) async {
-  await showDialog(
-    context: context,
-    barrierDismissible: true,
-    builder: (BuildContext context) {
-      final _textStyle = Theme.of(context).textTheme;
-      return AlertDialog(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        content: Card(
-          elevation: 1,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: locator<DynamicSizes>().p90,
-              maxWidth: locator<DynamicSizes>().p90,
-              maxHeight: locator<DynamicSizes>().p50,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  context.translate.ru_sure_want_to_delete ,
-                  style: _textStyle.displayMedium,
-                ),
-
-                gap(height: AppSizes.s20),
-                // confirm button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        if (Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
-                        if (Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
-                        // todo : send delete product event to bloc
-
-                        // show snackbar
-                        showSnackBar(
-                          message: SuccessSnackBar(
-                            title:
-                                context.translate.product_deleted_successfully,
-                            message:
-                                context.translate.product_deleted_successfully,
-                          ),
-                        );
-
-                      },
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            WidgetStatePropertyAll(AppColors.error),
-                      ),
-                      child: Text(
-                        context.translate.yes,
-                      ),
-                    ),
-
-                    // dispose button
-                    TextButton(
-                      onPressed: () {
-                        if (Navigator.of(context).canPop()) {
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      style: const ButtonStyle(
-                        backgroundColor:
-                            WidgetStatePropertyAll(AppColors.success),
-                      ),
-                      child: Text(
-                        context.translate.no,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    },
-  );
-}
 
 void showSnackBar({required AppSnackBarMessages message}) {
   toastification.show(
@@ -317,8 +155,3 @@ void showSnackBar({required AppSnackBarMessages message}) {
   );
 }
 
-void popCurrent(context) {
-  if (Navigator.of(context).canPop()) {
-    Navigator.of(context).pop();
-  }
-}

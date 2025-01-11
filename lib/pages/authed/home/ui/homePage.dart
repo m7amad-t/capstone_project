@@ -1,16 +1,12 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_owner/main.dart';
 import 'package:shop_owner/pages/authed/home/logic/models/featureModel.dart';
 import 'package:shop_owner/pages/authed/home/ui/components/featureCard.dart';
 import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
-import 'package:shop_owner/shared/drawer.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
-import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class HomePage extends StatelessWidget {

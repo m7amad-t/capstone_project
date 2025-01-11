@@ -11,34 +11,55 @@ import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class ProductCard extends StatelessWidget {
+  final bool isReturnPageCard;
   final ProductModel product;
   final List<ProductCategoryModel> categories;
   const ProductCard({
     super.key,
+    this.isReturnPageCard = false,
     required this.categories,
     required this.product,
   });
+
+  void _navigateToReturnPage(BuildContext context) {
+        GoRouter.of(context).push(
+      "${AppRoutes.productManagement}/${AppRoutes.product}/${AppRoutes.editProduct}",
+      extra: UpdateProductExtra(
+        categories: categories,
+        product: product,
+      ).getExtra,
+    );
+  }
+
+  void _navigateToDetailPage(BuildContext context) {
+    GoRouter.of(context).push(
+      "${AppRoutes.productManagement}/${AppRoutes.product}/${AppRoutes.productDetail}",
+      extra: UpdateProductExtra(
+        categories: categories,
+        product: product,
+      ).getExtra,
+    );
+  }
+
+  void _tapCallback(BuildContext context) {
+    if (isReturnPageCard) return _navigateToReturnPage(context);
+    return _navigateToDetailPage(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     final isLTR = context.fromLTR;
 
-    return InkWell(
-      onTap: () {
-        GoRouter.of(context).push(
-          "${AppRoutes.productManagement}/${AppRoutes.product}/${AppRoutes.editProduct}",
-          extra: UpdateProductExtra(
-            categories: categories,
-            product: product,
-          ).getExtra,
-        );
-      },
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: AppSizes.s120,
-          maxWidth: AppSizes.s300,
-        ),
-        child: Card(
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: AppSizes.s120,
+        maxWidth: AppSizes.s300,
+      ),
+      child: Card(
+        child: InkWell(
+          onTap: () {
+            return _tapCallback(context);
+          },
           child: productCardMainSection(
             product: product,
             isLTR: isLTR,
@@ -48,4 +69,5 @@ class ProductCard extends StatelessWidget {
     );
   }
 
+  
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
-import 'package:shop_owner/style/appSizes/appSizes.dart';
 // instead of using this its better to use cached images , but i got an error , and i don't have enough time to fix it 
 // so i have useed this way to avoid displaying (nothing till it load or when having error to laod image)
 

@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/models/cardModel.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 
 class CartLocalService {

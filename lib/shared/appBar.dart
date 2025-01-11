@@ -1,17 +1,10 @@
 // ignore_for_file: unused_element
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_owner/pages/authed/saleAnalytics/ui/saleAnalyticsPage.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/bloc/cart_bloc_bloc.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
-import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
-import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
-import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -79,12 +72,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return false;
   }
 
+  bool _showSellingHistory(String location) {
+    final List<String> primaryRoutes = [
+      AppRoutes.home,
+    ];
+    if (primaryRoutes.contains(location)) {
+      return true;
+    }
+
+    return false;
+  }
+
+ 
   @override
   Widget build(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
 
     final bool showBackButton = _showBackButton(location);
-
+    // show history of selling button
+    final bool showHOSRB = _showSellingHistory(location);
     return AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       leading: showBackButton
@@ -96,7 +102,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onPressed: () => context.pop(),
             )
-          : null,
+          : showHOSRB ? IconButton(
+              icon: Icon(
+                Icons.history_rounded,
+                color: AppColors.onPrimary,
+                size: AppSizes.s30,
+              ),
+              onPressed: () =>GoRouter.of(context).push("${AppRoutes.home}/${AppRoutes.saleHistory}", ) , 
+            ):   null,
       title: Text(
         _title(context, location),
       ),

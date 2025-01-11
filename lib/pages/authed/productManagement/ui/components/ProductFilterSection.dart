@@ -15,7 +15,7 @@ class ProductFilterSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
-
+    
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxWidth: locator<DynamicSizes>().p100,
@@ -53,6 +53,7 @@ class ProductFilterSection extends StatelessWidget {
                       : selectedCategory.name == category.name;
 
                   return Container(
+
                     margin: EdgeInsets.only(right: AppSizes.s10),
                     child: TextButton(
                       style: ButtonStyle(
@@ -68,7 +69,7 @@ class ProductFilterSection extends StatelessWidget {
                         ),
                         padding: WidgetStatePropertyAll(
                           EdgeInsetsDirectional.symmetric(
-                            horizontal: AppPaddings.p6,
+                            horizontal: AppPaddings.p10,
                             vertical: AppPaddings.p8,
                           ),
                         ),
@@ -89,8 +90,10 @@ class ProductFilterSection extends StatelessWidget {
                 }
                 // all button
                 return Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: AppSizes.s10,
+                  margin: EdgeInsets.only(
+                    
+                    left: !context.fromLTR ? AppSizes.s10 : 0 ,
+                    right: context.fromLTR ? AppSizes.s10 : 0 ,
                   ),
                   child: TextButton(
                     style: ButtonStyle(

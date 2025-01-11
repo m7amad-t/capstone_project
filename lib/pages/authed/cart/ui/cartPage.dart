@@ -1,19 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/bloc/cart_bloc_bloc.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/models/cardModel.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/components/menuCard.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
-import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/inputFormater.dart';
 
 class CartPage extends StatefulWidget {
@@ -97,7 +94,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final _textStyle = Theme.of(context).textTheme;
+    final textStyle = Theme.of(context).textTheme;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: GestureDetector(
@@ -157,7 +154,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                 children: [
                                   Text(
                                     'Your Cart is empty',
-                                    style: _textStyle.displayMedium,
+                                    style: textStyle.displayMedium,
                                   ),
                                   Row(
                                     children: [
@@ -167,7 +164,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                             GoRouter.of(context)
                                                 .go(AppRoutes.home);
                                           },
-                                          child: Text(
+                                          child: const  Text(
                                             'Add Item',
                                           ),
                                         ),
@@ -256,7 +253,8 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                         sigmaY: 10,
                       ),
                       child: Container(
-                        color: Colors.transparent,
+                        color:AppColors.primary
+                          .withAlpha(80),
                       ),
                     ),
                   ),
@@ -267,9 +265,8 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                     ),
                     decoration: BoxDecoration(
                       backgroundBlendMode: BlendMode.color,
-                      color: Theme.of(context)
-                          .scaffoldBackgroundColor
-                          .withAlpha(160),
+                      color:AppColors.primary
+                          .withAlpha(250),
                       borderRadius: BorderRadius.all(
                         Radius.circular(
                           AppSizes.s8,
@@ -321,6 +318,9 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                     ],
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: AppColors.borderBrand)
+                                      ),
                                       hintText: 'enter discount amount',
                                     ),
                                     controller: _discount,

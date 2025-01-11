@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/service/productServices.dart';
+import 'package:shop_owner/shared/appDialogs.dart';
+import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 part 'product_bloc_event.dart';
@@ -23,6 +25,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
     bool _isProductsFetched() {
       try {
+        // ignore: unused_local_variable
         final temp = _categories;
         return true;
       } catch (e) {
@@ -34,7 +37,9 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
     // fucntion to order the products
     List<ProductModel> _order(
-        List<ProductModel> products, ORDER_PRODUCT_BY order) {
+      List<ProductModel> products,
+      ORDER_PRODUCT_BY order,
+    ) {
       switch (order) {
         case ORDER_PRODUCT_BY.NAME:
           products.sort((a, b) => a.name.compareTo(b.name));
@@ -93,7 +98,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           products: products,
           orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
           selectedCategory: _lastSelectedCategory,
-          lastQuery: _lastQuery, 
+          lastQuery: _lastQuery,
         ));
       }
       //  set UI to loading state
@@ -120,8 +125,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
         products: _products,
         orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
         selectedCategory: _lastSelectedCategory,
-          lastQuery: _lastQuery, 
-
+        lastQuery: _lastQuery,
       ));
     }
 
@@ -154,8 +158,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
         products: _products,
         orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
         selectedCategory: _lastSelectedCategory,
-          lastQuery: _lastQuery, 
-
+        lastQuery: _lastQuery,
       ));
     }
 
@@ -170,8 +173,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
           selectedCategory: _lastSelectedCategory,
           products: products,
-          lastQuery: _lastQuery, 
-
+          lastQuery: _lastQuery,
         ),
       );
     }
@@ -196,8 +198,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           selectedCategory: _lastSelectedCategory,
           products: products,
           categories: _categories,
-          lastQuery: _lastQuery, 
-
+          lastQuery: _lastQuery,
         ));
       } catch (e) {
         print("Error in order by event : $e");
@@ -223,8 +224,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           selectedCategory: _lastSelectedCategory,
           products: products,
           categories: _categories,
-          lastQuery: _lastQuery, 
-
+          lastQuery: _lastQuery,
         ));
       } catch (e) {
         FailedToLoad();
@@ -233,6 +233,10 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
     Future<void> _onUpdate(UpdateProduct event, emit) async {
       try {
+
+        
+
+
         List<ProductCategoryModel> categories = List.from(_categories);
         List<ProductModel> products = List.from(_products);
 
@@ -272,7 +276,8 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
         // Apply ordering
         if (_lastOrderBy != null) {
-          filteredProducts = _order(filteredProducts, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
+          filteredProducts = _order(
+              filteredProducts, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
         }
 
         // Apply search query if exists
@@ -280,13 +285,15 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           filteredProducts = _queryByName(filteredProducts);
         }
 
+
+        
         // Emit new state with updated data
         return emit(GotProducts(
           orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
           selectedCategory: _lastSelectedCategory,
           products: filteredProducts,
           categories: categories,
-          lastQuery: _lastQuery, 
+          lastQuery: _lastQuery,
 
           // updatedProduct: products[productIndex],
         ));
@@ -297,14 +304,12 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
     Future<void> _onDelete(DeleteProduct event, emit) async {
       try {
-
         // delete it from main list List<ProductCategoryModel>
         for (int i = 0; i < _categories.length; i++) {
           // check if this category have the targeted product
           for (int j = 0; j < _categories[i].items.length; j++) {
             if (_categories[i].items[j].id == event.product.id) {
               _categories[i].items.removeAt(j);
-              
             }
           }
         }
@@ -325,8 +330,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           selectedCategory: _lastSelectedCategory,
           products: products,
           categories: _categories,
-          lastQuery: _lastQuery, 
-
+          lastQuery: _lastQuery,
         ));
       } catch (e) {
         FailedToLoad();
@@ -335,14 +339,11 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
     Future<void> _onInsert(InsertProduct event, emit) async {
       try {
-
         // delete it from main list List<ProductCategoryModel>
         for (int i = 0; i < _categories.length; i++) {
           if (_categories[i].name == event.category.name) {
-            
             _categories[i] = _categories[i]
                 .updateItems([..._categories[i].items, event.product]);
-      
           }
         }
 
@@ -361,7 +362,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
           selectedCategory: _lastSelectedCategory,
           products: products,
-          lastQuery: _lastQuery, 
+          lastQuery: _lastQuery,
           categories: _categories,
         ));
       } catch (e) {
@@ -389,8 +390,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           selectedCategory: _lastSelectedCategory,
           products: products,
           categories: _categories,
-          lastQuery: _lastQuery, 
-
+          lastQuery: _lastQuery,
         ));
       } catch (e) {
         FailedToLoad();
@@ -420,8 +420,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           selectedCategory: _lastSelectedCategory,
           products: products,
           categories: _categories,
-          lastQuery: _lastQuery, 
-
+          lastQuery: _lastQuery,
         ));
       } catch (e) {
         FailedToLoad();
@@ -449,13 +448,62 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           selectedCategory: _lastSelectedCategory,
           products: products,
           categories: _categories,
-          lastQuery: _lastQuery, 
-
+          lastQuery: _lastQuery,
         ));
       } catch (e) {
         FailedToLoad();
       }
     }
+
+    Future<void> _onReturnProduct(ReturnProduct event, emit) async {
+      try {
+        // find the product in the category list List<ProductcategoryModel>  
+        for (int i = 0; i < _categories.length; i++) {
+          // get the product in the caegory products list
+          int index = _categories[i].items.indexWhere((element) => element.id == event.product.id);
+
+          if (index >=0) {
+            final data = {
+              'quantity' : event.product.quantity + event.quantity, 
+            }; 
+            // update item stok
+            _categories[i].items[index] = _categories[i].items[index].update(data);
+            // update the category
+            _categories[i] = _categories[i].updateItems(_categories[i].items);
+          }
+        }
+
+        // find it in product list..
+        int index = _products.indexWhere((element) => element.id == event.product.id);
+        if (index >=0) {
+          final data = {
+            'quantity' : event.product.quantity + event.quantity, 
+          }; 
+          // update item stok
+          _products[index] = _products[index].update(data);
+        }
+
+        List<ProductModel> products = _products;
+        // applay last filter if there is any..
+        if (_lastSelectedCategory != null) {
+          products = _lastSelectedCategory!.items;
+        }
+
+        products = _order(products, _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT);
+        products = _queryByName(products);
+
+        emit(GotProducts(
+          orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
+          selectedCategory: _lastSelectedCategory,
+          products: products,
+          lastQuery: _lastQuery,
+          categories: _categories,
+        ));
+      } catch (e) {
+        FailedToLoad();
+      }
+    }
+
 
     // event listeners
     on<LoadProducts>(_onLoadProducts);
@@ -479,5 +527,8 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
     on<UpdateCategory>(_onUpdateCategory);
 
     on<DeleteCategory>(_onDeleteCategory);
+
+    on<ReturnProduct>(_onReturnProduct);
+
   }
 }

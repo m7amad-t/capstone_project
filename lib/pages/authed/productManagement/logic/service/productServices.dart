@@ -1,6 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
-import 'package:shop_owner/pages/authed/productManagement/logic/models/example.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/models/products_data_example.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 
 class ProductModelService {
@@ -10,7 +12,7 @@ class ProductModelService {
       await Future.delayed(const Duration(seconds: 1));
 
       // get fake products
-      final data = productCategoryExample; 
+      const data = productCategoryExample; 
 
       // decode json data
       final json = jsonDecode(data);

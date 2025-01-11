@@ -11,7 +11,6 @@ class SaleAnalyticPage extends StatefulWidget {
 class _SaleAnalyticPageState extends State<SaleAnalyticPage> {
   @override
   Widget build(BuildContext context) {
-     final _textStyle = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(

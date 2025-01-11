@@ -28,17 +28,32 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        
     }
 
     buildTypes {
         release {
+
             // TODO: Add your own signing config for the release build.
+          
+          
             // Signing with the debug keys for now, so `flutter run --release` works.
+            minifyEnabled true
+            shrinkResources true
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
             signingConfig = signingConfigs.debug
+            // useProgourd = true
         }
     }
 }
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Add dependencies if required
+    implementation 'com.google.crypto.tink:tink-android:1.7.0' // Add tink if necessary
 }

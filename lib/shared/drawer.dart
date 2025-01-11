@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
 import 'package:shop_owner/shared/uiHelper.dart';
@@ -12,7 +13,7 @@ import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 Widget appDrawer(BuildContext context) {
-  final _textStyle = Theme.of(context).textTheme;
+  final textStyle = Theme.of(context).textTheme;
   // get proper height for drawer 
   double preferredHeight = 650; // or more..
   // get screen height
@@ -64,7 +65,7 @@ Widget appDrawer(BuildContext context) {
                           alignment: Alignment.center,
                           child: Text(
                             locator<User>().name,
-                            style: _textStyle.displayLarge,
+                            style: textStyle.displayLarge,
                           ),
                         ),
                       ),
@@ -82,7 +83,7 @@ Widget appDrawer(BuildContext context) {
                     ListTile(
                       leading: Text(
                         context.translate.light_mode,
-                        style: _textStyle.displayLarge,
+                        style: textStyle.displayLarge,
                       ),
                       trailing: CupertinoSwitch(
                         value: Theme.of(context).brightness == Brightness.light,
@@ -109,7 +110,7 @@ Widget appDrawer(BuildContext context) {
                       height: AppSizes.s50,
                       child: TextButton(
                         onPressed: () {
-                          showLogoutConfirmation(context);
+                          locator<AppDialogs>().showLogoutConfiramtion();
                         },
                         style: const ButtonStyle(
                           backgroundColor: WidgetStatePropertyAll(AppColors.error),

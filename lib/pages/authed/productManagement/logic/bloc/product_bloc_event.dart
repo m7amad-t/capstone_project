@@ -20,7 +20,6 @@ enum ORDER_PRODUCT_BY {
 }
 
 
-
 extension ProductEnumExtension on ORDER_PRODUCT_BY {
   String name(BuildContext context) {
     switch (this) {
@@ -41,6 +40,7 @@ extension ProductEnumExtension on ORDER_PRODUCT_BY {
     }
   }
 }
+
 
 class LoadProducts extends ProductBlocEvent {}
 
@@ -76,9 +76,9 @@ class SearchProductByName extends ProductBlocEvent {
 
 class UpdateProduct extends ProductBlocEvent {
   final ProductModel product;
-  final Map<String , dynamic> toUpdate;
+  final Map<String, dynamic> toUpdate;
 
-  const UpdateProduct({required this.product, required this.toUpdate}); 
+  const UpdateProduct({required this.product, required this.toUpdate});
 
   @override
   List<Object> get props => [product, toUpdate];
@@ -87,8 +87,7 @@ class UpdateProduct extends ProductBlocEvent {
 class DeleteProduct extends ProductBlocEvent {
   final ProductModel product;
 
-  const  DeleteProduct({required this.product});
-
+  const DeleteProduct({required this.product});
 
   @override
   List<Object> get props => [product];
@@ -96,44 +95,50 @@ class DeleteProduct extends ProductBlocEvent {
 
 class InsertProduct extends ProductBlocEvent {
   final ProductModel product;
-  final ProductCategoryModel category ; 
+  final ProductCategoryModel category;
 
-  const  InsertProduct({required this.product , required this.category});
-
+  const InsertProduct({required this.product, required this.category});
 
   @override
   List<Object> get props => [product];
 }
 
-
 class InsertCategory extends ProductBlocEvent {
-  final ProductCategoryModel category ; 
+  final ProductCategoryModel category;
 
-  const  InsertCategory({required this.category});
-
+  const InsertCategory({required this.category});
 
   @override
   List<Object> get props => [category];
 }
 
 class UpdateCategory extends ProductBlocEvent {
-  final ProductCategoryModel category ; 
-  final Map<String , dynamic> update ; 
+  final ProductCategoryModel category;
+  final Map<String, dynamic> update;
 
-  const  UpdateCategory({required this.category , required this.update});
-
+  const UpdateCategory({required this.category, required this.update});
 
   @override
-  List<Object> get props => [category , update];
+  List<Object> get props => [category, update];
 }
+
 class DeleteCategory extends ProductBlocEvent {
-  final ProductCategoryModel category ;
+  final ProductCategoryModel category;
 
-  const  DeleteCategory({required this.category}); 
-
-
+  const DeleteCategory({required this.category});
 
   @override
   List<Object> get props => [category];
 }
 
+class ReturnProduct extends ProductBlocEvent {
+  final ProductModel product;
+  final int quantity; 
+
+  const ReturnProduct({
+    required this.product,
+    required this.quantity,
+  });
+  @override
+  List<Object> get props => [product,quantity];
+}

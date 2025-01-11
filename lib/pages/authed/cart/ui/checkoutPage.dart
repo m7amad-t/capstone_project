@@ -2,9 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/bloc/cart_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
+import 'package:shop_owner/style/theme/appColors.dart';
 
 class CheckoutPage extends StatefulWidget {
   final double discount;
@@ -32,11 +33,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    DataCell _cellData(String text, TextTheme _textStyle) {
+    DataCell cellData(String text, TextTheme textStyle) {
       return DataCell(
         Text(
           text,
-          style: _textStyle.bodySmall,
+          style: textStyle.bodySmall,
         ),
       );
     }
@@ -109,23 +110,23 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               for (final row in rows)
                                 DataRow(
                                   cells: [
-                                    _cellData(
+                                    cellData(
                                       row.product.id.toString(),
                                       textStyle,
                                     ),
-                                    _cellData(
+                                    cellData(
                                       row.product.name,
                                       textStyle,
                                     ),
-                                    _cellData(
+                                    cellData(
                                       row.quantity.toString(),
                                       textStyle,
                                     ),
-                                    _cellData(
+                                    cellData(
                                       row.product.price.toStringAsFixed(2),
                                       textStyle,
                                     ),
-                                    _cellData(
+                                    cellData(
                                       (row.product.price * row.quantity)
                                           .toStringAsFixed(2),
                                       textStyle,
@@ -158,7 +159,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         sigmaY: 10,
                       ),
                       child: Container(
-                        color: Colors.transparent,
+                        color:AppColors.primary
+                          .withAlpha(80),
                       ),
                     ),
                   ),
@@ -169,9 +171,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                     decoration: BoxDecoration(
                       backgroundBlendMode: BlendMode.color,
-                      color: Theme.of(context)
-                          .scaffoldBackgroundColor
-                          .withAlpha(160),
+                     color:AppColors.primary
+                          .withAlpha(80),
                       borderRadius: BorderRadius.all(
                         Radius.circular(
                           AppSizes.s8,

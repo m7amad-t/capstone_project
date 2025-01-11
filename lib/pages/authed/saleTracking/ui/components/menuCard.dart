@@ -5,8 +5,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/bloc/cart_bloc_bloc.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/models/cardModel.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
 import 'package:shop_owner/shared/imageDisplayer.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
@@ -187,19 +187,6 @@ class _MenuCardState extends State<MenuCard> {
     return "\$${total.toStringAsFixed(2)}";
   }
 
-  String _getDiscount(CartBlocState state) {
-    // first find the element
-    late final CartModel? cartItem;
-    for (final element in state.cartData) {
-      if (element.product.id == widget.product.id) {
-        cartItem = element;
-      }
-    }
-
-    if (cartItem == null) return "%??";
-
-    return "${1}%";
-  }
 
   Widget _loadingCart() {
     return Container();

@@ -10,7 +10,10 @@ import 'package:shop_owner/l10n/kurdish_widget_localization_deligate.dart';
 import 'package:shop_owner/l10n/l10n.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/bloc/cart_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/returnedProductBlocs/blocForAllProducts/returned_products_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/sellingBloc/selling_bloc_bloc.dart';
 import 'package:shop_owner/pages/notAuthed/login/logic/bloc/login_bloc_bloc.dart';
 import 'package:shop_owner/router/appRouter.dart';
 import 'package:shop_owner/style/languages/logic/bloc/language_bloc_bloc.dart';
@@ -56,6 +59,15 @@ void main() async {
           ),
           BlocProvider(
             create: (_) => CartBloc(),
+          ),
+          BlocProvider(
+            create: (_) => ReturnedProductsBloc(),
+          ),
+          BlocProvider(
+            create: (_) => ReturnedProductBloc(),
+          ),
+          BlocProvider(
+            create: (_) => SellingBloc(),
           ),
         ],
         child: const App(),

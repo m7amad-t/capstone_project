@@ -11,7 +11,6 @@ class ExpensesTracking extends StatefulWidget {
 class _ExpensesTrackingState extends State<ExpensesTracking> {
   @override
   Widget build(BuildContext context) {
-     final _textStyle = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(

@@ -1,9 +1,8 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
 import 'package:shop_owner/pages/authed/home/logic/models/featureModel.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shop_owner/router/routes.dart'; 
 class FeatureCard extends StatelessWidget {
   final AppFeature feature;
   const FeatureCard({super.key, required this.feature});
