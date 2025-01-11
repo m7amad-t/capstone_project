@@ -1,6 +1,5 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartLocalService.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/models/cardModel.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
 import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
@@ -251,7 +249,7 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
             );
       }
       // build UI again..
-      event.context.read<ProductBloc>().add(LoadProducts());
+      event.context.read<ProductBloc>() .add(LoadProducts());
 
       _cartData = [];
       await _saveCart();
