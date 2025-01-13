@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/models/sellingRecordModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/sellingBloc/selling_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/components/sellingHistorycard.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
@@ -12,6 +11,7 @@ import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SaleHistoryPage extends StatefulWidget {
   const SaleHistoryPage({super.key});
@@ -27,13 +27,6 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
 
   final ValueNotifier<bool> _showScrollToTop = ValueNotifier<bool>(false);
 
-  void _scrollListener() {
-    if (_controller.offset > 550) {
-      _showScrollToTop.value = true;
-    } else {
-      _showScrollToTop.value = false;
-    }
-  }
 
   @override
   void initState() {
@@ -47,7 +40,17 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
   void dispose() {
     _controller.removeListener(_scrollListener);
     _controller.dispose();
+    _selectedRange.dispose();
     super.dispose();
+  }
+
+  
+  void _scrollListener() {
+    if (_controller.offset > 550) {
+      _showScrollToTop.value = true;
+    } else {
+      _showScrollToTop.value = false;
+    }
   }
 
   int get _calculateDuration {
@@ -59,26 +62,27 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
 
   Widget? _animateToTopButton() {
     return ValueListenableBuilder(
-        valueListenable: _showScrollToTop,
-        builder: (context, value, child) {
-          if (value) {
-            return FloatingActionButton(
-              onPressed: () {
-                _controller.animateTo(
-                  0,
-                  duration: Duration(milliseconds: _calculateDuration),
-                  curve: Curves.linear,
-                );
-              },
-              child: Icon(
-                Icons.keyboard_arrow_up_rounded,
-                size: AppSizes.s30,
-              ),
-            );
-          }
+      valueListenable: _showScrollToTop,
+      builder: (context, value, child) {
+        if (value) {
+          return FloatingActionButton(
+            onPressed: () {
+              _controller.animateTo(
+                0,
+                duration: Duration(milliseconds: _calculateDuration),
+                curve: Curves.linear,
+              );
+            },
+            child: Icon(
+              Icons.keyboard_arrow_up_rounded,
+              size: AppSizes.s30,
+            ),
+          );
+        }
 
-          return Container();
-        });
+        return Container();
+      },
+    );
   }
 
   Future<void> _onDateRangePicker() async {
@@ -117,13 +121,6 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
                 gap(height: AppSizes.s30),
                 Row(
                   children: [
-                    // const Expanded(
-                    //   flex: 1,
-                    //   child: Text(
-                    //     'Select Range',
-                    //   ),
-                    // ),
-                    // gap(width: AppPaddings.p10),
                     Expanded(
                       flex: 2,
                       child: ValueListenableBuilder(
@@ -138,7 +135,7 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
                                 borderRadius:
                                     BorderRadius.circular(AppSizes.s8),
                                 border: Border.all(color: AppColors.primary),
-                                color: value != null ? null : AppColors.primary,
+                                color: value != null ? AppColors.primary.withAlpha(100) : AppColors.primary,
                               ),
                               alignment: Alignment.center,
                               child: Text(
@@ -198,29 +195,8 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
     );
   }
 
+// todo : start from here
 
-// todo : start from here 
-
-
-  
-  // Widget _laodingCards (){
-  //   List<int> _laodingCards = Li
-  //   return ListView.builder(
-  //         shrinkWrap: true,
-  //         itemCount: records.length,
-  //         physics: const NeverScrollableScrollPhysics(),
-  //         itemBuilder: (context, index) => SellingHistoryCard(
-  //           record: records[index],
-  //         )
-  //             .paddingSymmetric(
-  //               vertical: AppSizes.s14,
-  //             )
-  //             .marginOnly(
-  //               bottom: index == records.length - 1 ? AppSizes.s200 : 0,
-  //               top: index == 0 ? AppSizes.s30 : 0,
-  //             ),
-  //       );
-  // }
 
   Widget _historySection() {
     return BlocBuilder<SellingBloc, SellingBlocState>(
@@ -229,7 +205,7 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
           return const Text('Failed to load sales records');
         }
         if (state is LoadingProductSellingRecords) {
-          return Container(); 
+          return appLoadingCards(height: AppSizes.s250,  duration: 1200);
         }
 
         List<InvoiceModel> records = [];
@@ -255,7 +231,5 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
         );
       },
     );
-
   }
-
 }

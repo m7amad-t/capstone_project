@@ -117,6 +117,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                 },
                 builder: (context, state) {
                   List<CartModel> cartItems = [...state.cartData];
+
                   if (state is LoadingCart) {
                     return const Center(
                       child: RepaintBoundary(
@@ -126,61 +127,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                   }
 
                   if (state.cartData.isEmpty) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppSizes.s10,
-                      ),
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Container(),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Image.asset(
-                              AssetPaths.emptyCart,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.symmetric(
-                                vertical: AppSizes.s10,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text(
-                                    'Your Cart is empty',
-                                    style: textStyle.displayMedium,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextButton(
-                                          onPressed: () {
-                                            GoRouter.of(context)
-                                                .go(AppRoutes.home);
-                                          },
-                                          child: const  Text(
-                                            'Add Item',
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                        ],
-                      ),
-                    );
+                    return _emptyCartCase(textStyle);
                   }
 
                   return ListView.builder(
@@ -213,12 +160,69 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
     );
   }
 
+  Widget _emptyCartCase(TextTheme textStyle) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSizes.s10,
+      ),
+      child: Column(
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(),
+          ),
+          Expanded(
+            flex: 2,
+            child: Image.asset(
+              AssetPaths.emptyCart,
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.symmetric(
+                vertical: AppSizes.s10,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    'Your Cart is empty',
+                    style: textStyle.displayMedium,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {
+                            GoRouter.of(context).go(AppRoutes.home);
+                          },
+                          child: const Text(
+                            'Add Item',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(),
+          ),
+        ],
+      ),
+    );
+  }
+
   // checkout section
   Widget _checkoutSection() {
     return BlocBuilder<CartBloc, CartBlocState>(
       builder: (context, state) {
         if (state is LoadingCart || state.cartData.isEmpty) {
-          _discount.text = ""; 
+          _discount.text = "";
 
           return Container();
         }
@@ -228,7 +232,9 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
         for (final element in state.cartData) {
           total += element.product.price * element.quantity;
         }
-
+        if (state.cartData.length <= 2) {
+          _isVisible.value = true;
+        }
 
         final textStyle = Theme.of(context).textTheme;
 
@@ -253,8 +259,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                         sigmaY: 10,
                       ),
                       child: Container(
-                        color:AppColors.primary
-                          .withAlpha(80),
+                        color: AppColors.primary.withAlpha(80),
                       ),
                     ),
                   ),
@@ -265,8 +270,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                     ),
                     decoration: BoxDecoration(
                       backgroundBlendMode: BlendMode.color,
-                      color:AppColors.primary
-                          .withAlpha(250),
+                      color: AppColors.primary.withAlpha(250),
                       borderRadius: BorderRadius.all(
                         Radius.circular(
                           AppSizes.s8,
@@ -319,7 +323,9 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: AppColors.borderBrand)
+                                        borderSide: BorderSide(
+                                          color: AppColors.borderBrand,
+                                        ),
                                       ),
                                       hintText: 'enter discount amount',
                                     ),

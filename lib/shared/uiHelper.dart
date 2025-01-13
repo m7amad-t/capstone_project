@@ -3,20 +3,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shop_owner/l10n/l10n.dart';
-import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
-import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/style/appSizes/fontSizes.dart';
-import 'package:shop_owner/style/languages/logic/bloc/language_bloc_bloc.dart';
-import 'package:shop_owner/style/theme/appColors.dart';
-import 'package:shop_owner/utils/auth/bloc/auth_bloc_bloc.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
-import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 import 'package:toastification/toastification.dart';
 
 void showLoadingDialog(BuildContext context, String text) {
@@ -127,6 +119,9 @@ Future<Uint8List?> pickImageFromGallery() async {
   // If no image is selected, return null
   return null;
 }
+
+
+
 
 
 

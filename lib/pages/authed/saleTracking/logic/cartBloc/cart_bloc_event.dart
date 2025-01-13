@@ -11,46 +11,65 @@ class LoadCart extends CartBlocEvent {
   const LoadCart();
 }
 
-class SetCostumQuantity extends CartBlocEvent{
-
-  
-
-}
+class SetCostumQuantity extends CartBlocEvent {}
 
 class AddItemToCart extends CartBlocEvent {
   final ProductModel product;
   final int? quantity;
 
-  const AddItemToCart(
-      {required this.product, this.quantity,});
+  const AddItemToCart({
+    required this.product,
+    this.quantity,
+  });
   @override
-  List<Object> get props => [product, quantity ?? 1 ,];
+  List<Object> get props => [
+        product,
+        quantity ?? 1,
+      ];
 }
 
 class RemoveFromCart extends CartBlocEvent {
   final ProductModel product;
 
-  const RemoveFromCart({required this.product,});
+  const RemoveFromCart({
+    required this.product,
+  });
 
   @override
-  List<Object> get props => [product , ];
+  List<Object> get props => [
+        product,
+      ];
 }
 
 class DecrementQuantity extends CartBlocEvent {
   final ProductModel product;
 
-  const DecrementQuantity({required this.product, });
+  const DecrementQuantity({
+    required this.product,
+  });
 
   @override
-  List<Object> get props => [product , ];
+  List<Object> get props => [
+        product,
+      ];
 }
 
 class PlaceOrder extends CartBlocEvent {
-  final BuildContext context; 
+  final BuildContext context;
   const PlaceOrder({required this.context});
 }
 
+class ProductUpdatedUpdateInCart extends CartBlocEvent {
+  final ProductModel updatedProduct;
 
+  const ProductUpdatedUpdateInCart({required this.updatedProduct});
+}
+
+class ProductListUpdatedCheckUpdates extends CartBlocEvent {
+  final List<ProductModel> products;
+
+  const ProductListUpdatedCheckUpdates({required this.products});
+}
 
 class ClearCart extends CartBlocEvent {
   const ClearCart();

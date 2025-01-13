@@ -13,8 +13,13 @@ import 'package:shop_owner/style/theme/appColors.dart';
 class SellingHistoryCard extends StatelessWidget {
   final InvoiceModel record;
   final bool isTapable;
-  const SellingHistoryCard(
-      {super.key, required this.record, this.isTapable = true});
+  final double? width;
+  const SellingHistoryCard({
+    super.key,
+    required this.record,
+    this.isTapable = true,
+    this.width,
+  });
 
   String trimedName(String name) {
     if (name.length > 15) {
@@ -42,63 +47,76 @@ class SellingHistoryCard extends StatelessWidget {
       subTotal += element.quantity * element.product.price;
     }
 
-    return Card(
-      child: Stack(
-        children: [
-          InkWell(
-            onTap: !isTapable
-                ? null
-                : () {
-                    _onTapCallback(context);
-                  },
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppPaddings.p10,
-                vertical: AppPaddings.p4,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  gap(height: AppPaddings.p20),
-                  _dataTable(textStyle),
-                  gap(height: AppPaddings.p20),
-                  _totalAndTimeSection(subTotal, textStyle),
-                  gap(height: AppSizes.s10),
-                ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          width: constraints.maxWidth,
+          child: FittedBox(
+            fit: BoxFit.fitWidth,
+            child: SizedBox(
+              width: width ?? AppSizes.s400,
+              child: Card(
+                child: Stack(
+                  children: [
+                    InkWell(
+                      onTap: !isTapable
+                          ? null
+                          : () {
+                              _onTapCallback(context);
+                            },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppPaddings.p10,
+                          vertical: AppPaddings.p4,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            gap(height: AppPaddings.p20),
+                            _dataTable(textStyle),
+                            gap(height: AppPaddings.p20),
+                            _totalAndTimeSection(subTotal, textStyle),
+                            gap(height: AppSizes.s10),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    // invoice id
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppPaddings.p10,
+                              vertical: AppPaddings.p4,
+                            ),
+                            decoration: BoxDecoration(
+                                color: AppColors.primary.withAlpha(100),
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(AppSizes.s8),
+                                  bottomRight: Radius.circular(AppSizes.s8),
+                                )),
+                            child: Text(
+                              "ID ${record.id}",
+                              style: textStyle.bodySmall!.copyWith(
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
-
-          // invoice id
-          Positioned(
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: AppPaddings.p10,
-                    vertical: AppPaddings.p4,
-                  ),
-                  decoration: BoxDecoration(
-                      color: AppColors.primary.withAlpha(100),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(AppSizes.s8),
-                        bottomRight: Radius.circular(AppSizes.s8),
-                      )),
-                  child: Text(
-                    "ID ${record.id}",
-                    style: textStyle.bodySmall!.copyWith(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 

@@ -16,7 +16,6 @@ import 'package:shop_owner/shared/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
-import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
@@ -36,7 +35,7 @@ class _SalePageState extends State<SalePage> {
     super.initState();
 
     _queryController = TextEditingController();
-    context.read<ProductBloc>().add(ReloadProduct());
+    context.read<ProductBloc>().add(ReloadProduct(context: context));
     context.read<CartBloc>().add(const LoadCart());
   }
 
@@ -59,7 +58,10 @@ class _SalePageState extends State<SalePage> {
   Widget build(BuildContext context) {
     final TextTheme _textStyle = Theme.of(context).textTheme;
     return BlocConsumer<ProductBloc, ProductBlocState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        print('state wa.....'); 
+        print('its from bloc listener in sale page'); 
+      },
       builder: (context, state) {
         if (state is LoadingProducts) {
           return const Scaffold(
@@ -80,7 +82,9 @@ class _SalePageState extends State<SalePage> {
             onTap: () => FocusScope.of(context).unfocus(),
             child: RefreshIndicator(
               onRefresh: () async {
-                context.read<ProductBloc>().add(ReloadProduct());
+                context
+                    .read<ProductBloc>()
+                    .add(ReloadProduct(context: context));
                 _queryController.text = "";
               },
               child: gotProductsAndHaveCategory
@@ -193,7 +197,7 @@ class _SalePageState extends State<SalePage> {
                       _showOrderOptions = !_showOrderOptions;
                     });
                   },
-                  child: filterIcon(), 
+                  child: filterIcon(),
                 ),
               ),
             ],

@@ -1,13 +1,14 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print
+// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_print, use_build_context_synchronously
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/service/productServices.dart';
-import 'package:shop_owner/shared/appDialogs.dart';
-import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 part 'product_bloc_event.dart';
@@ -129,7 +130,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
       ));
     }
 
-    Future<void> _onReloadProducts(event, emit) async {
+    Future<void> _onReloadProducts(ReloadProduct event, emit) async {
       _lastOrderBy = null;
       _lastSelectedCategory = null;
       _lastQuery = "";
@@ -153,6 +154,12 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
       _products = products;
 
+      // notify cart bloc with updated product list 
+      event.context.read<CartBloc>().add(
+            ProductListUpdatedCheckUpdates(
+              products: products,
+            ),
+          );
       emit(GotProducts(
         categories: _categories,
         products: _products,
@@ -233,10 +240,6 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
     Future<void> _onUpdate(UpdateProduct event, emit) async {
       try {
-
-        
-
-
         List<ProductCategoryModel> categories = List.from(_categories);
         List<ProductModel> products = List.from(_products);
 
@@ -285,8 +288,15 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           filteredProducts = _queryByName(filteredProducts);
         }
 
+        if (!event.fromCart) {
+          // send event to the cart bloc to update this product if its in cart..
+          event.context.read<CartBloc>().add(
+                ProductUpdatedUpdateInCart(
+                  updatedProduct: products[productIndex],
+                ),
+              );
+        }
 
-        
         // Emit new state with updated data
         return emit(GotProducts(
           orderby: _lastOrderBy ?? ORDER_PRODUCT_BY.DEFAULT,
@@ -294,8 +304,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
           products: filteredProducts,
           categories: categories,
           lastQuery: _lastQuery,
-
-          // updatedProduct: products[productIndex],
+          updatedProduct: products[productIndex],
         ));
       } catch (e) {
         FailedToLoad();
@@ -455,30 +464,34 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
       }
     }
 
-    Future<void> _onReturnProduct(ReturnProduct event, emit) async {
+    Future<void> _onReturnProduct(ReturnProductToInventory event, emit) async {
       try {
-        // find the product in the category list List<ProductcategoryModel>  
+        // find the product in the category list List<ProductcategoryModel>
         for (int i = 0; i < _categories.length; i++) {
           // get the product in the caegory products list
-          int index = _categories[i].items.indexWhere((element) => element.id == event.product.id);
+          int index = _categories[i]
+              .items
+              .indexWhere((element) => element.id == event.product.id);
 
-          if (index >=0) {
+          if (index >= 0) {
             final data = {
-              'quantity' : event.product.quantity + event.quantity, 
-            }; 
+              'quantity': _categories[i].items[index].quantity + event.quantity,
+            };
             // update item stok
-            _categories[i].items[index] = _categories[i].items[index].update(data);
+            _categories[i].items[index] =
+                _categories[i].items[index].update(data);
             // update the category
             _categories[i] = _categories[i].updateItems(_categories[i].items);
           }
         }
 
         // find it in product list..
-        int index = _products.indexWhere((element) => element.id == event.product.id);
-        if (index >=0) {
+        int index =
+            _products.indexWhere((element) => element.id == event.product.id);
+        if (index >= 0) {
           final data = {
-            'quantity' : event.product.quantity + event.quantity, 
-          }; 
+            'quantity': _products[index].quantity + event.quantity,
+          };
           // update item stok
           _products[index] = _products[index].update(data);
         }
@@ -503,8 +516,6 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
         FailedToLoad();
       }
     }
-
-
     // event listeners
     on<LoadProducts>(_onLoadProducts);
 
@@ -520,6 +531,8 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
     on<UpdateProduct>(_onUpdate);
 
+    // on<UpdateProduct>(_onUpdate);
+
     on<InsertProduct>(_onInsert);
 
     on<InsertCategory>(_onInsertCategory);
@@ -528,7 +541,6 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
 
     on<DeleteCategory>(_onDeleteCategory);
 
-    on<ReturnProduct>(_onReturnProduct);
-
+    on<ReturnProductToInventory>(_onReturnProduct);
   }
 }

@@ -17,7 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppRoutes.login: context.translate.login,
       AppRoutes.productManagement: context.translate.product_management,
       AppRoutes.saleAnalytics: context.translate.sale_analytics,
-      AppRoutes.saleTracking: context.translate.sale,
+      // AppRoutes.saleTracking: context.translate.sale,
       AppRoutes.cart: "Cart",
       AppRoutes.expensesTracking: context.translate.expenses_tracking,
       AppRoutes.product: context.translate.product,
@@ -51,7 +51,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppRoutes.productManagement,
       AppRoutes.cart,
       AppRoutes.saleAnalytics,
-      AppRoutes.saleTracking,
+      // AppRoutes.saleTracking,
       AppRoutes.expensesTracking
     ];
     if (primaryRoutes.contains(location)) {
@@ -59,6 +59,38 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     return true;
+  }
+
+  Widget _historyB(String path){
+
+    return Builder(
+      builder: (context) {
+        return IconButton(onPressed: (){
+          GoRouter.of(context).push(path); 
+        }, icon: Icon(Icons.history , color:  AppColors.onPrimary , size : AppSizes.s35,),);
+      }
+    );
+
+  }
+
+  Widget? _historyButton(String location) {
+    final List<Map<String, String>> histories = [
+      // buy product page ..
+      {
+        'location' : AppRoutes.buyProducts,
+         'path' :    AppRoutes.boughtedProducts,
+      }
+    ];
+
+
+    for(int i  = 0 ; i < histories.length ; i++){
+
+      if(location.endsWith(histories[i]['location']!)){
+        return _historyB(histories[i]['path']!); 
+      }
+
+    }
+
   }
 
   bool _showTotalInCart(String location) {
@@ -83,7 +115,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return false;
   }
 
- 
   @override
   Widget build(BuildContext context) {
     final String location = GoRouterState.of(context).uri.toString();
@@ -102,20 +133,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onPressed: () => context.pop(),
             )
-          : showHOSRB ? IconButton(
-              icon: Icon(
-                Icons.history_rounded,
-                color: AppColors.onPrimary,
-                size: AppSizes.s30,
-              ),
-              onPressed: () =>GoRouter.of(context).push("${AppRoutes.home}/${AppRoutes.saleHistory}", ) , 
-            ):   null,
+          : showHOSRB
+              ? IconButton(
+                  icon: Icon(
+                    Icons.history_rounded,
+                    color: AppColors.onPrimary,
+                    size: AppSizes.s30,
+                  ),
+                  onPressed: () => GoRouter.of(context).push(
+                    "${AppRoutes.home}/${AppRoutes.saleHistory}",
+                  ),
+                )
+              : null,
+      // actions: [
+
+      //   _historyButton(location) ?? const SizedBox()
+      // ],
+      
       title: Text(
         _title(context, location),
       ),
       centerTitle: true,
-
-   );
+    );
   }
 
   @override

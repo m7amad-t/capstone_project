@@ -1,5 +1,6 @@
 const String productCategoryExample = """
-{"categories" : [
+{
+"categories" : [
     {
       "name": "Electronics",
       "items": [

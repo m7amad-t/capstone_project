@@ -20,7 +20,7 @@ final class GotCart extends CartBlocState {
   const GotCart({ this.updatedItem,required this.isAllUpdated, required super.cartData , }); 
 
   @override
-  List<Object> get props => [cartData , isAllUpdated,];
+  List<Object> get props => [cartData , isAllUpdated,isAllUpdated];
 }
 
 

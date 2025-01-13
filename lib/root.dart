@@ -1,6 +1,6 @@
-
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -28,11 +28,15 @@ class _RootPageState extends State<RootPage> {
   void initState() {
     super.initState();
     setupAppDialogs(context);
-    setupAppDynamicSizes(context); 
+    setupAppDynamicSizes(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    // lock rotation to portrait
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: const CustomAppBar(),
@@ -41,82 +45,76 @@ class _RootPageState extends State<RootPage> {
         widget.child,
       ]),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).textTheme.bodyLarge!.color!, 
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+              color: Theme.of(context).textTheme.bodyLarge!.color!,
               blurRadius: 0.5,
               spreadRadius: 0.5
               // offset: Offset(0, 1),
-            ),
-          ]
-        ),
+              ),
+        ]),
         child: SalomonBottomBar(
-          itemShape:ContinuousRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSizes.s8), 
-          ), 
+          itemShape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSizes.s8),
+          ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           currentIndex: widget.child.currentIndex,
           selectedColorOpacity: 0.0,
-          
           onTap: (index) {
             widget.child.goBranch(index);
           },
           items: [
             /// Home
             SalomonBottomBarItem(
-        
               icon: const Icon(Icons.sell_outlined),
               title: Text(context.translate.sale),
               selectedColor: AppColors.primary,
-              activeIcon: const Icon(Icons.sell_rounded), 
+              activeIcon: const Icon(Icons.sell_rounded),
             ),
-        
+
             ///
             SalomonBottomBarItem(
               icon: const Icon(
                 Icons.inventory_2_outlined,
               ),
               title: Text(context.translate.product),
-        
               selectedColor: AppColors.primary,
-              activeIcon:     const Icon(
+              activeIcon: const Icon(
                 Icons.inventory_2_rounded,
               ),
             ),
-        
+
             /// cart
             SalomonBottomBarItem(
-              icon: BlocBuilder<CartBloc, CartBlocState>(
-                builder: (context, state) {
-                  bool show = false; 
-                  if(state is GotCart){
-                    show = state.cartData.isNotEmpty; 
-                  }
-                  if(state is CartItemUpdated){
-                    show = state.cartData.isNotEmpty; 
-                  }
-        
-                  return badges.Badge(
-                    showBadge: show,
-                    child: const Icon(
-                      Icons.shopping_cart_outlined,
-                    ),
-                  );
-                },
-              ),
-              title: const Text("Cart"),
-              selectedColor: AppColors.primary,
-              activeIcon: const Icon(Icons.shopping_cart_rounded)
-            ),
-        
+                icon: BlocBuilder<CartBloc, CartBlocState>(
+                  builder: (context, state) {
+                    bool show = false;
+                    if (state is GotCart) {
+                      show = state.cartData.isNotEmpty;
+                    }
+                    if (state is CartItemUpdated) {
+                      show = state.cartData.isNotEmpty;
+                    }
+
+                    return badges.Badge(
+                      showBadge: show,
+                      child: const Icon(
+                        Icons.shopping_cart_outlined,
+                      ),
+                    );
+                  },
+                ),
+                title: const Text("Cart"),
+                selectedColor: AppColors.primary,
+                activeIcon: const Icon(Icons.shopping_cart_rounded)),
+
             // analytics
             SalomonBottomBarItem(
               icon: const Icon(Icons.analytics_outlined),
               title: const Text("Analytics"),
               selectedColor: AppColors.primary,
             ),
-            
+
             // expenses
             SalomonBottomBarItem(
               icon: const Icon(Icons.receipt_outlined),

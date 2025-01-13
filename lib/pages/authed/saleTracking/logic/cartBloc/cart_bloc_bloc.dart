@@ -66,8 +66,11 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
         // update quantity to the incomming quantity
         if (quantity > product.quantity) {
           showSnackBar(
-              message: WarningSnackBar(
-                  title: "out of stok", message: "out of stok"));
+            message: WarningSnackBar(
+              title: "out of stok",
+              message: "out of stok",
+            ),
+          );
           return emit(
             CartItemUpdated(
               updatedItem: product,
@@ -83,8 +86,12 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
               // add updaetd item to the cart
               _cartData.add(temp.copyWith({'quantity': quantity}));
               _saveCart();
-              return emit(CartItemUpdated(
-                  updatedItem: product, cartData: [..._cartData]));
+              return emit(
+                CartItemUpdated(
+                  updatedItem: product,
+                  cartData: [..._cartData],
+                ),
+              );
             }
           }
         }
@@ -94,8 +101,11 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
       if (product.quantity <= 0) {
         // show a snackbar
         showSnackBar(
-            message: WarningSnackBar(
-                title: "out of stock", message: "out of stock"));
+          message: WarningSnackBar(
+            title: "out of stock",
+            message: "out of stock",
+          ),
+        );
         return;
       }
 
@@ -105,10 +115,11 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
           if (_cartData[i].quantity >= product.quantity) {
             // show a snackbar
             showSnackBar(
-                message: WarningSnackBar(
-                    title: "Out of stock ",
-                    message:
-                        "this product have only ${product.quantity} in stock"));
+              message: WarningSnackBar(
+                title: "Out of stock ",
+                message: "this product have only ${product.quantity} in stock",
+              ),
+            );
             // already at max quantity, do nothing
             return;
           }
@@ -211,13 +222,13 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
     Future<void> _onPlaceOrder(PlaceOrder event, emit) async {
       // semulate the real world example
 
-      // display loading screen 
-      locator<AppDialogs>().showCostumTextLoading('Initiating the transaction..'); 
-      
+      // display loading screen
+      locator<AppDialogs>().showCostumTextLoading(
+        'Initiating the transaction..',
+      );
+
       // simulate network delay
       await Future.delayed(const Duration(seconds: 2));
-
-
 
       // check if cart is empty
       if (_cartData.isEmpty) {
@@ -228,8 +239,8 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
             message: "Add some items to cart",
           ),
         );
-        
-      locator<AppDialogs>().disposeAnyActiveDialogs();
+
+        locator<AppDialogs>().disposeAnyActiveDialogs();
         return;
       }
 
@@ -242,6 +253,7 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
         event.context.read<ProductBloc>().add(
               UpdateProduct(
                 product: item.product,
+                context: event.context,
                 toUpdate: {
                   'quantity': newStok,
                 },
@@ -249,7 +261,7 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
             );
       }
       // build UI again..
-      event.context.read<ProductBloc>() .add(LoadProducts());
+      event.context.read<ProductBloc>().add(LoadProducts());
 
       _cartData = [];
       await _saveCart();
@@ -262,12 +274,9 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
         ),
       );
 
-
       locator<AppDialogs>().disposeAnyActiveDialogs();
 
-      GoRouter.of(event.context).go(AppRoutes.cart); 
-      // GoRouter.of(event.context).go(AppRoutes.home); 
- 
+      GoRouter.of(event.context).go(AppRoutes.cart);
 
       return emit(
         GotCart(
@@ -275,6 +284,64 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
           isAllUpdated: true,
         ),
       );
+    }
+
+    Future<void> _onProductUpdatedUpdateHere(
+      ProductUpdatedUpdateInCart event,
+      emit,
+    ) async {
+      final ProductModel product = event.updatedProduct;
+
+      // find the product :
+      for (int i = 0; i < _cartData.length; i++) {
+        if (_cartData[i].product.id == product.id) {
+          _cartData[i] = CartModel(
+            product: product,
+            quantity: _cartData[i].quantity,
+          );
+        }
+      }
+      await _saveCart();
+
+      return emit(GotCart(
+        cartData: [..._cartData],
+        updatedItem: product,
+        isAllUpdated: false,
+      ));
+    }
+
+    Future<void> _onNewProductList(
+      ProductListUpdatedCheckUpdates event,
+      emit,
+    ) async {
+      bool anyUpdated = false;
+      // check if any updates have been happened to thoses products that in cart
+      for (int i = 0; i < event.products.length; i++) {
+        final product = event.products[i];
+        for (int j = 0; j < _cartData.length; j++) {
+          final cart = _cartData[j];
+          if (cart.product.id == product.id) {
+            // chekc if the current cart quantity is not out of product stok
+            int currentQuantity = cart.quantity;
+
+            // if current cart quantity is more then the product stok ,update cart quantity to product stok
+            if (currentQuantity > product.quantity) {
+              currentQuantity = product.quantity;
+            }
+            anyUpdated = true;
+            // update the cart.product model with new one , and checked quantity
+            _cartData[j] =
+                CartModel(product: product, quantity: currentQuantity);
+          }
+        }
+      }
+
+      await _saveCart();
+
+      return emit(GotCart(
+        cartData: [..._cartData],
+        isAllUpdated: anyUpdated,
+      ));
     }
 
     // laod cart event listener
@@ -294,5 +361,11 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
 
     // onPlace Order event listener
     on<PlaceOrder>(_onPlaceOrder);
+
+    // on product update event listener
+    on<ProductUpdatedUpdateInCart>(_onProductUpdatedUpdateHere);
+
+    // on product list updates event listener
+    on<ProductListUpdatedCheckUpdates>(_onNewProductList);
   }
 }

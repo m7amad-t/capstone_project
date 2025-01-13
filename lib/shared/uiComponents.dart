@@ -4,6 +4,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/shared/appDialogs.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
@@ -476,6 +478,7 @@ Widget productCardMainSection({
       );
     },
   );
+
 }
 
 Future<DateTimeRange?> showAppDateTimeRangePicker(
@@ -512,3 +515,55 @@ Future<DateTimeRange?> showAppDateTimeRangePicker(
     return null;
   }
 }
+
+Future<DateTime?> showAppDateTimePicker(
+  BuildContext context,
+  DateTime? current,
+) async {
+
+  final res = await showCalendarDatePicker2Dialog(
+    context: context,
+    config: CalendarDatePicker2WithActionButtonsConfig(
+      firstDate: DateTime.now(),
+      
+      calendarType: CalendarDatePicker2Type.single,
+    ),
+    value: [current],
+    dialogSize: Size(
+      locator<DynamicSizes>().p90,
+      AppSizes.s400,
+    ),
+  );
+
+  if(res == null || res.isEmpty){
+    return null; 
+  }
+  return res[0]; 
+}
+
+
+  Widget appLoadingCards({required double height , int duration = 1500}) {
+    List<int> _laodingCards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: _laodingCards.length,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) => Shimmer.fromColors(
+        baseColor: Theme.of(context).cardColor.withAlpha(250),
+        highlightColor:
+            Theme.of(context).textTheme.bodyLarge!.color!.withAlpha(20),
+        loop: 10,
+        period: Duration(milliseconds: duration),
+        child: SizedBox(
+          height: height,
+          child: const Card(),
+        ),
+      )
+          .paddingSymmetric(
+            vertical: AppPaddings.p10,
+          )
+          .marginOnly(
+            top: index == 0 ? AppSizes.s30 : 0,
+          ),
+    );
+  }

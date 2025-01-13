@@ -24,7 +24,7 @@ class ProductSellRecordModel extends Equatable{
   factory ProductSellRecordModel.fromJson(Map<String, dynamic> data) {
     return ProductSellRecordModel(
       id: data['id'],
-      product: ProductModel.fromJsonForReturnedRecords(data['product']),
+      product: ProductModel.fromJsonBasicData(data['product']),
       quantity: data['quantity'],
       productId: data['productID'],
       price: data['price'],

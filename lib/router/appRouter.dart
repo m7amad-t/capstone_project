@@ -2,11 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/cart/ui/cartPage.dart';
 import 'package:shop_owner/pages/authed/cart/ui/checkoutPage.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/catrgoryPages/CategoriesPage.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/productPages/ProductsPage.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/catrgoryPages/categoryEditorPage.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/productPages/productDetailPage.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/productPages/productEditorPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/pages/boughtedProduct.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/pages/buyingFormPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/pages/buyingPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/catrgoryPages/CategoriesPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/components/productListPresenter.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/catrgoryPages/categoryEditorPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/productPages/ProductPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/productPages/productDetailPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/productPages/productEditorPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/productReturnPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/productManagementPage.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/returnProductFromInvoicePage.dart';
@@ -246,7 +252,9 @@ class AppRouter {
                         path: AppRoutes.product,
                         pageBuilder: (context, state) => NoTransitionPage(
                           key: state.pageKey,
-                          child: ProductsPage(key: state.pageKey),
+                          child: ProductPage(
+                            key: state.pageKey,
+                          ),
                         ),
                         routes: [
                           // add product
@@ -344,8 +352,11 @@ class AppRouter {
                       GoRoute(
                         path: AppRoutes.returnProduct,
                         pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: ProductReturnPage(
                             key: state.pageKey,
-                            child: const ProductsPage(isReturnPage: true)),
+                          ),
+                        ),
                         routes: [
                           // add add category
                           GoRoute(
@@ -358,6 +369,41 @@ class AppRouter {
                                   key: state.pageKey,
                                   category: null,
                                   categories: data['product'],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+
+                      // add add category
+                      GoRoute(
+                        path: AppRoutes.boughtedProducts,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: const Boughtedproducts(),
+                        ),
+                      ),
+                      // buy products
+                      GoRoute(
+                        path: AppRoutes.buyProducts,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: BuyingPage(
+                            key: state.pageKey,
+                          ),
+                        ),
+                        routes: [
+                          // add add category
+                          GoRoute(
+                            path: AppRoutes.buyProductsFrom,
+                            pageBuilder: (context, state) {
+                              final data = state.extra as Map<String, dynamic>;
+                              return NoTransitionPage(
+                                key: state.pageKey,
+                                child: BuyingProductFormPage(
+                                  key: state.pageKey,
+                                  product: data['product'],
                                 ),
                               );
                             },

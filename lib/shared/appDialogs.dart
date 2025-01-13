@@ -521,94 +521,95 @@ class AppDialogs extends AppDialogsBase {
     anyDialogVisible = false;
   }
 
-  Future<void> showCheckout({
-    bool isDismissable = true,
-  }) async {
-    anyDialogVisible = true;
-    await showDialog(
-      barrierDismissible: isDismissable,
-      context: super.context,
-      builder: (context) {
-        final _textStyle = Theme.of(context).textTheme;
-        final state = context.read<CartBloc>().state;
-        List<CartModel> rows = state.cartData;
-        return _showDialog(
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    columns: [
-                      DataColumn(
-                        label: Text(
-                          'ID',
-                          style: _textStyle.bodyMedium,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Name',
-                          style: _textStyle.bodyMedium,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Quantity',
-                          style: _textStyle.bodyMedium,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Price',
-                          style: _textStyle.bodyMedium,
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Total',
-                          style: _textStyle.bodyMedium,
-                        ),
-                      ),
-                    ],
-                    rows: [
-                      for (final row in rows)
-                        DataRow(
-                          cells: [
-                            _cellData(
-                              row.product.id.toString(),
-                              _textStyle,
-                            ),
-                            _cellData(
-                              row.product.name,
-                              _textStyle,
-                            ),
-                            _cellData(
-                              row.quantity.toString(),
-                              _textStyle,
-                            ),
-                            _cellData(
-                              row.product.price.toString(),
-                              _textStyle,
-                            ),
-                            _cellData(
-                              (row.product.price * row.quantity).toString(),
-                              _textStyle,
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-    anyDialogVisible = false;
-  }
+  // Future<bool> showCheckout({
+  //   bool isDismissable = true,
+    
+  // }) async {
+  //   anyDialogVisible = true;
+  //   await showDialog(
+  //     barrierDismissible: isDismissable,
+  //     context: super.context,
+  //     builder: (context) {
+  //       final _textStyle = Theme.of(context).textTheme;
+  //       final state = context.read<CartBloc>().state;
+  //       List<CartModel> rows = state.cartData;
+  //       return _showDialog(
+  //         SingleChildScrollView(
+  //           scrollDirection: Axis.vertical,
+  //           child: Column(
+  //             children: [
+  //               SingleChildScrollView(
+  //                 scrollDirection: Axis.horizontal,
+  //                 child: DataTable(
+  //                   columns: [
+  //                     DataColumn(
+  //                       label: Text(
+  //                         'ID',
+  //                         style: _textStyle.bodyMedium,
+  //                       ),
+  //                     ),
+  //                     DataColumn(
+  //                       label: Text(
+  //                         'Name',
+  //                         style: _textStyle.bodyMedium,
+  //                       ),
+  //                     ),
+  //                     DataColumn(
+  //                       label: Text(
+  //                         'Quantity',
+  //                         style: _textStyle.bodyMedium,
+  //                       ),
+  //                     ),
+  //                     DataColumn(
+  //                       label: Text(
+  //                         'Price',
+  //                         style: _textStyle.bodyMedium,
+  //                       ),
+  //                     ),
+  //                     DataColumn(
+  //                       label: Text(
+  //                         'Total',
+  //                         style: _textStyle.bodyMedium,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                   rows: [
+  //                     for (final row in rows)
+  //                       DataRow(
+  //                         cells: [
+  //                           _cellData(
+  //                             row.product.id.toString(),
+  //                             _textStyle,
+  //                           ),
+  //                           _cellData(
+  //                             row.product.name,
+  //                             _textStyle,
+  //                           ),
+  //                           _cellData(
+  //                             row.quantity.toString(),
+  //                             _textStyle,
+  //                           ),
+  //                           _cellData(
+  //                             row.product.price.toString(),
+  //                             _textStyle,
+  //                           ),
+  //                           _cellData(
+  //                             (row.product.price * row.quantity).toString(),
+  //                             _textStyle,
+  //                           ),
+  //                         ],
+  //                       ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  //   anyDialogVisible = false;
+  // }
 
   DataCell _cellData(String text, TextTheme _textStyle) {
     return DataCell(

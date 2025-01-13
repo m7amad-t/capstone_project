@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
@@ -12,7 +11,6 @@ class SaleTrackingPage extends StatefulWidget {
 class _SaleTrackingPageState extends State<SaleTrackingPage> {
   @override
   Widget build(BuildContext context) {
-    final _textStyle = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(

@@ -19,7 +19,6 @@ enum ORDER_PRODUCT_BY {
   QUANTITY_DESC,
 }
 
-
 extension ProductEnumExtension on ORDER_PRODUCT_BY {
   String name(BuildContext context) {
     switch (this) {
@@ -41,10 +40,12 @@ extension ProductEnumExtension on ORDER_PRODUCT_BY {
   }
 }
 
-
 class LoadProducts extends ProductBlocEvent {}
 
-class ReloadProduct extends ProductBlocEvent {}
+class ReloadProduct extends ProductBlocEvent {
+  final BuildContext context ; 
+  const ReloadProduct({required this.context});
+}
 
 class OrderBy extends ProductBlocEvent {
   final ORDER_PRODUCT_BY order;
@@ -77,8 +78,14 @@ class SearchProductByName extends ProductBlocEvent {
 class UpdateProduct extends ProductBlocEvent {
   final ProductModel product;
   final Map<String, dynamic> toUpdate;
-
-  const UpdateProduct({required this.product, required this.toUpdate});
+  final BuildContext context;
+  final bool fromCart ; 
+  const UpdateProduct({
+    required this.product,
+    required this.toUpdate,
+    required this.context,
+    this.fromCart = false, 
+  });
 
   @override
   List<Object> get props => [product, toUpdate];
@@ -131,14 +138,14 @@ class DeleteCategory extends ProductBlocEvent {
   List<Object> get props => [category];
 }
 
-class ReturnProduct extends ProductBlocEvent {
+class ReturnProductToInventory extends ProductBlocEvent {
   final ProductModel product;
-  final int quantity; 
+  final int quantity;
 
-  const ReturnProduct({
+  const ReturnProductToInventory({
     required this.product,
     required this.quantity,
   });
   @override
-  List<Object> get props => [product,quantity];
+  List<Object> get props => [product, quantity];
 }

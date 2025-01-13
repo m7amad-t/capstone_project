@@ -29,7 +29,7 @@ class ProductModel extends Equatable {
   }
 
   // from json
-  factory ProductModel.fromJsonForReturnedRecords(Map<String, dynamic> json) {
+  factory ProductModel.fromJsonBasicData(Map<String, dynamic> json) {
 
     return ProductModel(
       id: json['id'],

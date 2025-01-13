@@ -93,7 +93,7 @@ class ProductFilterSection extends StatelessWidget {
                   margin: EdgeInsets.only(
                     
                     left: !context.fromLTR ? AppSizes.s10 : 0 ,
-                    right: context.fromLTR ? AppSizes.s10 : 0 ,
+                    right: !context.fromLTR ? AppSizes.s10 : 0 ,
                   ),
                   child: TextButton(
                     style: ButtonStyle(

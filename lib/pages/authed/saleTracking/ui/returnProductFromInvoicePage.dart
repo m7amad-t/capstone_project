@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
-import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
-import 'package:shop_owner/pages/authed/productManagement/logic/models/productReturnsModel.dart';
-import 'package:shop_owner/pages/authed/productManagement/logic/returnedProductBlocs/shared/enum.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/models/productReturnedModel.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/shared/enum.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/productSellModel.dart';
 import 'package:shop_owner/shared/uiComponents.dart';
@@ -27,19 +28,23 @@ class _ReturnParoductFromInvoicePageState
     extends State<ReturnParoductFromInvoicePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final ValueNotifier<RETURN_PRODUCT_REASON> _returnReason =
-      ValueNotifier(RETURN_PRODUCT_REASON.CUSTOM_REASON);
+  final ValueNotifier<RETURN_PRODUCT_REASON?> _returnReason =
+      ValueNotifier(null);
 
   final ValueNotifier<ProductSellModel?> _slectedProduct = ValueNotifier(null);
 
   late final TextEditingController _quantityController;
   late final TextEditingController _noteController;
+  late final TextEditingController _refundController;
+
+  ValueNotifier<bool?> _returnTOInventory = ValueNotifier(null);
 
   @override
   void initState() {
     super.initState();
     _quantityController = TextEditingController();
     _noteController = TextEditingController();
+    _refundController = TextEditingController();
     _quantityController.addListener(_quantityControllerListener);
   }
 
@@ -50,6 +55,7 @@ class _ReturnParoductFromInvoicePageState
     _noteController.dispose();
     _slectedProduct.dispose();
     _returnReason.dispose();
+    _returnTOInventory.dispose();
 
     super.dispose();
   }
@@ -84,7 +90,6 @@ class _ReturnParoductFromInvoicePageState
       _quantityController.text = '$productQuantity';
       return;
     }
-   
   }
 
   double get _subTotal {
@@ -95,13 +100,28 @@ class _ReturnParoductFromInvoicePageState
     return sub;
   }
 
-  void _onReturnProductButton (){
+  void _onReturnProductButton() {
+    if (_formKey.currentState!.validate()) {
+      // create return model
+      final ProductReturnedModel model = ProductReturnedModel(
+        id: -1,
+        product: _slectedProduct.value!.product,
+        refund: double.parse(_refundController.text),
+        returnedQuantity: int.parse(_quantityController.text),
+        date: DateTime.now(),
+        reason: _returnReason.value!,
+        note: _noteController.text,
+        backToInventory: _returnTOInventory.value!,
+        invoice: widget.invoice,
+      );
 
-    if(_formKey.currentState!.validate()){
-      // create return model 
-      final ProductReturnModel  ss; 
+      context.read<ReturnedProductBloc>().add(
+            ReturnProduct(
+              product: model,
+              context: context,
+            ),
+          );
     }
-
   }
 
   @override
@@ -173,8 +193,11 @@ class _ReturnParoductFromInvoicePageState
                   key: _formKey,
                   child: Column(
                     children: [
+                    
                       // selection of the returned product section
                       _productSelectorSection(),
+                      gap(height: AppSizes.s4),
+
                       // total for the selected and sold quantity section
                       ValueListenableBuilder(
                         valueListenable: _slectedProduct,
@@ -203,10 +226,17 @@ class _ReturnParoductFromInvoicePageState
                           );
                         },
                       ),
+                      
                       gap(height: AppSizes.s10),
                       // reason of return section
                       _resonSelectorSection(),
+                      
                       gap(height: AppSizes.s20),
+                      
+                      _returnBackToSection(),
+                      
+                      gap(height: AppSizes.s20),
+                      
                       // quantity section of the return quantity section
                       ValueListenableBuilder(
                         valueListenable: _slectedProduct,
@@ -217,11 +247,22 @@ class _ReturnParoductFromInvoicePageState
                           );
                         },
                       ),
+
                       gap(height: AppSizes.s30),
 
                       // refund text field
-                      TextField(
-                        controller: _noteController,
+                      TextFormField(
+                        controller: _refundController,
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Refund amount is required';
+                          }
+                          if (double.tryParse(value) == null) {
+                            return 'Please enter valid refund';
+                          }
+
+                          return null;
+                        },
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           AppInputFormatter.price,
@@ -246,11 +287,12 @@ class _ReturnParoductFromInvoicePageState
                 ),
 
                 gap(height: AppSizes.s30),
+
                 Row(
                   children: [
                     Expanded(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: _onReturnProductButton,
                         child: const Text(
                           'Return Product',
                         ),
@@ -302,7 +344,7 @@ class _ReturnParoductFromInvoicePageState
       constraints: BoxConstraints(
         maxWidth: locator<DynamicSizes>().p100,
       ),
-      child: ValueListenableBuilder(
+      child: ValueListenableBuilder<RETURN_PRODUCT_REASON?>(
         valueListenable: _returnReason,
         builder: (context, value, child) {
           final TextTheme textStyle = Theme.of(context).textTheme;
@@ -310,31 +352,44 @@ class _ReturnParoductFromInvoicePageState
           return Row(
             children: [
               Expanded(
-                child: Container(
-                  margin: EdgeInsets.symmetric(
-                    vertical: AppSizes.s6,
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: AppSizes.s8),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    border: Border.all(color: AppColors.primary),
-                    borderRadius: BorderRadius.circular(AppSizes.s8),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<RETURN_PRODUCT_REASON>(
-                      value: _returnReason.value,
-                      items: [
-                        for (final reason in RETURN_REASON_LIST)
-                          DropdownMenuItem(
-                            value: reason,
-                            child: Text(
-                              reason.name,
-                              style: textStyle.bodyMedium,
-                            ),
-                          ),
-                      ],
-                      onChanged: _onChangeForReturnReason,
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButtonFormField<RETURN_PRODUCT_REASON?>(
+                    hint: Text(
+                      'Select a Reason',
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppSizes.s8),
+                        borderSide: BorderSide(
+                          color: AppColors.primary,
+                          width: AppSizes.s1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(AppSizes.s8),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                          )),
+                    ),
+                    value: _returnReason.value,
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please Select a reason';
+                      }
+                      return null;
+                    },
+                    items: [
+                      for (final reason in RETURN_REASON_LIST)
+                        DropdownMenuItem(
+                          value: reason,
+                          child: Text(
+                            reason.name,
+                            style: textStyle.bodyMedium,
+                          ),
+                        ),
+                    ],
+                    onChanged: _onChangeForReturnReason,
                   ),
                 ),
               ),
@@ -354,47 +409,116 @@ class _ReturnParoductFromInvoicePageState
         valueListenable: _slectedProduct,
         builder: (context, value, child) {
           final TextTheme textStyle = Theme.of(context).textTheme;
+
           return Row(
             children: [
               Expanded(
-                child: Container(
-                  margin: EdgeInsets.symmetric(
-                    vertical: AppSizes.s6,
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: AppSizes.s8),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    border: Border.all(color: AppColors.primary),
-                    borderRadius: BorderRadius.circular(AppSizes.s8),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButtonFormField<ProductSellModel?>(
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select a product';
-                        }
-                        return null;
-                      },
-                      value: _slectedProduct.value,
-                      items: [
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButtonFormField<ProductSellModel?>(
+                    hint: Text(
+                      'Select a Product',
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppSizes.s8),
+                        borderSide: BorderSide(
+                          color: AppColors.primary,
+                          width: AppSizes.s1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(AppSizes.s8),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                          )),
+                    ),
+                    value: _slectedProduct.value,
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Select a Product';
+                      }
+                      return null;
+                    },
+                    items: [
+                      for (final product in widget.invoice.products)
                         DropdownMenuItem(
-                          value: null,
+                          value: product,
                           child: Text(
-                            "Select A Product",
+                            product.product.name,
                             style: textStyle.bodyMedium,
                           ),
                         ),
-                        for (final product in widget.invoice.products)
-                          DropdownMenuItem(
-                            value: product,
-                            child: Text(
-                              product.product.name,
-                              style: textStyle.bodyMedium,
-                            ),
-                          ),
-                      ],
-                      onChanged: _onSelectProductChange,
+                    ],
+                    onChanged: _onSelectProductChange,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _returnBackToSection() {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: locator<DynamicSizes>().p100,
+      ),
+      child: ValueListenableBuilder(
+        valueListenable: _returnTOInventory,
+        builder: (context, value, child) {
+          final TextTheme textStyle = Theme.of(context).textTheme;
+          return Row(
+            children: [
+              Expanded(
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButtonFormField<bool?>(
+                    hint: Text(
+                      'Select Product return place',
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppSizes.s8),
+                        borderSide: BorderSide(
+                          color: AppColors.primary,
+                          width: AppSizes.s1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(AppSizes.s8),
+                          borderSide: const BorderSide(
+                            color: AppColors.primary,
+                          )),
+                    ),
+                    value: _returnTOInventory.value,
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select product place';
+                      }
+                      return null;
+                    },
+                    items: [
+                      DropdownMenuItem(
+                        value: true,
+                        child: Text(
+                          'Put back to inventory',
+                          style: textStyle.bodyMedium,
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: false,
+                        child: Text(
+                          'Put to losses',
+                          style: textStyle.bodyMedium,
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      _returnTOInventory.value = value;
+                    },
                   ),
                 ),
               ),
@@ -406,134 +530,139 @@ class _ReturnParoductFromInvoicePageState
   }
 
   Widget _quantityControllerSection(bool isEnabled) {
-    return Builder(builder: (context) {
-      final _textStyle = Theme.of(context).textTheme;
-      final bool isLTR = context.fromLTR;
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // add button
-          Expanded(
-            flex: 2,
-            child: InkWell(
-              enableFeedback: isEnabled,
-              onTap: !isEnabled
-                  ? null
-                  : () {
-                      int? curr = int.tryParse(_quantityController.text);
-                      _quantityController.text =
-                          curr == null ? '0' : (curr + 1).toString();
-                    },
-              child: Container(
-                alignment: Alignment.center,
-                height: AppSizes.s50 - 2,
-                // padding: EdgeInsets.all(AppPaddings.p10),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withAlpha(100),
-                  border: Border.all(
+    return Builder(
+      builder: (context) {
+        final _textStyle = Theme.of(context).textTheme;
+        final bool isLTR = context.fromLTR;
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // add button
+            Expanded(
+              flex: 2,
+              child: InkWell(
+                enableFeedback: isEnabled,
+                onTap: !isEnabled
+                    ? null
+                    : () {
+                        int? curr = int.tryParse(_quantityController.text);
+                        _quantityController.text =
+                            curr == null ? '0' : (curr + 1).toString();
+                      },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: AppSizes.s50 - 2,
+                  // padding: EdgeInsets.all(AppPaddings.p10),
+                  decoration: BoxDecoration(
                     color: AppColors.primary.withAlpha(100),
-                    width: 3,
+                    border: Border.all(
+                      color: AppColors.primary.withAlpha(100),
+                      width: 3,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(isLTR ? 0 : AppSizes.s8),
+                      bottomRight: Radius.circular(isLTR ? 0 : AppSizes.s8),
+                      bottomLeft: Radius.circular(!isLTR ? 0 : AppSizes.s8),
+                      topLeft: Radius.circular(!isLTR ? 0 : AppSizes.s8),
+                    ),
                   ),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(isLTR ? 0 : AppSizes.s8),
-                    bottomRight: Radius.circular(isLTR ? 0 : AppSizes.s8),
-                    bottomLeft: Radius.circular(!isLTR ? 0 : AppSizes.s8),
-                    topLeft: Radius.circular(!isLTR ? 0 : AppSizes.s8),
+                  child: Icon(
+                    Icons.add,
+                    color: AppColors.onPrimary,
+                    size: AppSizes.s24,
                   ),
-                ),
-                child: Icon(
-                  Icons.add,
-                  color: AppColors.onPrimary,
-                  size: AppSizes.s24,
                 ),
               ),
             ),
-          ),
 
-          Expanded(
-            flex: 5,
-            child: TextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return context.translate.enter_quantity;
-                }
-                if (int.tryParse(value) == null) {
-                  return context.translate.enter_valid_quantity;
-                }
-                if (int.parse(value) < 0) {
-                  return context.translate.enter_valid_quantity;
-                }
+            Expanded(
+              flex: 5,
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return context.translate.enter_quantity;
+                  }
+                  if (int.tryParse(value) == null) {
+                    return context.translate.enter_valid_quantity;
+                  }
+                  if (int.parse(value) < 0) {
+                    return context.translate.enter_valid_quantity;
+                  }
 
-                return null;
-              },
-              textAlign: TextAlign.center,
-              controller: _quantityController,
-              inputFormatters: [
-                AppInputFormatter.numbersOnly,
-              ],
-              keyboardType: TextInputType.number,
-              style: _textStyle.bodySmall,
-              decoration: InputDecoration(
-                fillColor: AppColors.primary.withAlpha(100),
-                filled: true,
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.primary.withAlpha(100),
-                    width: 2,
+                  return null;
+                },
+                textAlign: TextAlign.center,
+                controller: _quantityController,
+                inputFormatters: [
+                  AppInputFormatter.numbersOnly,
+                ],
+                keyboardType: TextInputType.number,
+                style: _textStyle.displayMedium,
+                decoration: InputDecoration(
+                  fillColor: AppColors.primary.withAlpha(100),
+                  filled: true,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.primary.withAlpha(100),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(0),
                   ),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: AppColors.primary.withAlpha(100),
-                    width: 2,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: AppColors.primary.withAlpha(100),
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(0),
                   ),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                hintText: 'Retured Quantity',
-              ),
-            ),
-          ),
-
-          // remove button
-          Expanded(
-            flex: 2,
-            child: InkWell(
-              enableFeedback: isEnabled,
-              onTap: !isEnabled
-                  ? null
-                  : () {
-                      if (int.parse(_quantityController.text) <= 0) {
-                        return;
-                      }
-                      _quantityController.text =
-                          (int.parse(_quantityController.text) - 1).toString();
-                    },
-              child: Container(
-                alignment: Alignment.center,
-                height: AppSizes.s50 - 2,
-                // padding: EdgeInsets.all(AppPaddings.p10),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withAlpha(100),
-                  border: Border.all(
-                      color: AppColors.primary.withAlpha(100), width: 3),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(!isLTR ? 0 : AppSizes.s8),
-                    bottomRight: Radius.circular(!isLTR ? 0 : AppSizes.s8),
-                    bottomLeft: Radius.circular(isLTR ? 0 : AppSizes.s8),
-                    topLeft: Radius.circular(isLTR ? 0 : AppSizes.s8),
-                  ),
-                ),
-                child: Icon(
-                  Icons.remove,
-                  color: AppColors.onPrimary,
-                  size: AppSizes.s24,
+                  hintText: 'Retured Quantity',
                 ),
               ),
             ),
-          ),
-        ],
-      );
-    });
+
+            // remove button
+            Expanded(
+              flex: 2,
+              child: InkWell(
+                enableFeedback: isEnabled,
+                onTap: !isEnabled
+                    ? null
+                    : () {
+                        if (int.parse(_quantityController.text) <= 0) {
+                          return;
+                        }
+                        _quantityController.text =
+                            (int.parse(_quantityController.text) - 1)
+                                .toString();
+                      },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: AppSizes.s50 - 2,
+                  // padding: EdgeInsets.all(AppPaddings.p10),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withAlpha(100),
+                    border: Border.all(
+                      color: AppColors.primary.withAlpha(100),
+                      width: 3,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(!isLTR ? 0 : AppSizes.s8),
+                      bottomRight: Radius.circular(!isLTR ? 0 : AppSizes.s8),
+                      bottomLeft: Radius.circular(isLTR ? 0 : AppSizes.s8),
+                      topLeft: Radius.circular(isLTR ? 0 : AppSizes.s8),
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.remove,
+                    color: AppColors.onPrimary,
+                    size: AppSizes.s24,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

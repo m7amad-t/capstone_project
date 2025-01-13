@@ -13,7 +13,7 @@ class ProductSellModel extends Equatable {
   factory ProductSellModel.fromJson(Map<String, dynamic> data) {
     return ProductSellModel(
       quantity: data['quantity'],
-      product: ProductModel.fromJsonForReturnedRecords(data['product']),
+      product: ProductModel.fromJsonBasicData(data['product']),
     );
   }
 
