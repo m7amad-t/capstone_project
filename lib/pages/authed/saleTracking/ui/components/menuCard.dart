@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
-import 'package:shop_owner/shared/imageDisplayer.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/productMainCardSection.dart';
+import 'package:shop_owner/shared/UI/imageDisplayer.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
@@ -109,8 +109,10 @@ class _MenuCardState extends State<MenuCard> {
                 // main section , which is product image, name and description...
                 Expanded(
                   flex: 2,
-                  child: productCardMainSection(
-                      product: widget.product, isLTR: isLTR, isCart: true),
+                  child: ProductMainCardSection(
+                    product: widget.product,
+                    isCart: true,
+                  ),
                 ),
 
                 // advance section , which is are the total section...
@@ -118,7 +120,8 @@ class _MenuCardState extends State<MenuCard> {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: AppPaddings.p10),
                       alignment: Alignment.bottomCenter,
                       child: Container(
                         padding: EdgeInsets.symmetric(
@@ -126,8 +129,7 @@ class _MenuCardState extends State<MenuCard> {
                           vertical: AppPaddings.p10,
                         ),
                         decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.circular(AppSizes.s8),
+                          borderRadius: BorderRadius.circular(AppSizes.s8),
                           color: AppColors.primary.withAlpha(100),
                         ),
                         child: Row(
@@ -136,14 +138,12 @@ class _MenuCardState extends State<MenuCard> {
                             Text(
                               "total",
                               style: _textStyle.bodyMedium!
-                                  .copyWith(
-                                      color: AppColors.primary),
+                                  .copyWith(color: AppColors.primary),
                             ),
                             // gap(width: AppSizes.s10),
                             Text(
                               _getTotal(state),
-                              style:
-                                  _textStyle.bodyMedium!.copyWith(
+                              style: _textStyle.bodyMedium!.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -186,7 +186,6 @@ class _MenuCardState extends State<MenuCard> {
 
     return "\$${total.toStringAsFixed(2)}";
   }
-
 
   Widget _loadingCart() {
     return Container();
@@ -545,9 +544,8 @@ class _MenuCardState extends State<MenuCard> {
           children: [
             Expanded(
               flex: 2,
-              child: productCardMainSection(
+              child: ProductMainCardSection(
                 product: widget.product,
-                isLTR: isLTR,
               ),
             ),
 

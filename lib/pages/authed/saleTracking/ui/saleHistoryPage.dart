@@ -6,12 +6,12 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/sellingBloc/selling_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/components/sellingHistorycard.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/appLoadingCards.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
-import 'package:shimmer/shimmer.dart';
 
 class SaleHistoryPage extends StatefulWidget {
   const SaleHistoryPage({super.key});
@@ -103,7 +103,7 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    final _textStyle = Theme.of(context).textTheme;
+    final textStyle = Theme.of(context).textTheme;
     return Scaffold(
       floatingActionButton: _animateToTopButton(),
       body: RefreshIndicator(
@@ -140,7 +140,7 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
                               alignment: Alignment.center,
                               child: Text(
                                 value == null ? 'Select Range' : 'Change Range',
-                                style: _textStyle.bodyLarge!.copyWith(
+                                style: textStyle.bodyLarge!.copyWith(
                                   color: value == null
                                       ? AppColors.onPrimary
                                       : AppColors.primary,
@@ -166,7 +166,7 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
                           flex: 1,
                           child: Text(
                             'Selected Range',
-                            style: _textStyle.displaySmall,
+                            style: textStyle.displaySmall,
                           ),
                         ),
                         gap(width: AppPaddings.p10),
@@ -176,7 +176,7 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
                             alignment: Alignment.center,
                             child: Text(
                               "${getAppDate(value.start)}     to     ${getAppDate(value.end)}",
-                              style: _textStyle.displaySmall,
+                              style: textStyle.displaySmall,
                             ),
                           ),
                         ),
@@ -205,7 +205,7 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
           return const Text('Failed to load sales records');
         }
         if (state is LoadingProductSellingRecords) {
-          return appLoadingCards(height: AppSizes.s250,  duration: 1200);
+          return AppLoadingCards(height: AppSizes.s250,  duration: 1200);
         }
 
         List<InvoiceModel> records = [];

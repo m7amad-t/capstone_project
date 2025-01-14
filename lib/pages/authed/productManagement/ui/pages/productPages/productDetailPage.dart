@@ -8,8 +8,8 @@ import 'package:shop_owner/pages/authed/productManagement/logic/models/productMo
 import 'package:shop_owner/pages/authed/productManagement/ui/components/productHistorySection.dart';
 import 'package:shop_owner/router/extraTemplates/productManagementExtra.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/imageDisplayer.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/imageDisplayer.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
@@ -78,7 +78,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
                 child: ProductHistorySection(
                   product: widget.product,
-                ),
+                ),  
               ),
 
               // trailling gap
@@ -158,7 +158,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
  
-
   Widget _quantitySection() {
     return _template(
       context.translate.quantity,

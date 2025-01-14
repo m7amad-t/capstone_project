@@ -10,6 +10,7 @@ import 'package:shop_owner/l10n/kurdish_widget_localization_deligate.dart';
 import 'package:shop_owner/l10n/l10n.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/damagedproductsBloc/damaged_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductBloc/buying_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductsBloc/buying_products_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForAllProducts/returned_products_bloc_bloc.dart';
@@ -76,6 +77,9 @@ void main() async {
           ),
           BlocProvider(
             create: (_) => BuyingProductsBloc(),
+          ),
+          BlocProvider(
+            create: (_) => DamagedProductBloc(),
           ),
         ],
         child: const App(),

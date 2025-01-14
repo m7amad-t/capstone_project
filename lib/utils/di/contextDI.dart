@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shop_owner/router/navigationService.dart';
-import 'package:shop_owner/shared/appDialogs.dart';
+import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/utils/auth/authService.dart';
 

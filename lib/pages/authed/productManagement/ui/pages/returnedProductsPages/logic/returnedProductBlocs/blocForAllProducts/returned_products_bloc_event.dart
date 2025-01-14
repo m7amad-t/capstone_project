@@ -33,7 +33,7 @@ final class LoadReturnedRecordsForAllInRange extends ReturnedProductsBlocEvent {
 }
 
 final class FilterByReason extends ReturnedProductsBlocEvent {
-  final RETURN_PRODUCT_REASON reason;
+  final RETURN_PRODUCT_REASON? reason;
 
   const FilterByReason({
     required super.context,
@@ -41,5 +41,29 @@ final class FilterByReason extends ReturnedProductsBlocEvent {
   });
 
   @override
-  List<Object> get props => [context, reason];
+  List<Object> get props => [context, reason ?? []];
 }
+
+final class FilterByReturnedPlace extends ReturnedProductsBlocEvent {
+  final bool? retunedToInvenotory; 
+
+  const FilterByReturnedPlace({
+    required super.context,
+    required this.retunedToInvenotory,
+  });
+
+  @override
+  List<Object> get props => [context, retunedToInvenotory ?? []];
+}
+
+
+final class ReturnToReturnedProducts extends ReturnedProductsBlocEvent {
+  final ProductReturnedModel record;
+
+  const ReturnToReturnedProducts({required super.context, required this.record}); 
+
+  @override
+  List<Object> get props => [context, record];
+}
+
+

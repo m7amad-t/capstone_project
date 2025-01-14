@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names, use_build_context_synchronously
+// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names, use_build_context_synchronously, deprecated_member_use
 
 import 'dart:math';
 import 'dart:typed_data';
@@ -10,12 +10,12 @@ import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_blo
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/appDialogs.dart';
+import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
-import 'package:shop_owner/shared/imageDisplayer.dart';
+import 'package:shop_owner/shared/UI/imageDisplayer.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
-import 'package:shop_owner/shared/uiHelper.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';

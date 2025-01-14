@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/models/productReturnedModel.dart';
@@ -15,16 +17,11 @@ class ProductReturningService {
       final jsonMap = jsonDecode(returnedProductsExample);
 
       final records = ProductReturnedModel.listFromJson(jsonMap);
-      List<ProductReturnedModel> result = [];
-      if (records.length > perPage * page) {
-        for (int i = (perPage * page) + 1;
-            i < records.length && (i < perPage * page + 1);
-            i++) {
-          result.add(records[i]);
-        }
-      }
+      // List<ProductReturnedModel> result = [];
+      // print('from the service : ${records.length}'); 
 
-      return result;
+      return records;
+
     } catch (e) {
       print('Error getting product returning records: $e');
       return null;

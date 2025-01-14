@@ -5,7 +5,7 @@ import 'package:shop_owner/pages/authed/productManagement/logic/models/productMo
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/enum/enum.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductBloc/buying_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
@@ -716,13 +716,10 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
               inputFormatters: [
                 AppInputFormatter.price,
               ],
-              onChanged: (value) {
-                print(value);
-                _cost.value = double.tryParse(value) ?? 0;
-              },
+             
               keyboardType: TextInputType.number,
               style: textStyle.bodySmall,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "cost",
               ),
             ),
@@ -856,7 +853,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                             _summary(
                               textStyle,
                               "Total Cost",
-                              "\$" + total.toStringAsFixed(2),
+                              "\$${total.toStringAsFixed(2)}",
                               context.fromLTR,
                             ),
                             gap(height: AppPaddings.p10),
@@ -865,7 +862,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                               _summary(
                                 textStyle,
                                 "Cost Per Package",
-                                "\$" + perPackage.toStringAsFixed(2),
+                                "\$${perPackage.toStringAsFixed(2)}",
                                 context.fromLTR,
                               ),
                             if (_selectedPurchaseUnit.value ==
@@ -874,7 +871,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                             _summary(
                               textStyle,
                               "Cost Per Item",
-                              "\$" + perItem.toStringAsFixed(2),
+                              "\$${perItem.toStringAsFixed(2)}",
                               context.fromLTR,
                             ),
                             if (_selectedPurchaseUnit.value ==
@@ -950,7 +947,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     // create a record
-                    ProductBoughtModel _record = ProductBoughtModel(
+                    ProductBoughtModel record = ProductBoughtModel(
                       dateTime: DateTime.now(),
                       pricePerItem: perItem,
                       product: widget.product,
@@ -964,7 +961,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                         .add(BoughtProductInSingleProduct(
                           context: context,
                           product: widget.product,
-                          record: _record,
+                          record: record,
                         ));
                   }
                 },

@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
@@ -15,7 +14,7 @@ import 'package:shop_owner/pages/authed/productManagement/ui/components/products
 import 'package:shop_owner/pages/authed/productManagement/ui/components/productCard.dart';
 import 'package:shop_owner/router/extraTemplates/productManagementExtra.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
@@ -26,11 +25,13 @@ class ProductListPresenter extends StatefulWidget {
   final String cardPath;
   final bool isCardTappable;
   final bool floatingButton;
-  final Widget? insertTop ; 
+  final Widget? insertTop;
+  final FloatingActionButton? costumFloating;
   const ProductListPresenter({
     super.key,
     required this.cardPath,
     this.insertTop,
+    this.costumFloating,
     this.isCardTappable = false,
     this.floatingButton = false,
   });
@@ -64,9 +65,32 @@ class _ProductListPresenterState extends State<ProductListPresenter> {
     });
   }
 
+  Widget? _floatingButton(ProductBlocState state, bool isShow) {
+    if (state == FailedToLoad() || !isShow) {
+      return null;
+    }
+
+    if (widget.costumFloating != null) {
+      return widget.costumFloating;
+    } else if (widget.floatingButton && state is GotProducts) {
+      return FloatingActionButton(
+        onPressed: () {
+          GoRouter.of(context).push(
+            AppRoutes.productManagement +
+                "/" +
+                AppRoutes.product +
+                "/" +
+                AppRoutes.addProduct,
+            extra: AddNewProductExtra(categories: state.categories).getExtra,
+          );
+        },
+        child: const Icon(Icons.add),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final TextTheme _textStyle = Theme.of(context).textTheme;
     return BlocConsumer<ProductBloc, ProductBlocState>(
       listener: (context, state) {},
@@ -88,25 +112,7 @@ class _ProductListPresenterState extends State<ProductListPresenter> {
         }
 
         return Scaffold(
-          floatingActionButton: !gotProductsAndHaveCategory
-              ? null
-              : !widget.floatingButton
-                  ? null
-                  : FloatingActionButton(
-                      onPressed: () {
-                        GoRouter.of(context).push(
-                          AppRoutes.productManagement +
-                              "/" +
-                              AppRoutes.product +
-                              "/" +
-                              AppRoutes.addProduct,
-                          extra:
-                              AddNewProductExtra(categories: state.categories)
-                                  .getExtra,
-                        );
-                      },
-                      child: const Icon(Icons.add),
-                    ),
+          floatingActionButton: _floatingButton(state, gotProductsAndHaveCategory), 
           resizeToAvoidBottomInset: false,
           body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
@@ -151,8 +157,7 @@ class _ProductListPresenterState extends State<ProductListPresenter> {
       ),
       child: Column(
         children: [
-
-          widget.insertTop ?? const SizedBox(), 
+          widget.insertTop ?? const SizedBox(),
 
           // search and filter section
           Expanded(

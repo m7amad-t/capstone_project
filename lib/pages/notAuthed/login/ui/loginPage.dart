@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_owner/pages/notAuthed/login/logic/bloc/login_bloc_bloc.dart';
 import 'package:shop_owner/pages/notAuthed/login/logic/model/loginModel.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';

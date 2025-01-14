@@ -13,6 +13,7 @@ class ProductReturnedModel extends Equatable {
   final String? note;
   final int returnedQuantity;
   final bool backToInventory;
+  final double? costPerItem ; 
 
   const ProductReturnedModel({
     required this.id,
@@ -25,6 +26,7 @@ class ProductReturnedModel extends Equatable {
 
     this.note,
     this.invoice,
+    this.costPerItem,
   });
 
   factory ProductReturnedModel.fromJson(Map<String, dynamic> data) {
@@ -50,6 +52,7 @@ class ProductReturnedModel extends Equatable {
       reason: getReasonEnumFromStrign(data['reason']),
       note: data['note'],
       invoice: invoice,
+      costPerItem: data['costPerItem'],
       date: DateTime.parse(data['dateTime']),
       
     );
@@ -64,6 +67,7 @@ class ProductReturnedModel extends Equatable {
       records.add(ProductReturnedModel.fromJson(record));
     }
 
+    print("from the model ${records.length}");
     return records;
   }
 

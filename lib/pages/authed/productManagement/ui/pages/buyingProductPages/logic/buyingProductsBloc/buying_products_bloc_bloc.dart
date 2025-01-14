@@ -27,7 +27,6 @@ class BuyingProductsBloc
     }
 
     Future<void> _loadMore() async {
-      print("start loading ...."); 
       final res = await _service.getListFromJson(_currentPage++);
       if (res.length < _service.perPage) {
         _isEnded = true;

@@ -9,9 +9,9 @@ import 'package:shop_owner/pages/authed/productManagement/logic/models/productMo
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartLocalService.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/appDialogs.dart';
+import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
-import 'package:shop_owner/shared/uiHelper.dart';
+import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 part 'cart_bloc_event.dart';
 part 'cart_bloc_state.dart';

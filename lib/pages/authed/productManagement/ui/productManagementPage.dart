@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/shared/constants.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
@@ -54,7 +54,7 @@ class ProductManagementPage extends StatelessWidget {
       // return product..
       {
         'name': 'Returned products',
-        "path": '${AppRoutes.productManagement}/${AppRoutes.returnProduct}',
+        "path": '${AppRoutes.productManagement}/${AppRoutes.returnedProduct}',
         'icon': Image.asset(AssetPaths.returnedProducts)
       },
       {
@@ -65,7 +65,7 @@ class ProductManagementPage extends StatelessWidget {
       // return product..
       {
         'name': 'Expired Products',
-        "path": '${AppRoutes.productManagement}/${AppRoutes.returnProduct}',
+        "path": '${AppRoutes.productManagement}/${AppRoutes.expiredProducts}',
         'icon': Image.asset(AssetPaths.expiredProducts)
       },
       // return product..

@@ -6,8 +6,8 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/components/boughtedProductCard.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductsBloc/buying_products_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/appLoadingCards.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
@@ -207,7 +207,7 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
     return BlocBuilder<BuyingProductsBloc, BuyingProductsBlocState>(
       builder: (context, state) {
         if (state is LoadingBoughtForProducts) {
-          return appLoadingCards(height: AppSizes.s200, duration: 1200);
+          return AppLoadingCards(height: AppSizes.s200, duration: 1200);
         }
 
         List<ProductBoughtModel> records = [];

@@ -1,6 +1,5 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +10,9 @@ import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProduct
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/service/productBoughtService.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/appDialogs.dart';
+import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
-import 'package:shop_owner/shared/uiHelper.dart';
+import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 
 part 'buying_product_bloc_event.dart';
@@ -39,10 +38,15 @@ class BuyingProductBloc
     }
 
     Future<void> _loadMore() async {
+      print('---------------------------'); 
       final res = await _service.getListFromJson(_currentPage++);
       if (res.length < _service.perPage) {
         _isEnded = true;
       }
+
+      print(res); 
+      print(res.length); 
+
       _records.addAll(res);
     }
 
@@ -132,7 +136,6 @@ class BuyingProductBloc
       BoughtProductInSingleProduct event,
       emit,
     ) async {
-      print('skajkas');
 
       locator<AppDialogs>().showCostumTextLoading('Buying Product..');
 

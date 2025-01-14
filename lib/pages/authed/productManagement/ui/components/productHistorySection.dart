@@ -4,13 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/components/boughtedProductCard.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductBloc/buying_product_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/models/productReturnedModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/shared/enum.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/components/returnedProductCard.dart';
+import 'package:shop_owner/shared/UI/appLoadingCards.dart';
 // import 'package:shop_owner/pages/authed/productManagement/ui/components/returnedProductCard.dart';
 // import 'package:shop_owner/pages/authed/productManagement/logic/returnedProductBlocs/shared/enum.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
@@ -52,6 +56,8 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
     context.read<ReturnedProductBloc>().add(LoadReturnedProduct(
           product: widget.product,
         ));
+
+    context.read<BuyingProductBloc>().add(LoadProductBoughtHistory(product: widget.product)); 
   }
 
   bool isReturned = true;
@@ -137,11 +143,10 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
         // _dateRangePicker(),
 
         gap(height: AppSizes.s10),
-        if (isReturned)
           Container(
             child: isReturned
                 ? _returnedHistory()
-                : const Text('Not Finished yet '),
+                : _boughtedHistory(), 
           ),
       ],
     );
@@ -338,4 +343,45 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
       },
     );
   }
+
+  Widget _boughtedHistory() {
+    return BlocBuilder<BuyingProductBloc, BuyingProductBlocState>(
+      builder: (context, state) {
+        print(state); 
+        if (state is LoadingBoughtForProduct) {
+          return  Center(
+            child: RepaintBoundary(
+              child: AppLoadingCards(height: AppSizes.s180),
+            ),
+          );
+        }
+
+        if (state is FailedToLoadProductBoughtHistory) {
+          return const Text('Failed to load bought records');
+        }
+
+        List<ProductBoughtModel> records = [];
+
+        if (state is GotProductBoughtHistory) {
+          records = state.records;
+        }
+
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: isReturned ? null : 0,
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: records.length,
+            itemBuilder: (context, index) => BoughtedProductCard(
+              record: records[index],
+            ).paddingSymmetric(
+              horizontal: AppPaddings.p1,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 }

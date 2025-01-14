@@ -3,12 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
-import 'package:shop_owner/shared/imageDisplayer.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
-import 'package:shop_owner/style/appSizes/appPaddings.dart';
+import 'package:shop_owner/shared/UI/productMainCardSection.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
-import 'package:shop_owner/style/theme/appColors.dart';
-import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class ProductCard extends StatelessWidget {
   final bool isReturnPageCard;
@@ -25,8 +21,6 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLTR = context.fromLTR;
-
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxHeight: AppSizes.s120,
@@ -35,9 +29,8 @@ class ProductCard extends StatelessWidget {
       child: Card(
         child: InkWell(
           onTap: onTapCallback,
-          child: productCardMainSection(
+          child: ProductMainCardSection(
             product: product,
-            isLTR: isLTR,
           ),
         ),
       ),

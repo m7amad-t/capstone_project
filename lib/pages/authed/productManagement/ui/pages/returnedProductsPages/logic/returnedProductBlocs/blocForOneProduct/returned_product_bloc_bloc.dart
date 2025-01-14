@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously
+// ignore_for_file: no_leading_underscores_for_local_identifiers, use_build_context_synchronously, avoid_print
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -6,13 +6,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/damagedproductsBloc/damaged_product_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/models/DamagedProductsModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/models/productReturnedModel.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForAllProducts/returned_products_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/shared/enum.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/service/productReturningService.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/appDialogs.dart';
+import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
-import 'package:shop_owner/shared/uiHelper.dart';
+import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 
 part 'returned_product_bloc_event.dart';
@@ -254,29 +257,43 @@ class ReturnedProductBloc
             ),
           );
         } else {
+          final _new = event.product;
+          // create a object for the damaged products
+          final record = DamagedProductsModel(
+            id: -1,
+            quantity: _new.returnedQuantity,
+            boughtedPrice: _new.costPerItem ?? 0,
+            product: _new.product,
+            note: _new.note,
+            dateTime: _new.date,
+          );
+          event.context.read<DamagedProductBloc>().add(AddProductToDamaged(
+                record: record,
+                context: event.context,
+                returned: true, 
+              ));
+
           // send the item to the dmaged good inventory...
           showSnackBar(
             message: SuccessSnackBar(
-              title: 'Product Returned to Damged Goods Inventory',
+              title: 'Product Returned to Damaged product Inventory',
               message: "Product Returned to Damged Goods Inventory",
             ),
           );
         }
 
-        // todo : notify Products reteturned bloc.. mean ,bloc of all returned products
+        // send new returned product to returned products bloc
+        event.context.read<ReturnedProductsBloc>().add(
+              ReturnToReturnedProducts(
+                context: event.context,
+                record: event.product,
+              ),
+            );
+
 
         locator<AppDialogs>().disposeAnyActiveDialogs();
-        // // sendBack records
-        // emit(
-        //   GotReturnedForProduct(
-        //     records: List.from(_records),
-        //     filter: _lastFilter,
-        //     start: _lastStart,
-        //     end: _lastEnd,
-        //     isLast: _isEnd,
-        //   ),
-        // );
-        GoRouter.of(event.context).go(AppRoutes.home);
+
+        GoRouter.of(event.context).pop();
       } catch (e) {
         emit(FailedToLoadProductReturnedRecords());
         return;

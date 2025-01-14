@@ -26,6 +26,7 @@ class ImageDisplayerWithPlaceHolder extends StatelessWidget {
   Widget build(BuildContext context) {
    
     return ClipRRect(
+      
       borderRadius:BorderRadius.only(
         topLeft: Radius.circular(topLeft),
         topRight: Radius.circular(topRight),
@@ -33,6 +34,7 @@ class ImageDisplayerWithPlaceHolder extends StatelessWidget {
         bottomRight: Radius.circular(bottomRight),
       ), 
       
+
       child: Image(
         image: NetworkImage(imageUrl , ),
         loadingBuilder: (context, child, loadingProgress) {

@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/style/appSizes/fontSizes.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
@@ -45,62 +45,6 @@ void showLoadingDialog(BuildContext context, String text) {
   );
 }
 
-// Future<void> showChangeLanguage(BuildContext context) async {
-//   await showDialog(
-//     context: context,
-//     barrierDismissible: true,
-//     builder: (BuildContext context) {
-//       final _textStyle = Theme.of(context).textTheme;
-//       return AlertDialog(
-//         backgroundColor: Colors.transparent,
-//         elevation: 0,
-//         content: Card(
-//           elevation: 1,
-//           child: ConstrainedBox(
-//             constraints: BoxConstraints(
-//               minWidth: locator<DynamicSizes>().p65,
-//               maxWidth: locator<DynamicSizes>().p65,
-//               maxHeight: locator<DynamicSizes>().p50,
-//             ),
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 for (final local in L10n.all)
-//                   ListTile(
-//                     onTap: () {
-//                       context
-//                           .read<LanguageBloc>()
-//                           .add(ChangeLanguage(local: local));
-//                       if (Navigator.of(context).canPop()) {
-//                         Navigator.of(context).pop();
-//                       }
-//                     },
-//                     trailing: Container(
-//                       margin: EdgeInsets.symmetric(
-//                         horizontal: AppSizes.s4,
-//                         vertical: AppSizes.s2,
-//                       ),
-//                       height: AppSizes.s35,
-//                       width: AppSizes.s45,
-//                       child: Image.asset(
-//                         local.flag,
-//                         fit: BoxFit.cover,
-//                       ),
-//                     ),
-//                     leading: Text(
-//                       local.languageName,
-//                       style: _textStyle.displayLarge,
-//                     ),
-//                   ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       );
-//     },
-//   );
-// }
-
 Future<Uint8List?> pickImageFromGallery() async {
   final ImagePicker _picker = ImagePicker();
 
@@ -119,11 +63,6 @@ Future<Uint8List?> pickImageFromGallery() async {
   // If no image is selected, return null
   return null;
 }
-
-
-
-
-
 
 void showSnackBar({required AppSnackBarMessages message}) {
   toastification.show(

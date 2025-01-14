@@ -3,8 +3,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
-import 'package:shop_owner/shared/imageDisplayer.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/imageDisplayer.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
@@ -17,7 +17,7 @@ class BoughtedProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: AppSizes.s200,
       child: Card(
         child: _mainSection(),
@@ -28,7 +28,7 @@ class BoughtedProductCard extends StatelessWidget {
   Widget _mainSection() {
     return Builder(
       builder: (context) {
-        final _textStyle = Theme.of(context).textTheme;
+        final textStyle = Theme.of(context).textTheme;
         final isLTR = context.fromLTR;
 
         if (!isLTR) {
@@ -115,7 +115,7 @@ class BoughtedProductCard extends StatelessWidget {
                               _trimName(record.product.name),
                               textAlign: TextAlign.end,
                               textDirection: TextDirection.rtl,
-                              style: _textStyle.bodyMedium!.copyWith(
+                              style: textStyle.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -141,7 +141,7 @@ class BoughtedProductCard extends StatelessWidget {
                             
                                     Text(
                                       "\$${record.pricePerItem.toStringAsFixed(2)}",
-                                      style: _textStyle.bodyMedium!.copyWith(
+                                      style: textStyle.bodyMedium!.copyWith(
                                         fontWeight: FontWeight.bold,
                                         // color: AppColors.primary,
                                       ),
@@ -165,7 +165,7 @@ class BoughtedProductCard extends StatelessWidget {
                                     
                                     Text(
                                       record.quantity.toString(),
-                                      style: _textStyle.bodyMedium!.copyWith(
+                                      style: textStyle.bodyMedium!.copyWith(
                                         fontWeight: FontWeight.bold,
                                         // color: AppColors.primary,
                                       ),
@@ -205,7 +205,7 @@ class BoughtedProductCard extends StatelessWidget {
                                           Text(
                                             getAppDate(record.expireDate ?? DateTime.now()),
                                             style:
-                                                _textStyle.bodyMedium!.copyWith(
+                                                textStyle.bodyMedium!.copyWith(
                                               // fontWeight: FontWeight.bold,
                                               // color: AppColors.primary,
                                             ),
@@ -234,7 +234,7 @@ class BoughtedProductCard extends StatelessWidget {
                                   children: [
                                     Text(
                                       "\$${(record.pricePerItem * record.quantity).toStringAsFixed(2)}",
-                                      style: _textStyle.bodyMedium!.copyWith(
+                                      style: textStyle.bodyMedium!.copyWith(
                                         fontWeight: FontWeight.bold,
                                         // color: AppColors.primary,
                                       ),
@@ -257,7 +257,7 @@ class BoughtedProductCard extends StatelessWidget {
                           opacity: 0.7,
                           child: Text(
                             record.note ?? "",
-                            style: _textStyle.bodySmall,
+                            style: textStyle.bodySmall,
                           ),
                         ),
                       ],
@@ -354,7 +354,7 @@ class BoughtedProductCard extends StatelessWidget {
                           Expanded(
                             child: Text(
                               _trimName(record.product.name),
-                              style: _textStyle.bodyMedium!.copyWith(
+                              style: textStyle.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -381,7 +381,7 @@ class BoughtedProductCard extends StatelessWidget {
                                   gap(width: AppSizes.s10),
                                   Text(
                                     record.quantity.toString(),
-                                    style: _textStyle.bodyMedium!.copyWith(
+                                    style: textStyle.bodyMedium!.copyWith(
                                       // fontWeight: FontWeight.bold,
                                       // color: AppColors.primary,
                                     ),
@@ -406,7 +406,7 @@ class BoughtedProductCard extends StatelessWidget {
                                   gap(width: AppSizes.s10),
                                   Text(
                                     "\$${record.pricePerItem.toStringAsFixed(2)}",
-                                    style: _textStyle.bodyMedium!.copyWith(
+                                    style: textStyle.bodyMedium!.copyWith(
                                       // fontWeight: FontWeight.bold,
                                       // color: AppColors.primary,
                                     ),
@@ -437,7 +437,7 @@ class BoughtedProductCard extends StatelessWidget {
                                   gap(width: AppSizes.s10),
                                   Text(
                                     "\$${(record.pricePerItem * record.quantity).toStringAsFixed(2)}",
-                                    style: _textStyle.bodyMedium!.copyWith(
+                                    style: textStyle.bodyMedium!.copyWith(
                                       // fontWeight: FontWeight.bold,
                                       // color: AppColors.primary,
                                     ),
@@ -465,7 +465,7 @@ class BoughtedProductCard extends StatelessWidget {
                                         Text(
                                           getAppDate(record.expireDate!),
                                           style:
-                                              _textStyle.bodyMedium!.copyWith(
+                                              textStyle.bodyMedium!.copyWith(
                                             // fontWeight: FontWeight.bold,
                                             // color: AppColors.primary,
                                           ),
@@ -483,7 +483,7 @@ class BoughtedProductCard extends StatelessWidget {
                         child: AutoSizeText(
                           
                           _trimNote(record.note ?? ''),
-                          style: _textStyle.bodySmall,
+                          style: textStyle.bodySmall,
                         ),
                       ),
                     ],

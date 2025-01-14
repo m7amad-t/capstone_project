@@ -4,7 +4,7 @@ import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.d
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/productSellModel.dart';
 import 'package:shop_owner/router/extraTemplates/invoiceExtra.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';

@@ -21,23 +21,26 @@ class AppRoutes {
   static String returnProductFromInvoice= "return_product_from_invoice";
 
 
-  // -------- [[ Product management childs ]]
+  // --------------------- [[ Product management childs ]] ---------------------
   static String product = "product";     
   static String category = "category";   
   static String buyProducts = "buy_products";   
   static String buyProductsFrom = "buying_form";   
   static String boughtedProducts = "boughted";  
-  static String returnProduct = "return_products";   
-  static String returnProductDetail = "return_form";   
+  static String returnedProduct = "returned_products";   
+  static String returnedProductsHistory = "returned_products_history";   
+  static String returnProductFrom = "return_product_form";   
   static String addProduct = "add_product";     
   static String productDetail = "product_detail";     
   static String editProduct = "edit_product"; 
   static String editCategory = "edit_category"; 
   static String addCategory = "add_category";     
   static String damagedProducts = "damaged_products";     
+  static String damagedProductsHistory = "damaged_products_history";     
+  static String damagedProductForm = "damaged_product_form";      
   static String expiredProducts = "expired_products";     
 
-  // -------- [[ cart childs ]]
+  // ---------------------- [[ cart childs ]] -------------------------------
   static String cartCheckout= "checkout";
 
 }

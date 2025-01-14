@@ -145,4 +145,6 @@ const String productCategoryExample = """
       ]
     }
   ]
-  }""";
+  }
+  
+  """;

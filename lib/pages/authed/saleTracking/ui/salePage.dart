@@ -12,7 +12,7 @@ import 'package:shop_owner/pages/authed/productManagement/ui/components/ProductL
 import 'package:shop_owner/pages/authed/productManagement/ui/components/productsOrderBySection.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/components/menuCard.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';

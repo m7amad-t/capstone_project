@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/cart/ui/cartPage.dart';
 import 'package:shop_owner/pages/authed/cart/ui/checkoutPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/addingDamagedProductFormPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/damagedProductHistoryPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/damagedProductsPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/pages/boughtedProduct.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/pages/buyingFormPage.dart';
@@ -12,7 +15,9 @@ import 'package:shop_owner/pages/authed/productManagement/ui/pages/catrgoryPages
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/productPages/ProductPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/productPages/productDetailPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/productPages/productEditorPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/productReturnFormPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/productReturnPage.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/returnedProductHistory.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/productManagementPage.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/returnProductFromInvoicePage.dart';
@@ -24,7 +29,7 @@ import 'package:shop_owner/root.dart';
 import 'package:shop_owner/router/extraTemplates/invoiceExtra.dart';
 import 'package:shop_owner/router/navigationService.dart';
 import 'package:shop_owner/router/routes.dart';
-import 'package:shop_owner/shared/errorPage.dart';
+import 'package:shop_owner/shared/UI/errorPage.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 
 class AppRouter {
@@ -350,7 +355,7 @@ class AppRouter {
 
                       // return product
                       GoRoute(
-                        path: AppRoutes.returnProduct,
+                        path: AppRoutes.returnedProduct,
                         pageBuilder: (context, state) => NoTransitionPage(
                           key: state.pageKey,
                           child: ProductReturnPage(
@@ -358,21 +363,31 @@ class AppRouter {
                           ),
                         ),
                         routes: [
-                          // add add category
+                          // return history
                           GoRoute(
-                            path: AppRoutes.returnProductDetail,
-                            pageBuilder: (context, state) {
-                              final data = state.extra as Map<String, dynamic>;
-                              return NoTransitionPage(
+                            path: AppRoutes.returnedProductsHistory,
+                            pageBuilder: (context, state) => NoTransitionPage(
+                              key: state.pageKey,
+                              child: ReturnedProducstHistoryPage(
                                 key: state.pageKey,
-                                child: CategoryEditorPage(
-                                  key: state.pageKey,
-                                  category: null,
-                                  categories: data['product'],
-                                ),
-                              );
-                            },
+                              ),
+                            ),
                           ),
+
+                          GoRoute(
+                              path: AppRoutes.returnProductFrom,
+                              pageBuilder: (context, state) {
+                                final data =
+                                    state.extra as Map<String, dynamic>;
+
+                                return NoTransitionPage(
+                                  key: state.pageKey,
+                                  child: ReturnProductForm(
+                                    key: state.pageKey,
+                                    product: data['product'],
+                                  ),
+                                );
+                              }),
                         ],
                       ),
 
@@ -410,6 +425,46 @@ class AppRouter {
                           ),
                         ],
                       ),
+                    
+                      // Damaged products
+                      GoRoute(
+                        path: AppRoutes.damagedProducts,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: DamagedProductsPage(
+                            key: state.pageKey,
+                          ),
+                        ),
+                        routes: [
+                          // Damaged history page...
+                          GoRoute(
+                            path: AppRoutes.damagedProductsHistory,
+                            pageBuilder: (context, state) => NoTransitionPage(
+                                key: state.pageKey,
+                                child:const DamagedProductsHistoryPage()
+                              )
+                            
+                          ),
+                       
+                          // add damaged products
+                          GoRoute(
+                            path: AppRoutes.damagedProductForm,
+                            pageBuilder: (context, state) {
+                              final data = state.extra as Map<String, dynamic>;
+                              return NoTransitionPage(
+                                key: state.pageKey,
+                                child: DamagedProductForm(
+                                  key: state.pageKey,
+                                  product: data['product'],
+                                ),
+                              );
+                            },
+                          ),
+                       
+                        ],
+                      ),
+                    
+                    
                     ],
                   ),
                 ],

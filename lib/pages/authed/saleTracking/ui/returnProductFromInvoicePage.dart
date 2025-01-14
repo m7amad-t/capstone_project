@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/models/productReturnedModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/shared/enum.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/productSellModel.dart';
-import 'package:shop_owner/shared/uiComponents.dart';
+import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
@@ -36,6 +37,8 @@ class _ReturnParoductFromInvoicePageState
   late final TextEditingController _quantityController;
   late final TextEditingController _noteController;
   late final TextEditingController _refundController;
+  late final TextEditingController _boughtedFor;
+
 
   ValueNotifier<bool?> _returnTOInventory = ValueNotifier(null);
 
@@ -46,6 +49,8 @@ class _ReturnParoductFromInvoicePageState
     _noteController = TextEditingController();
     _refundController = TextEditingController();
     _quantityController.addListener(_quantityControllerListener);
+    _boughtedFor = TextEditingController();
+
   }
 
   @override
@@ -55,6 +60,7 @@ class _ReturnParoductFromInvoicePageState
     _noteController.dispose();
     _slectedProduct.dispose();
     _returnReason.dispose();
+    _boughtedFor.dispose();
     _returnTOInventory.dispose();
 
     super.dispose();
@@ -112,6 +118,7 @@ class _ReturnParoductFromInvoicePageState
         reason: _returnReason.value!,
         note: _noteController.text,
         backToInventory: _returnTOInventory.value!,
+        costPerItem: _boughtedFor.text.isEmpty ? null : double.parse(_boughtedFor.text) ,
         invoice: widget.invoice,
       );
 
@@ -236,6 +243,40 @@ class _ReturnParoductFromInvoicePageState
                       _returnBackToSection(),
                       
                       gap(height: AppSizes.s20),
+                      
+                      ValueListenableBuilder(
+                        valueListenable: _returnTOInventory,
+                        builder: (context, isToInventory, child) {
+                          if(isToInventory == null || isToInventory == true ){
+                            return const SizedBox(); 
+                          }
+                          return TextFormField(
+                          controller: _boughtedFor ,
+                          validator: (value) {
+                            if(isToInventory == true) {
+                                return null; 
+                            }
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter cost of the product';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return 'Please enter valid cost';
+                            }
+                        
+                            return null;
+                          },
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            AppInputFormatter.price,
+                          ],
+                          decoration: const InputDecoration(
+                            hintText: 'Cost per item',
+                          ),
+                        ).paddingOnly(bottom: AppPaddings.p10, ); 
+                        },
+                      ),
+                     
+                      gap(height: AppSizes.s10),
                       
                       // quantity section of the return quantity section
                       ValueListenableBuilder(

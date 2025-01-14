@@ -20,6 +20,7 @@ class ReturnedProductsBloc
     const int _perPage = ProductReturningService.perPage;
     DateTime? _lastStart;
     DateTime? _lastEnd;
+    bool? _inventorySelected;
     final ProductReturningService _service = ProductReturningService();
 
     void _clear() {
@@ -31,13 +32,30 @@ class ReturnedProductsBloc
       _records = [];
     }
 
-    List<ProductReturnedModel> _filter() {
+    List<ProductReturnedModel> _filter(
+      final List<ProductReturnedModel> records, 
+    ) {
       if (_lastFilter == null) {
-        return _records;
+        return records;
       }
       List<ProductReturnedModel> result = [];
-      for (final element in _records) {
+      for (final element in records) {
         if (element.reason == _lastFilter) {
+          result.add(element);
+        }
+      }
+      return result;
+    }
+
+    List<ProductReturnedModel> _filterReturnedPlaces(
+      final List<ProductReturnedModel> records, 
+    ) {
+      if (_inventorySelected == null) {
+        return records;
+      }
+      List<ProductReturnedModel> result = [];
+      for (final element in records) {
+        if (element.backToInventory == _inventorySelected) {
           result.add(element);
         }
       }
@@ -72,7 +90,8 @@ class ReturnedProductsBloc
         List<ProductReturnedModel> result = List.from(_records);
 
         // applay last filters
-        result = _filter();
+        result = _filter(result);
+        result = _filterReturnedPlaces(result);
 
         // sendBack records
         emit(
@@ -99,6 +118,9 @@ class ReturnedProductsBloc
         _lastFilter = null;
         _lastStart = null;
         _lastEnd = null;
+        _inventorySelected = null;
+
+        emit(LoadingReturedProducts()); 
 
         // load more records
         await _loadMore();
@@ -123,14 +145,26 @@ class ReturnedProductsBloc
     }
 
     Future<void> _onLoadInRange(
-        LoadReturnedRecordsForAllInRange event, emit) async {
+      LoadReturnedRecordsForAllInRange event,
+      emit,
+    ) async {
       try {
         if (_lastEnd == null || _lastStart == null) {
           _clear();
+          emit(LoadingReturedProducts()); 
+        }
+        if(_lastEnd != event.end || _lastStart != event.start) {
+            _clear();
+          emit(LoadingReturedProducts()); 
+          
         }
         // sign new values
         _lastStart = event.start;
         _lastEnd = event.end;
+
+        if(_isEnd){
+          return ; 
+        }
 
         // load more records
         await _loadMore();
@@ -139,7 +173,8 @@ class ReturnedProductsBloc
         List<ProductReturnedModel> result = List.from(_records);
 
         // applay last filters
-        result = _filter();
+        result = _filter(result);
+        result = _filterReturnedPlaces(result);
 
         // sendBack records
         emit(
@@ -164,8 +199,69 @@ class ReturnedProductsBloc
         // create a deep coppy of the current records
         List<ProductReturnedModel> result = List.from(_records);
 
+        print(result.length); 
         // apply last filter
-        _filter();
+        result = _filter(result);
+        result = _filterReturnedPlaces(result);
+
+        print(result.length); 
+
+        // sendBack records
+        emit(
+          GotReturnedForProducts(
+            records: result,
+            filter: _lastFilter,
+            start: _lastStart,
+            end: _lastEnd,
+            isLast: _isEnd,
+          ),
+        );
+      } catch (e) {
+        emit(FailedToLoadProductsReturnedRecords());
+        return;
+      }
+    }
+
+    Future<void> _onFilterProductsByReturnedPlace(
+      FilterByReturnedPlace event,
+      emit,
+    ) async {
+      try {
+        _inventorySelected = event.retunedToInvenotory;
+
+        // create a deep coppy of the current records
+        List<ProductReturnedModel> result = List.from(_records);
+
+        // apply last filter
+        result = _filter(result);
+        result = _filterReturnedPlaces(result);
+
+        // sendBack records
+        emit(
+          GotReturnedForProducts(
+            records: result,
+            filter: _lastFilter,
+            start: _lastStart,
+            end: _lastEnd,
+            isLast: _isEnd,
+          ),
+        );
+      } catch (e) {
+        emit(FailedToLoadProductsReturnedRecords());
+        return;
+      }
+    }
+
+    Future<void> _onReturnProduct(ReturnToReturnedProducts event, emit) async {
+      try {
+        _records.add(event.record);
+
+        // create a deep coppy of the current records
+        List<ProductReturnedModel> result = List.from(_records);
+
+        // apply last filter
+        result = _filter(result);
+        result =_filterReturnedPlaces(result);
 
         // sendBack records
         emit(
@@ -191,5 +287,10 @@ class ReturnedProductsBloc
     on<LoadReturnedRecordsForAllInRange>(_onLoadInRange);
 
     on<FilterByReason>(_onFilterProductsByReason);
+
+    on<FilterByReturnedPlace>(_onFilterProductsByReturnedPlace);
+    
+    on<ReturnToReturnedProducts>(_onReturnProduct);
+
   }
 }
