@@ -7,8 +7,8 @@ import 'package:shop_owner/l10n/l10n.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
-import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/expiredPages/logic/expiredProductsBloc/expired_products_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/expiredPages/logic/models/expiredProductModel.dart';
 import 'package:shop_owner/router/navigationService.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
@@ -221,6 +221,76 @@ class AppDialogs extends AppDialogsBase {
                       if (Navigator.of(context).canPop()) {
                         Navigator.of(context).pop();
                       }
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(AppColors.success),
+                    ),
+                    child: Text(
+                      context.translate.no,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    anyDialogVisible = false;
+  }
+
+  Future<void> showMovingExpiredToDamaged({
+    bool isDismissable = true,
+    required ExpiredProductModel record,
+  }) async {
+    anyDialogVisible = true;
+    await showDialog(
+      barrierDismissible: isDismissable,
+      context: super.context,
+      builder: (context) {
+        final _textStyle = Theme.of(context).textTheme;
+        return _showDialog(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "are you sure you want to move this product to the damaged storage",
+                textAlign: TextAlign.center,
+                style: _textStyle.displayMedium!
+                  ..copyWith(
+                    color: AppColors.error,
+                  ),
+              ),
+
+              gap(height: AppSizes.s20),
+              // confirm button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      disposeAnyActiveDialogs();
+                      super.context.read<ExpiredProductsBloc>().add(
+                            GetRidOfExpiredProduct(
+                              record: record,
+                              context: super.context,
+                            ),
+                          );
+
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(AppColors.error),
+                    ),
+                    child: Text(
+                      context.translate.yes,
+                    ),
+                  ),
+
+                  // dispose button
+                  TextButton(
+                    onPressed: () {
+                      disposeAnyActiveDialogs();
                     },
                     style: const ButtonStyle(
                       backgroundColor:

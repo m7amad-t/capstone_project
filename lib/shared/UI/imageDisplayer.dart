@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shop_owner/shared/assetPaths.dart';
+import 'package:shop_owner/shared/UI/cacheImageWidget.dart';
 // instead of using this its better to use cached images , but i got an error , and i don't have enough time to fix it 
 // so i have useed this way to avoid displaying (nothing till it load or when having error to laod image)
 
@@ -35,20 +35,22 @@ class ImageDisplayerWithPlaceHolder extends StatelessWidget {
       ), 
       
 
-      child: Image(
-        image: NetworkImage(imageUrl , ),
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) return child;
-          return Image.asset(AssetPaths.placeHolder , fit: fit);
-        },
-        errorBuilder: (context, error, stackTrace) {
-          return Image.asset(AssetPaths.placeHolder , fit: fit,); 
-        },
+      child: CachedImageDisplayer(imageUrl: imageUrl  , fit: fit, ), 
+      
+      // Image(
+      //   image: NetworkImage(imageUrl , ),
+      //   loadingBuilder: (context, child, loadingProgress) {
+      //     if (loadingProgress == null) return child;
+      //     return Image.asset(AssetPaths.placeHolder , fit: fit);
+      //   },
+      //   errorBuilder: (context, error, stackTrace) {
+      //     return Image.asset(AssetPaths.placeHolder , fit: fit,); 
+      //   },
        
         
-        fit: fit ?? BoxFit.cover,
+      //   fit: fit ?? BoxFit.cover,
        
-      ),
+      // ),
     ); 
   }
 

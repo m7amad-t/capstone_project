@@ -102,6 +102,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     }
 
+    return null; 
+
   }
 
   bool _showTotalInCart(String location) {

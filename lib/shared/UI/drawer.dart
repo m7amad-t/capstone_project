@@ -4,8 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_owner/shared/UI/languageListTile.dart';
 import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
-import 'package:shop_owner/shared/UI/uiComponents.dart';
-import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/style/theme/logic/bloc/them_bloc_bloc.dart';

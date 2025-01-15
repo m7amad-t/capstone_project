@@ -142,6 +142,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
               ],
             ),
+            
+            
+            // cart information
             Positioned(
               bottom: AppPaddings.p6,
               left: AppPaddings.p14,
@@ -160,7 +163,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       ),
                       child: Container(
                         color:AppColors.primary
-                          .withAlpha(80),
+                          .withAlpha(30),
                       ),
                     ),
                   ),
@@ -172,7 +175,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     decoration: BoxDecoration(
                       backgroundBlendMode: BlendMode.color,
                      color:AppColors.primary
-                          .withAlpha(80),
+                          .withAlpha(30),
                       borderRadius: BorderRadius.all(
                         Radius.circular(
                           AppSizes.s8,

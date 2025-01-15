@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
@@ -134,17 +135,12 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                     itemCount: cartItems.length,
                     controller: _scrollController,
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          top: index == 0 ? AppPaddings.p30 : AppPaddings.p10,
-                          bottom: index == cartItems.length - 1
-                              ? AppSizes.s200
-                              : AppPaddings.p10,
-                        ),
-                        child: MenuCard(
-                          product: cartItems[index].product,
-                          showMoreDetails: true,
-                        ),
+                      return MenuCard(
+                        product: cartItems[index].product,
+                        showMoreDetails: true,
+                      ).paddingOnly(
+                        top: index == 0 ? AppPaddings.p30 : AppPaddings.p10, 
+                        bottom: index == cartItems.length -1 ? AppSizes.s200 : 0  , 
                       );
                     },
                   );
@@ -259,7 +255,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                         sigmaY: 10,
                       ),
                       child: Container(
-                        color: AppColors.primary.withAlpha(80),
+                        color: AppColors.primary.withAlpha(30),
                       ),
                     ),
                   ),
@@ -270,7 +266,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                     ),
                     decoration: BoxDecoration(
                       backgroundBlendMode: BlendMode.color,
-                      color: AppColors.primary.withAlpha(250),
+                      color: AppColors.primary.withAlpha(30),
                       borderRadius: BorderRadius.all(
                         Radius.circular(
                           AppSizes.s8,

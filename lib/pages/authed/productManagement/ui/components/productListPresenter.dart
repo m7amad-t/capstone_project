@@ -14,6 +14,7 @@ import 'package:shop_owner/pages/authed/productManagement/ui/components/products
 import 'package:shop_owner/pages/authed/productManagement/ui/components/productCard.dart';
 import 'package:shop_owner/router/extraTemplates/productManagementExtra.dart';
 import 'package:shop_owner/router/routes.dart';
+import 'package:shop_owner/shared/UI/appLoadingCards.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -87,6 +88,7 @@ class _ProductListPresenterState extends State<ProductListPresenter> {
         child: const Icon(Icons.add),
       );
     }
+    return null; 
   }
 
   @override
@@ -96,12 +98,8 @@ class _ProductListPresenterState extends State<ProductListPresenter> {
       listener: (context, state) {},
       builder: (context, state) {
         if (state is LoadingProducts) {
-          return const Scaffold(
-            body: Center(
-              child: RepaintBoundary(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+          return  Scaffold(
+            body: AppLoadingCards.productListPresenterTamplate(),
           );
         }
 

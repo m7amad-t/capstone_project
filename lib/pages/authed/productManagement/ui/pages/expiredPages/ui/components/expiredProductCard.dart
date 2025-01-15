@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/models/DamagedProductsModel.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/expiredPages/logic/models/expiredProductModel.dart';
+import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/UI/imageDisplayer.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
-class DamagedProductCard extends StatelessWidget {
-  final DamagedProductsModel record;
-  const DamagedProductCard({super.key, required this.record});
+class ExpiredProductCard extends StatelessWidget {
+  final ExpiredProductModel record;
+  const ExpiredProductCard({super.key, required this.record});
 
   double get totalLost {
-    return record.boughtedPrice * record.quantity;
+    return record.boughtedFor * record.quantity;
+  }
+
+  void _onTap(BuildContext context) {
+
+    locator<AppDialogs>().showMovingExpiredToDamaged(record: record); 
+    
   }
 
   @override
@@ -31,11 +39,16 @@ class DamagedProductCard extends StatelessWidget {
               width: AppSizes.s400,
               child: Card(
                   child: SizedBox(
-                height: AppSizes.s180,
-                child: _topSection(
-                  textStyle,
-                  context.fromLTR,
-                  context,
+                height: AppSizes.s150,
+                child: InkWell(
+                  onTap: (){
+                    _onTap(context); 
+                  },
+                  child: _topSection(
+                    textStyle,
+                    context.fromLTR,
+                    context,
+                  ),
                 ),
               )),
             ),
@@ -127,7 +140,7 @@ class DamagedProductCard extends StatelessWidget {
                       textStyle: textStyle,
                       isLTR: isLTR,
                       lable: "Boughted for",
-                      value: "\$${record.boughtedPrice.toStringAsFixed(2)}",
+                      value: "\$${record.boughtedFor.toStringAsFixed(2)}",
                     ),
                     gap(height: AppPaddings.p10),
                     _info(
@@ -138,16 +151,6 @@ class DamagedProductCard extends StatelessWidget {
                       valueColor: AppColors.error,
                     ),
                     gap(height: AppPaddings.p10),
-                    Opacity(
-                      opacity: 0.6,
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          _trimNote(record.note ?? ""),
-                          style: textStyle.bodySmall,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -176,9 +179,18 @@ class DamagedProductCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                Icon(
+                  Icons.date_range_outlined,
+                  color: AppColors.error,
+                  size: AppSizes.s20,
+                ),
+                gap(width: AppSizes.s6),
                 Text(
-                  getAppDate(record.dateTime),
-                )
+                  getAppDate(record.expireDate),
+                  style: textStyle.bodyMedium!.copyWith(
+                    color: AppColors.error,
+                  ),
+                ),
               ],
             ),
           ),
@@ -260,7 +272,6 @@ class DamagedProductCard extends StatelessWidget {
                 ),
               ),
             ),
-          
             Expanded(
               flex: 5,
               child: Column(
@@ -281,7 +292,7 @@ class DamagedProductCard extends StatelessWidget {
                     textStyle: textStyle,
                     isLTR: isLTR,
                     lable: "Boughted for",
-                    value: "\$${record.boughtedPrice.toStringAsFixed(2)}",
+                    value: "\$${record.boughtedFor.toStringAsFixed(2)}",
                   ),
                   gap(height: AppPaddings.p10),
                   _info(
@@ -292,23 +303,10 @@ class DamagedProductCard extends StatelessWidget {
                     valueColor: AppColors.error,
                   ),
                   gap(height: AppPaddings.p10),
-                  Opacity(
-                    opacity: 0.6,
-                    child: Expanded(
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          _trimNote(record.note ?? ""),
-                          style: textStyle.bodySmall,
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
             Expanded(flex: 2, child: Container()),
-          
           ],
         ).paddingSymmetric(
           horizontal: AppPaddings.p10,
@@ -323,8 +321,16 @@ class DamagedProductCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                getAppDate(record.dateTime),
-              )
+                getAppDate(record.expireDate),
+                style: textStyle.bodyMedium!.copyWith(
+                  color: AppColors.error,
+                ),
+              ),
+              Icon(
+                Icons.date_range_outlined,
+                color: AppColors.error,
+                size: AppSizes.s30,
+              ),
             ],
           ),
         ),
@@ -342,18 +348,6 @@ class DamagedProductCard extends StatelessWidget {
       return '${name.substring(0, maxLength)}...';
     }
     return name;
-  }
-
-  String _trimNote(String text) {
-    int maxLength = 70;
-    // first check if it contains enters
-    if (text.contains('\n')) {
-      text = text.split('\n')[0];
-    }
-    if (text.length > maxLength) {
-      return '${text.substring(0, maxLength)}...';
-    }
-    return text;
   }
 
   // info

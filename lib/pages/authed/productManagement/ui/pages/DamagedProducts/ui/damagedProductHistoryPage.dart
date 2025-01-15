@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_utils/get_utils.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/damagedproductsBloc/damaged_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/models/DamagedProductsModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/components/damagedProductCard.dart';
@@ -15,50 +16,57 @@ class DamagedProductsHistoryPage extends StatefulWidget {
   const DamagedProductsHistoryPage({super.key});
 
   @override
-  State<DamagedProductsHistoryPage> createState() => _DamagedProductsHistoryPageState();
+  State<DamagedProductsHistoryPage> createState() =>
+      _DamagedProductsHistoryPageState();
 }
 
-class _DamagedProductsHistoryPageState extends State<DamagedProductsHistoryPage> {
+class _DamagedProductsHistoryPageState
+    extends State<DamagedProductsHistoryPage> {
   late final ValueNotifier<DateTimeRange?> _slectedRange;
   late final ValueNotifier<bool> _showScrollToTop;
   bool _ended = false;
   late final ScrollController _scrollController;
   bool isLoadingMore = false;
 
-  void _scrollListener() {
-    // showing floating button section
-    if (_scrollController.offset > 550) {
-      _showScrollToTop.value = true;
-    } else {
-      _showScrollToTop.value = false;
-    }
+  // void _scrollListener() {
+  //   if(!mounted){
+  //     print('its not mounted '); 
+  //   }
+  //   // showing floating button section
+  //   if (_scrollController.offset > 550) {
+  //     _showScrollToTop.value = true;
+  //   } else {
+  //     _showScrollToTop.value = false;
+  //   }
 
-    if (_ended) {
-      return;
-    }
+  //   print("LOG : ScrollListener"); 
 
-    if (isLoadingMore) {
-      return;
-    }
+  //   if (_ended) {
+  //     return;
+  //   }
 
-    // if its in on loading state or error state done ask for next page..
-    if (context.read<DamagedProductBloc>().state is! GotDamagedProducts) {
-      return;
-    }
-    final double max = _scrollController.position.maxScrollExtent;
+  //   if (isLoadingMore) {
+  //     return;
+  //   }
 
-    // pagination section
-    if (max - 400 < _scrollController.offset) {
-      isLoadingMore = true;
-      if (_slectedRange.value != null) {
-        context
-            .read<DamagedProductBloc>()
-            .add(LoadDamagedProductInRange(range: _slectedRange.value!));
-      } else {
-        context.read<DamagedProductBloc>().add(LoadDamagedProducts());
-      }
-    }
-  }
+  //   // if its in on loading state or error state done ask for next page..
+  //   if (context.read<DamagedProductBloc>().state is! GotDamagedProducts) {
+  //     return;
+  //   }
+  //   final double max = _scrollController.position.maxScrollExtent;
+
+  //   // pagination section
+  //   if (max - 400 < _scrollController.offset) {
+  //     isLoadingMore = true;
+  //     if (_slectedRange.value != null) {
+  //       context
+  //           .read<DamagedProductBloc>()
+  //           .add(LoadDamagedProductInRange(range: _slectedRange.value!));
+  //     } else {
+  //       context.read<DamagedProductBloc>().add(LoadDamagedProducts());
+  //     }
+  //   }
+  // }
 
   int get _calculateDuration {
     int base = 100;
@@ -111,7 +119,7 @@ class _DamagedProductsHistoryPageState extends State<DamagedProductsHistoryPage>
   void initState() {
     super.initState();
     _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
+    // _scrollController.addListener(_scrollListener);
     _slectedRange = ValueNotifier(null);
     _showScrollToTop = ValueNotifier(false);
     context.read<DamagedProductBloc>().add(LoadDamagedProducts());
@@ -119,7 +127,7 @@ class _DamagedProductsHistoryPageState extends State<DamagedProductsHistoryPage>
 
   @override
   void dispose() {
-    _scrollController.removeListener(_scrollListener);
+    // _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     _slectedRange.dispose();
     _showScrollToTop.dispose();
@@ -186,32 +194,38 @@ class _DamagedProductsHistoryPageState extends State<DamagedProductsHistoryPage>
           _slectedRange.value = state.lastRange;
         }
 
-        print("LOG : ${records.length}");
         isLoadingMore = false;
         return ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: records.length + 1,
+          itemCount: records.length ,
           itemBuilder: (context, index) {
-            if (index == records.length) {
-              if (_ended) {
-                // trailing gap
-                return SizedBox(height: AppSizes.s100);
-              }
-              return Container(
-                padding: EdgeInsets.all(AppPaddings.p30),
-                alignment: Alignment.center,
-                child: const RepaintBoundary(
+            
+            // if (index == records.length ) {
 
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            }
+
+            //   if (_ended) {
+            //     // trailing gap
+            //     return SizedBox(height: AppSizes.s100);
+            //   }
+            //   return Shimmer.fromColors(
+            //     baseColor: Theme.of(context).scaffoldBackgroundColor,
+            //     highlightColor:
+            //         Theme.of(context).textTheme.bodyLarge!.color!.withAlpha(20),
+            //     loop: 30,
+            //     period: const Duration(milliseconds: 1000),
+            //     child: SizedBox(
+            //       height: AppSizes.s180,
+            //       child: const Card(),
+            //     ),
+            //   ).paddingOnly(top: AppPaddings.p10);
+            // }
+            
+            
             return DamagedProductCard(
               record: records[index],
             ).marginOnly(
               top: AppPaddings.p10,
-              bottom: index == records.length - 1 ? AppSizes.s50 : 0,
             );
           },
         );

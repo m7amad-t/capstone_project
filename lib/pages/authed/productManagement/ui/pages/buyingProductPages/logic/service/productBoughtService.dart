@@ -24,5 +24,22 @@ class ProductBoughtServcie{
 
 
   }
+  Future<List<ProductBoughtModel>> getListFromJsonForProduct(int page , int id )async{
+
+    await Future.delayed(const Duration(seconds: 1)); 
+
+    final res = boughtedProductsData; 
+
+    final json = jsonDecode(res); 
+
+    final List<ProductBoughtModel> records = ProductBoughtModel.listFromJson(json); 
+
+    records.removeWhere((product) => product.product.id!= id);
+
+    return records;  
+
+
+
+  }
 
 }

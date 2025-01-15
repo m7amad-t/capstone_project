@@ -6,11 +6,10 @@ import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProduc
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/damagedProductHistoryPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/damagedProductsPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/pages/boughtedProduct.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/expiredPages/ui/expiredProductsPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/pages/buyingFormPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/pages/buyingPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/catrgoryPages/CategoriesPage.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/components/productListPresenter.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/catrgoryPages/categoryEditorPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/productPages/ProductPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/productPages/productDetailPage.dart';
@@ -434,6 +433,44 @@ class AppRouter {
                           child: DamagedProductsPage(
                             key: state.pageKey,
                           ),
+                        ),
+                        routes: [
+                          // Damaged history page...
+                          GoRoute(
+                            path: AppRoutes.damagedProductsHistory,
+                            pageBuilder: (context, state) => NoTransitionPage(
+                                key: state.pageKey,
+                                child:const DamagedProductsHistoryPage()
+                              )
+                            
+                          ),
+                       
+                          // add damaged products
+                          GoRoute(
+                            path: AppRoutes.damagedProductForm,
+                            pageBuilder: (context, state) {
+                              final data = state.extra as Map<String, dynamic>;
+                              return NoTransitionPage(
+                                key: state.pageKey,
+                                child: DamagedProductForm(
+                                  key: state.pageKey,
+                                  product: data['product'],
+                                ),
+                              );
+                            },
+                          ),
+                       
+                        ],
+                      ),
+                    
+                      // Expired products
+                      GoRoute(
+                        path: AppRoutes.expiredProducts,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: ExpiredProductsPage(
+                            key: state.pageKey,
+                          )
                         ),
                         routes: [
                           // Damaged history page...

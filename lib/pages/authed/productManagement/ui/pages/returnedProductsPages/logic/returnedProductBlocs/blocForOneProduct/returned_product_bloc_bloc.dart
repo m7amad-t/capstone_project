@@ -12,7 +12,6 @@ import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProdu
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForAllProducts/returned_products_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/shared/enum.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/service/productReturningService.dart';
-import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/UI/uiHelper.dart';
@@ -102,6 +101,9 @@ class ReturnedProductBloc
 
     Future<void> _onLoad(LoadReturnedProduct event, emit) async {
       try {
+        if(_lastEnd != null || _lastStart != null){
+          _clear(); 
+        }
         if (_lastProduct != null) {
           if (_lastProduct!.id != event.product.id) {
             emit(LoadingReturedProduct());
@@ -189,15 +191,18 @@ class ReturnedProductBloc
             _lastEnd = event.end;
             _lastStart = event.start;
             emit(LoadingReturedProduct());
+
           }
-          if (_lastEnd == event.end || _lastStart == event.start) {
+          if (_lastEnd != event.end || _lastStart != event.start) {
             _clear();
             _lastProduct = event.product;
             _lastEnd = event.end;
             _lastStart = event.start;
             emit(LoadingReturedProduct());
+
           }
         } else {
+
           _lastProduct = event.product;
           _lastEnd = event.end;
           _lastStart = event.start;

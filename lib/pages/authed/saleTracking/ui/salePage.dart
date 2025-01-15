@@ -12,6 +12,7 @@ import 'package:shop_owner/pages/authed/productManagement/ui/components/ProductL
 import 'package:shop_owner/pages/authed/productManagement/ui/components/productsOrderBySection.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/components/menuCard.dart';
+import 'package:shop_owner/shared/UI/appLoadingCards.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -58,18 +59,11 @@ class _SalePageState extends State<SalePage> {
   Widget build(BuildContext context) {
     final TextTheme _textStyle = Theme.of(context).textTheme;
     return BlocConsumer<ProductBloc, ProductBlocState>(
-      listener: (context, state) {
-        print('state wa.....'); 
-        print('its from bloc listener in sale page'); 
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is LoadingProducts) {
-          return const Scaffold(
-            body: Center(
-              child: RepaintBoundary(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+          return Scaffold(
+            body: AppLoadingCards.productListPresenterTamplate(),
           );
         }
 

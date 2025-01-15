@@ -80,8 +80,6 @@ class _MenuCardState extends State<MenuCard> {
 
   @override
   Widget build(BuildContext context) {
-    // final _textStyle = Theme.of(context).textTheme;
-    final isLTR = context.fromLTR;
 
     return BlocBuilder<CartBloc, CartBlocState>(
       buildWhen: (previous, current) {
@@ -98,73 +96,85 @@ class _MenuCardState extends State<MenuCard> {
       },
       builder: (context, state) {
         final _textStyle = Theme.of(context).textTheme;
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: widget.showMoreDetails ? AppSizes.s250 : AppSizes.s150,
-            maxWidth: AppSizes.s300,
-          ),
-          child: Card(
-            child: Column(
-              children: [
-                // main section , which is product image, name and description...
-                Expanded(
-                  flex: 2,
-                  child: ProductMainCardSection(
-                    product: widget.product,
-                    isCart: true,
-                  ),
-                ),
-
-                // advance section , which is are the total section...
-                if (widget.showMoreDetails)
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: AppPaddings.p10),
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppPaddings.p18,
-                          vertical: AppPaddings.p10,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppSizes.s8),
-                          color: AppColors.primary.withAlpha(100),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              "total",
-                              style: _textStyle.bodyMedium!
-                                  .copyWith(color: AppColors.primary),
+        return LayoutBuilder(
+          builder: (context , constraints) {
+            return SizedBox(
+              width: constraints.maxWidth,
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: SizedBox(
+                  width: AppSizes.s400,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: widget.showMoreDetails ? AppSizes.s250 : AppSizes.s150,
+                    ),
+                    child: Card(
+                      child: Column(
+                        children: [
+                          // main section , which is product image, name and description...
+                          Expanded(
+                            flex: 2,
+                            child: ProductMainCardSection(
+                              product: widget.product,
+                              isCart: true,
                             ),
-                            // gap(width: AppSizes.s10),
-                            Text(
-                              _getTotal(state),
-                              style: _textStyle.bodyMedium!.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.bold,
+                          ),
+                
+                          // advance section , which is are the total section...
+                          if (widget.showMoreDetails)
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: AppPaddings.p10),
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: AppPaddings.p18,
+                                    vertical: AppPaddings.p10,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(AppSizes.s8),
+                                    color: AppColors.primary.withAlpha(100),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        "total",
+                                        style: _textStyle.bodyMedium!
+                                            .copyWith(color: AppColors.primary),
+                                      ),
+                                      // gap(width: AppSizes.s10),
+                                      Text(
+                                        _getTotal(state),
+                                        style: _textStyle.bodyMedium!.copyWith(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                          ],
-                        ),
+                
+                          // quantity controller
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              alignment: Alignment.bottomCenter,
+                              child: _getProperWidget(state),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-
-                // quantity controller
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    alignment: Alignment.bottomCenter,
-                    child: _getProperWidget(state),
-                  ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          }
         );
       },
     );

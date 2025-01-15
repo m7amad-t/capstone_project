@@ -38,19 +38,38 @@ class BuyingProductBloc
     }
 
     Future<void> _loadMore() async {
-      print('---------------------------'); 
-      final res = await _service.getListFromJson(_currentPage++);
+      final res = await _service.getListFromJsonForProduct(
+          _currentPage++, _lastProduct!.id);
       if (res.length < _service.perPage) {
         _isEnded = true;
       }
-
-      print(res); 
-      print(res.length); 
 
       _records.addAll(res);
     }
 
     Future<void> _onLoad(LoadProductBoughtHistory event, emit) async {
+      
+      
+        // check if last product is Null
+      if (_lastProduct == null) {
+        _clear();
+        _lastProduct = event.product;
+        emit(LoadingBoughtForProduct());
+      }
+
+      if (_lastProduct!.id != event.product.id) {
+        _clear();
+        _lastProduct = event.product;
+        emit(LoadingBoughtForProduct());
+      }
+      
+      if (_lastRange != null) {
+        _clear();
+        _lastProduct = event.product;
+        emit(LoadingBoughtForProduct());
+      }
+
+
       // if all records have been loaded
       if (_isEnded) {
         emit(
@@ -63,12 +82,7 @@ class BuyingProductBloc
         );
       }
 
-      // check if last product is Null
-      if (_lastProduct == null) {
-        _clear();
-        _lastProduct = event.product;
-        emit(LoadingBoughtForProduct());
-      }
+    
 
       // load records
       await _loadMore();
@@ -87,6 +101,8 @@ class BuyingProductBloc
       _clear();
 
       emit(LoadingBoughtForProduct());
+
+      _lastProduct = event.product;
 
       // load records
       await _loadMore();
@@ -108,6 +124,16 @@ class BuyingProductBloc
       if (_lastRange == null) {
         _clear();
         emit(LoadingBoughtForProduct());
+        _lastProduct = event.product;
+        _lastRange = event.range;
+      } else {
+        if (_lastRange!.start != event.range.start ||
+            _lastRange!.end != event.range.end) {
+          _clear();
+          emit(LoadingBoughtForProduct());
+          _lastProduct = event.product;
+          _lastRange = event.range;
+        }
       }
 
       if (_isEnded) {
@@ -136,7 +162,6 @@ class BuyingProductBloc
       BoughtProductInSingleProduct event,
       emit,
     ) async {
-
       locator<AppDialogs>().showCostumTextLoading('Buying Product..');
 
       Future.delayed(const Duration(seconds: 1));

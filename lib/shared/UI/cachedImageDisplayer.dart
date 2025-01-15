@@ -13,7 +13,6 @@ class AppImageDisplayer extends StatelessWidget {
     imageUrl: imageUrl,
     placeholder: (context, url) {
       // print('this is the palce holder callback secion..');
-
       return Image.asset(
         AssetPaths.placeHolder, // Your placeholder image
         fit: BoxFit.cover,

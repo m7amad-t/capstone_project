@@ -6,6 +6,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/components/boughtedProductCard.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductBloc/buying_product_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductsBloc/buying_products_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/models/productReturnedModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
@@ -31,21 +32,63 @@ class ProductHistorySection extends StatefulWidget {
 }
 
 class _ProductHistorySectionState extends State<ProductHistorySection> {
-  final ValueNotifier<DateTimeRange?> _selectedRange =
+  final ValueNotifier<DateTimeRange?> _returnedSelectedRange =
+      ValueNotifier<DateTimeRange?>(null);
+  final ValueNotifier<DateTimeRange?> _boughtedSelectedRange =
       ValueNotifier<DateTimeRange?>(null);
 
-  Future<void> _onDateRangePicker() async {
-    _selectedRange.value = await showAppDateTimeRangePicker(
-      context,
-      _selectedRange.value,
-    );
+  updateBoughtedSelectedRange(DateTimeRange? newRange) {
+    if (_boughtedSelectedRange.value == newRange) {
+      return;
+    }
 
-    if (_selectedRange.value != null) {
+    if (newRange != null) {
+      _boughtedSelectedRange.value = newRange;
+      // fetch data for returned products in the new range
+      context.read<BuyingProductBloc>().add(LoadProductBoughtHistoryInRange(
+            product: widget.product,
+            range: _boughtedSelectedRange.value!,
+          ));
+    } else {
+      _boughtedSelectedRange.value = newRange;
+      // fetch data for boughted products : no range
+      context.read<BuyingProductBloc>().add(LoadProductBoughtHistory(
+            product: widget.product,
+          ));
+    }
+  }
+
+  updateReturnedSelectedRange(DateTimeRange? newRange) {
+    if (_returnedSelectedRange.value == newRange) {
+      return;
+    }
+
+    if (newRange != null) {
+      _returnedSelectedRange.value = newRange;
+      // fetch data for returned products in the new range
       context.read<ReturnedProductBloc>().add(LoadReturnedProductInRange(
             product: widget.product,
-            start: _selectedRange.value!.start,
-            end: _selectedRange.value!.end,
+            end: _returnedSelectedRange.value!.end,
+            start: _returnedSelectedRange.value!.start,
           ));
+    } else {
+      _returnedSelectedRange.value = newRange;
+      // fetch data for boughted products : no range
+      context.read<ReturnedProductBloc>().add(LoadReturnedProduct(
+            product: widget.product,
+          ));
+    }
+  }
+
+  Future<void> _onDateRangePicker() async {
+    final result = await showAppDateTimeRangePicker(
+      context,
+      isReturned ? _returnedSelectedRange.value : _boughtedSelectedRange.value,
+    );
+    if (isReturned) {
+      return updateReturnedSelectedRange(result);
+    } else {
+      return updateBoughtedSelectedRange(result);
     }
   }
 
@@ -57,7 +100,16 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
           product: widget.product,
         ));
 
-    context.read<BuyingProductBloc>().add(LoadProductBoughtHistory(product: widget.product)); 
+    context
+        .read<BuyingProductBloc>()
+        .add(ReloadProductBoughtHistory(product: widget.product));
+  }
+
+  @override
+  void dispose() {
+    _boughtedSelectedRange.dispose();
+    _returnedSelectedRange.dispose();
+    super.dispose();
   }
 
   bool isReturned = true;
@@ -135,7 +187,11 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
         // Divider(height: 0),
         gap(height: AppSizes.s20),
 
-        if (isReturned) _selectDateRangeButton(),
+        // button for selecting range
+        isReturned
+            ? _selectDateRangeButton()
+            : _selectDateRangeButtonForBoughted(),
+
         gap(height: AppSizes.s4),
         _selectedDateRange(),
         if (isReturned) gap(height: AppSizes.s10),
@@ -143,24 +199,51 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
         // _dateRangePicker(),
 
         gap(height: AppSizes.s10),
-          Container(
-            child: isReturned
-                ? _returnedHistory()
-                : _boughtedHistory(), 
-          ),
+        Container(
+          child: isReturned ? _returnedHistory() : _boughtedHistory(),
+        ),
       ],
     );
   }
 
   Widget _selectedDateRange() {
-    if (!isReturned) {
-      return const SizedBox();
-    }
-
     final textStyle = Theme.of(context).textTheme;
 
+    if (!isReturned) {
+      return ValueListenableBuilder<DateTimeRange?>(
+        valueListenable: _boughtedSelectedRange,
+        builder: (context, value, child) {
+          if (value == null) {
+            return const SizedBox();
+          }
+          return Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text(
+                  'Selected Range',
+                  style: textStyle.displaySmall,
+                ),
+              ),
+              gap(width: AppPaddings.p10),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "${getAppDate(value.start)}     to     ${getAppDate(value.end)}",
+                    style: textStyle.displaySmall,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return ValueListenableBuilder<DateTimeRange?>(
-      valueListenable: _selectedRange,
+      valueListenable: _returnedSelectedRange,
       builder: (context, value, child) {
         if (value == null) {
           return const SizedBox();
@@ -198,7 +281,45 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
         Expanded(
           flex: 2,
           child: ValueListenableBuilder(
-            valueListenable: _selectedRange,
+            valueListenable: _returnedSelectedRange,
+            builder: (context, value, child) {
+              return InkWell(
+                onTap: _onDateRangePicker,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(AppSizes.s8),
+                    border: Border.all(color: AppColors.primary),
+                    color: value != null
+                        ? AppColors.primary.withAlpha(100)
+                        : AppColors.primary,
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    value == null ? 'Select Range' : 'Change Range',
+                    style: textStyle.bodyLarge!.copyWith(
+                      color: value == null
+                          ? AppColors.onPrimary
+                          : AppColors.primary,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _selectDateRangeButtonForBoughted() {
+    final textStyle = Theme.of(context).textTheme;
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: ValueListenableBuilder(
+            valueListenable: _boughtedSelectedRange,
             builder: (context, value, child) {
               return InkWell(
                 onTap: _onDateRangePicker,
@@ -309,9 +430,11 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
     return BlocBuilder<ReturnedProductBloc, ReturnedProductBlocState>(
       builder: (context, state) {
         if (state is LoadingReturedProduct) {
-          return const Center(
-            child: RepaintBoundary(
-              child: CircularProgressIndicator(),
+          print('LOG : its loading state...');
+          return RepaintBoundary(
+            child: AppLoadingCards(
+              height: AppSizes.s200,
+              cards: 1,
             ),
           );
         }
@@ -324,6 +447,10 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
 
         if (state is GotReturnedForProduct) {
           records = state.records;
+        }
+
+        if (records.isEmpty) {
+          return Text("No Data found");
         }
 
         return AnimatedContainer(
@@ -347,11 +474,10 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
   Widget _boughtedHistory() {
     return BlocBuilder<BuyingProductBloc, BuyingProductBlocState>(
       builder: (context, state) {
-        print(state); 
         if (state is LoadingBoughtForProduct) {
-          return  Center(
-            child: RepaintBoundary(
-              child: AppLoadingCards(height: AppSizes.s180),
+          return RepaintBoundary(
+            child: AppLoadingCards(
+              height: AppSizes.s200,
             ),
           );
         }
@@ -366,22 +492,20 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
           records = state.records;
         }
 
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          width: isReturned ? null : 0,
-          child: ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: records.length,
-            itemBuilder: (context, index) => BoughtedProductCard(
-              record: records[index],
-            ).paddingSymmetric(
-              horizontal: AppPaddings.p1,
-            ),
-          ),
+        print(
+            "LOG : records length in buying history : product section : ${records.length}");
+
+        return ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: records.length,
+          itemBuilder: (context, index) => BoughtedProductCard(
+            record: records[index],
+          ).paddingSymmetric(
+              // horizontal: AppPaddings.p10,
+              vertical: AppPaddings.p10),
         );
       },
     );
   }
-
 }
