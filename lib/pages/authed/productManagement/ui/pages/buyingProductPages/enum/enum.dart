@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, constant_identifier_names, camel_case_extensions
 
 import 'package:flutter/material.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 enum PURCHASE_UNITE_TYPE {
   PACKAGE,
@@ -34,9 +35,9 @@ extension pruchase_unit_type_name on PURCHASE_UNITE_TYPE {
   String name(BuildContext context) {
     switch (this) {
       case PURCHASE_UNITE_TYPE.PACKAGE:
-        return 'Package';
+        return context.translate.package;
       case PURCHASE_UNITE_TYPE.ITEM:
-        return 'Item';
+        return context.translate.product;
     }
   }
 }

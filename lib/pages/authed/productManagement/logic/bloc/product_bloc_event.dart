@@ -23,19 +23,19 @@ extension ProductEnumExtension on ORDER_PRODUCT_BY {
   String name(BuildContext context) {
     switch (this) {
       case ORDER_PRODUCT_BY.NAME:
-        return context.translate.name_a_to_z;
+        return "context.translate.name_a_to_z";
       case ORDER_PRODUCT_BY.NAME_DESC:
-        return context.translate.name_z_to_a;
+        return "context.translate.name_z_to_a";
       case ORDER_PRODUCT_BY.PRICE:
-        return context.translate.price_high_to_low;
+        return "context.translate.price_high_to_low";
       case ORDER_PRODUCT_BY.PRICE_DESC:
-        return context.translate.price_low_to_high;
+        return "context.translate.price_low_to_high";
       case ORDER_PRODUCT_BY.QUANTITY:
-        return context.translate.quantity_high_to_low;
+        return "context.translate.quantity_high_to_low";
       case ORDER_PRODUCT_BY.QUANTITY_DESC:
-        return context.translate.quantity_low_to_high;
+        return "context.translate.quantity_low_to_high";
       default:
-        return context.translate.order_by_default;
+        return "context.translate.order_by_default";
     }
   }
 }

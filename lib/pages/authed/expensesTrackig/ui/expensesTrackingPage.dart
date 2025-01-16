@@ -14,7 +14,7 @@ class _ExpensesTrackingState extends State<ExpensesTracking> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.translate.expenses_tracking),
+        title: Text("context.translate.expenses_tracking"),
       ),
       body: Container(),
     );

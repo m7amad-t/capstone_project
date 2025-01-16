@@ -411,10 +411,10 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                               return context.translate.enter_quantity;
                             }
                             if (int.tryParse(value) == null) {
-                              return context.translate.enter_valid_quantity;
+                              return "context.translate.enter_valid_quantity";
                             }
                             if (int.parse(value) < 0) {
-                              return context.translate.enter_valid_quantity;
+                              return "context.translate.enter_valid_quantity";
                             }
 
                             return null;
@@ -586,10 +586,10 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                                   return context.translate.enter_quantity;
                                 }
                                 if (int.tryParse(value) == null) {
-                                  return context.translate.enter_valid_quantity;
+                                  return "context.translate.enter_valid_quantity";
                                 }
                                 if (int.parse(value) < 0) {
-                                  return context.translate.enter_valid_quantity;
+                                  return "context.translate.enter_valid_quantity";
                                 }
 
                                 return null;
@@ -703,10 +703,10 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                   return context.translate.enter_quantity;
                 }
                 if (double.tryParse(value) == null) {
-                  return context.translate.enter_valid_quantity;
+                  return "context.translate.enter_valid_quantity";
                 }
                 if (double.parse(value) < 0) {
-                  return context.translate.enter_valid_quantity;
+                  return "context.translate.enter_valid_quantity";
                 }
 
                 return null;

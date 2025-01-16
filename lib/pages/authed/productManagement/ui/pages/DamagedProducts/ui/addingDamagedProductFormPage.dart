@@ -4,15 +4,10 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/damagedproductsBloc/damaged_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/models/DamagedProductsModel.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/models/productReturnedModel.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/shared/enum.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
-import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
-import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 import 'package:shop_owner/utils/inputFormater.dart';
 
@@ -51,7 +46,6 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
   void _onReturnProductButton() {
     if (_formKey.currentState!.validate()) {
 
-      print("LOG : dddd");
       // create return model
       final DamagedProductsModel model = DamagedProductsModel(
         id: -1,
@@ -62,7 +56,6 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
         dateTime: DateTime.now(),
       );
 
-      print("LOG : $model");
 
 
       context.read<DamagedProductBloc>().add(
@@ -73,7 +66,7 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
 
   @override
   Widget build(BuildContext context) {
-    final _textStyle = Theme.of(context).textTheme;
+    final textStyle = Theme.of(context).textTheme;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -93,14 +86,14 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
 
                 // title
                 Text(
-                  'Damaged Product Form',
-                  style: _textStyle.displayLarge,
+                  context.translate.damaged_product_form,
+                  style: textStyle.displayLarge,
                 ),
                 gap(height: AppSizes.s10),
 
                 Text(
                   "(${widget.product.name})",
-                  style: _textStyle.displayLarge,
+                  style: textStyle.displayLarge,
                 ),
                 gap(height: AppSizes.s30),
 
@@ -119,10 +112,10 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
                         controller: _boughtedFor,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter cost of the product';
+                            return context.translate.please_enter_cost;
                           }
                           if (double.tryParse(value) == null) {
-                            return 'Please enter valid cost';
+                            return context.translate.please_enter_valid_cost;
                           }
 
                           return null;
@@ -131,8 +124,8 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
                         inputFormatters: [
                           AppInputFormatter.price,
                         ],
-                        decoration: const InputDecoration(
-                          hintText: 'Cost per item',
+                        decoration:  InputDecoration(
+                          hintText: context.translate.cost,
                         ),
                       ).paddingOnly(
                         bottom: AppPaddings.p10,
@@ -151,8 +144,8 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
                       TextField(
                         controller: _noteController,
                         maxLines: 4,
-                        decoration: const InputDecoration(
-                          hintText: 'Note',
+                        decoration:  InputDecoration(
+                          hintText: context.translate.cost,
                         ),
                       ),
                     ],
@@ -166,8 +159,8 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
                     Expanded(
                       child: TextButton(
                         onPressed: _onReturnProductButton,
-                        child: const Text(
-                          'Add to Damaged Invintory',
+                        child: Text(
+                          context.translate.add_to_damaged_inventoy,
                         ),
                       ),
                     ),
@@ -187,7 +180,7 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
   Widget _quantityControllerSection() {
     return Builder(
       builder: (context) {
-        final _textStyle = Theme.of(context).textTheme;
+        final textStyle = Theme.of(context).textTheme;
         final bool isLTR = context.fromLTR;
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,10 +228,10 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
                     return context.translate.enter_quantity;
                   }
                   if (int.tryParse(value) == null) {
-                    return context.translate.enter_valid_quantity;
+                    return context.translate.enter_quantity;
                   }
                   if (int.parse(value) <= 0) {
-                    return context.translate.enter_valid_quantity;
+                    return context.translate.please_enter_quantity;
                   }
 
                   return null;
@@ -249,7 +242,7 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
                   AppInputFormatter.numbersOnly,
                 ],
                 keyboardType: TextInputType.number,
-                style: _textStyle.displayMedium,
+                style: textStyle.displayMedium,
                 decoration: InputDecoration(
                   fillColor: AppColors.primary.withAlpha(100),
                   filled: true,
@@ -267,7 +260,7 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
                     ),
                     borderRadius: BorderRadius.circular(0),
                   ),
-                  hintText: 'Retured Quantity',
+                  hintText: context.translate.returned_quantity,
                 ),
               ),
             ),

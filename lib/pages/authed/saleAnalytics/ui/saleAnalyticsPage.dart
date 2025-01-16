@@ -14,7 +14,7 @@ class _SaleAnalyticPageState extends State<SaleAnalyticPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.translate.sale_analytics),
+        title: Text(context.translate.analytics),
       ),
       body: Container(),
     );

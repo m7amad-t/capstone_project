@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
     final _textStyles = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: Text(context.translate.sign_in),
+        title: Text(context.translate.signin),
       ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -140,13 +140,11 @@ class _LoginPageState extends State<LoginPage> {
                             // bottom: 0,
                             top: AppSizes.s2,
                             right:
-                                Localizations.localeOf(context).toString() ==
-                                        'en'
+                                context.fromLTR
                                     ? 10
                                     : null,
                             left:
-                                Localizations.localeOf(context).toString() !=
-                                        'en'
+                                !context.fromLTR
                                     ? 10
                                     : null,
                             child: IconButton(
@@ -175,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: TextButton(
                               onPressed: _validate,
                               child: Text(
-                                context.translate.sign_in,
+                                context.translate.signin,
                                 style: _textStyles.displayLarge!.copyWith(
                                   color: AppColors.onPrimary,
                                 ),

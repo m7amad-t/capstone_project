@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +11,7 @@ import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 part 'damaged_product_bloc_event.dart';
 part 'damaged_product_bloc_state.dart';
@@ -110,19 +113,19 @@ class DamagedProductBloc
 
       // if its not removed from the inventory remove it ...
       if (!event.returned) {
-        
         // show loading dialog
-        locator<AppDialogs>()
-            .showCostumTextLoading("Moving Product To Damaged Inventory");
-        
+        locator<AppDialogs>().showCostumTextLoading(
+          event.context.translate.moving_to_damaged_inventory,
+        );
+
         // simulate sending request
-        await Future.delayed(Duration(seconds: 1));
-        
-        // show message 
+        await Future.delayed(const Duration(seconds: 1));
+
+        // show message
         showSnackBar(
           message: SuccessSnackBar(
-            title: "Product moved to damaged inventory",
-            message: 'Product moved to damaged inventory',
+            title: event.context.translate.add_to_damaged_inventoy,
+            message: event.context.translate.add_to_damaged_inventoy,
           ),
         );
         event.context.read<ProductBloc>().add(
@@ -131,8 +134,8 @@ class DamagedProductBloc
                 quantity: -(event.record.quantity),
               ),
             );
-        locator<AppDialogs>().disposeAnyActiveDialogs(); 
-        GoRouter.of(event.context).pop(); 
+        locator<AppDialogs>().disposeAnyActiveDialogs();
+        GoRouter.of(event.context).pop();
       }
 
       emit(GotDamagedProducts(

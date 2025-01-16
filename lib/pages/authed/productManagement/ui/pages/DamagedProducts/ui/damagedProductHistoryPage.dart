@@ -11,6 +11,7 @@ import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class DamagedProductsHistoryPage extends StatefulWidget {
   const DamagedProductsHistoryPage({super.key});
@@ -181,7 +182,7 @@ class _DamagedProductsHistoryPageState
 
         if (state is FailedToLoadDamagedProducts) {
           return Text(
-            "Failed to load damaged products",
+            context.translate.something_went_wrong,
             style: textStyle.displayMedium,
             textAlign: TextAlign.center,
           );
@@ -247,7 +248,7 @@ class _DamagedProductsHistoryPageState
             Expanded(
               flex: 1,
               child: Text(
-                'Selected Range',
+                context.translate.select_a_reason,
                 style: textStyle.displaySmall,
               ),
             ),
@@ -294,7 +295,7 @@ class _DamagedProductsHistoryPageState
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    value == null ? 'Select Range' : 'Change Range',
+                    value == null ? context.translate.select_a_reason : context.translate.change_selected_date_range,
                     style: textStyle.bodyLarge!.copyWith(
                       color: value == null
                           ? AppColors.onPrimary

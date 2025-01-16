@@ -77,11 +77,11 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
     // if product is not provided then create new one , else update the one how provided,
 
     String loadingDialog =
-        _isUpdating ? context.translate.updating : context.translate.uploading;
+        _isUpdating ? context.translate.updating_category : context.translate.adding_new_category;
 
     // show loading dialog
     locator<AppDialogs>()
-        .showCostumTextLoading("$loadingDialog ${context.translate.product}");
+        .showCostumTextLoading(loadingDialog);
 
     // wait for one second
     await Future.delayed(const Duration(seconds: 2));
@@ -117,8 +117,8 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
     }
     // snackbar title
     String title = _isUpdating
-        ? context.translate.updated_succesfully
-        : context.translate.inserted_successfuly;
+        ? context.translate.category_updated_successfully
+        : context.translate.category_added_successfully;
 
     showSnackBar(
       message: SuccessSnackBar(
@@ -157,7 +157,7 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
           child: TextFormField(
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return context.translate.enter_name;
+                return context.translate.enter_category_name;
               }
               if (_isUpdating) {
                 if (value == widget.category!.name) {
@@ -166,7 +166,7 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
               }
               for (final cat in widget.categories) {
                 if (cat.name == value) {
-                  return "this name is already in the";
+                  return context.translate.already_have_this_category;
                 }
               }
               return null;
@@ -174,7 +174,7 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
             style: _textStyle.bodySmall,
             controller: _nameController,
             decoration: InputDecoration(
-              hintText: context.translate.enter_category_name,
+              hintText: context.translate.category_name,
             ),
           ),
         ),
@@ -210,7 +210,7 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
                   style: const ButtonStyle(
                     backgroundColor: WidgetStatePropertyAll(AppColors.error),
                   ),
-                  child: Text(context.translate.deleted),
+                  child: Text(context.translate.delete),
                 ),
               ),
             ],

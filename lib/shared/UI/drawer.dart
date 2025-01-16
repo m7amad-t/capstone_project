@@ -115,7 +115,7 @@ Widget appDrawer(BuildContext context) {
                           backgroundColor: WidgetStatePropertyAll(AppColors.error),
                         ),
                         child: Text(
-                          context.translate.log_out,
+                          context.translate.sign_out,
                         ),
                       ),
                     ),

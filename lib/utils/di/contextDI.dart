@@ -7,6 +7,8 @@ import 'package:shop_owner/router/navigationService.dart';
 import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/utils/auth/authService.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 final locator = GetIt.instance;
 
@@ -27,6 +29,16 @@ void setupAppDynamicSizes (BuildContext context){
     return;
   } else {
     locator.registerSingleton(DynamicSizes(context: context));
+  }
+
+} 
+
+void setupAllLocalization (BuildContext context){
+  // register daynamic size class
+  if (locator.isRegistered<AppLocalizations>()) {
+    return;
+  } else {
+    locator.registerSingleton( AppLocalizations.of(context)!);
   }
 
 } 

@@ -13,6 +13,8 @@ import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 part 'cart_bloc_event.dart';
 part 'cart_bloc_state.dart';
 
@@ -67,8 +69,8 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
         if (quantity > product.quantity) {
           showSnackBar(
             message: WarningSnackBar(
-              title: "out of stok",
-              message: "out of stok",
+              title: locator<AppLocalizations>().out_of_stock,
+              message: locator<AppLocalizations>().out_of_stock,
             ),
           );
           return emit(
@@ -102,8 +104,8 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
         // show a snackbar
         showSnackBar(
           message: WarningSnackBar(
-            title: "out of stock",
-            message: "out of stock",
+            title: locator<AppLocalizations>().out_of_stock,
+            message: locator<AppLocalizations>().out_of_stock,
           ),
         );
         return;
@@ -116,8 +118,8 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
             // show a snackbar
             showSnackBar(
               message: WarningSnackBar(
-                title: "Out of stock ",
-                message: "this product have only ${product.quantity} in stock",
+                title: locator<AppLocalizations>().out_of_stock,
+                message: locator<AppLocalizations>().out_of_stock,
               ),
             );
             // already at max quantity, do nothing
@@ -224,7 +226,7 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
 
       // display loading screen
       locator<AppDialogs>().showCostumTextLoading(
-        'Initiating the transaction..',
+        locator<AppLocalizations>().initiating_transaction,
       );
 
       // simulate network delay
@@ -235,8 +237,8 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
         // show a snackbar
         showSnackBar(
           message: WarningSnackBar(
-            title: "Cart is empty",
-            message: "Add some items to cart",
+            title: locator<AppLocalizations>().your_cart_is_empty,
+            message: locator<AppLocalizations>().your_cart_is_empty,
           ),
         );
 
@@ -269,8 +271,8 @@ class CartBloc extends Bloc<CartBlocEvent, CartBlocState> {
       // show a snackbar
       showSnackBar(
         message: SuccessSnackBar(
-          title: "Order placed",
-          message: "Order placed successfully",
+          title: locator<AppLocalizations>().sold_product_successfully,
+          message: locator<AppLocalizations>().sold_product_successfully,
         ),
       );
 

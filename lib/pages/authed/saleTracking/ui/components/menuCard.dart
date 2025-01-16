@@ -283,10 +283,10 @@ class _MenuCardState extends State<MenuCard> {
                     return context.translate.enter_quantity;
                   }
                   if (int.tryParse(value) == null) {
-                    return context.translate.enter_valid_quantity;
+                    return context.translate.please_enter_quantity;
                   }
                   if (int.parse(value) < 0) {
-                    return context.translate.enter_valid_quantity;
+                    return context.translate.please_enter_valid_quantity;
                   }
 
                   return null;

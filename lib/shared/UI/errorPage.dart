@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({super.key});
@@ -27,7 +28,7 @@ class ErrorPage extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
-                  'sorry error occurred',
+                  context.translate.something_went_wrong,
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
               ),
@@ -40,8 +41,8 @@ class ErrorPage extends StatelessWidget {
                       onPressed: () {
                         GoRouter.of(context).go(AppRoutes.home);
                       },
-                      child: const Text(
-                        'Go Home',
+                      child:  Text(
+                        context.translate.go_home,
                       ),
                     ),
                   ),

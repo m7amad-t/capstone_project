@@ -9,6 +9,7 @@ import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class SellingHistoryCard extends StatelessWidget {
   final InvoiceModel record;
@@ -73,9 +74,9 @@ class SellingHistoryCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             gap(height: AppPaddings.p20),
-                            _dataTable(textStyle),
+                            _dataTable(textStyle , context),
                             gap(height: AppPaddings.p20),
-                            _totalAndTimeSection(subTotal, textStyle),
+                            _totalAndTimeSection(subTotal, textStyle ,  context),
                             gap(height: AppSizes.s10),
                           ],
                         ),
@@ -120,7 +121,7 @@ class SellingHistoryCard extends StatelessWidget {
     );
   }
 
-  Widget _totalAndTimeSection(double subTotal, TextTheme textStyle) {
+  Widget _totalAndTimeSection(double subTotal, TextTheme textStyle ,BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -130,7 +131,7 @@ class SellingHistoryCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "Total",
+                    context.translate.total,
                     style: textStyle.bodyMedium!.copyWith(
                         // fontWeight: FontWeight.bold,
                         ),
@@ -139,7 +140,7 @@ class SellingHistoryCard extends StatelessWidget {
                     Opacity(
                       opacity: 0.4,
                       child: Text(
-                        "SubTotal",
+                        context.translate.sub_total,
                         style: textStyle.bodySmall!.copyWith(
                             // decoration: TextDecoration.lineThrough,
                             ),
@@ -182,15 +183,15 @@ class SellingHistoryCard extends StatelessWidget {
     );
   }
 
-  Widget _dataTable(TextTheme textStyle) {
+  Widget _dataTable(TextTheme textStyle , BuildContext context) {
     return DataTable(
       dataRowMinHeight: AppSizes.s40,
       columnSpacing: AppSizes.s30,
       columns: [
-        _Column('ID', textStyle),
-        _Column('Name', textStyle),
-        _Column('Quantity', textStyle),
-        _Column('Total', textStyle),
+        _Column(context.translate.id, textStyle),
+        _Column(context.translate.name, textStyle),
+        _Column(context.translate.quantity, textStyle),
+        _Column(context.translate.total, textStyle),
       ],
       rows: [for (final record in record.products) _row(record, textStyle)],
     );

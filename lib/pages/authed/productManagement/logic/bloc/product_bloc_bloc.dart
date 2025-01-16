@@ -514,6 +514,7 @@ class ProductBloc extends Bloc<ProductBlocEvent, ProductBlocState> {
         FailedToLoad();
       }
     }
+  
     // event listeners
     on<LoadProducts>(_onLoadProducts);
 

@@ -67,17 +67,17 @@ class _RootPageState extends State<RootPage> {
             /// Home
             SalomonBottomBarItem(
               icon: const Icon(Icons.sell_outlined),
-              title: Text(context.translate.sale),
+              title: Text(context.translate.home),
               selectedColor: AppColors.primary,
               activeIcon: const Icon(Icons.sell_rounded),
             ),
 
-            ///
+            //
             SalomonBottomBarItem(
               icon: const Icon(
                 Icons.inventory_2_outlined,
               ),
-              title: Text(context.translate.product),
+              title: Text(context.translate.inventory),
               selectedColor: AppColors.primary,
               activeIcon: const Icon(
                 Icons.inventory_2_rounded,
@@ -86,39 +86,42 @@ class _RootPageState extends State<RootPage> {
 
             /// cart
             SalomonBottomBarItem(
-                icon: BlocBuilder<CartBloc, CartBlocState>(
-                  builder: (context, state) {
-                    bool show = false;
-                    if (state is GotCart) {
-                      show = state.cartData.isNotEmpty;
-                    }
-                    if (state is CartItemUpdated) {
-                      show = state.cartData.isNotEmpty;
-                    }
+              icon: BlocBuilder<CartBloc, CartBlocState>(
+                builder: (context, state) {
+                  bool show = false;
+                  if (state is GotCart) {
+                    show = state.cartData.isNotEmpty;
+                  }
+                  if (state is CartItemUpdated) {
+                    show = state.cartData.isNotEmpty;
+                  }
 
-                    return badges.Badge(
-                      showBadge: show,
-                      child: const Icon(
-                        Icons.shopping_cart_outlined,
-                      ),
-                    );
-                  },
-                ),
-                title: const Text("Cart"),
-                selectedColor: AppColors.primary,
-                activeIcon: const Icon(Icons.shopping_cart_rounded)),
+                  return badges.Badge(
+                    showBadge: show,
+                    child: const Icon(
+                      Icons.shopping_cart_outlined,
+                    ),
+                  );
+                },
+              ),
+              title: const Text("Cart"),
+              selectedColor: AppColors.primary,
+              activeIcon: const Icon(
+                Icons.shopping_cart_rounded,
+              ),
+            ),
 
             // analytics
             SalomonBottomBarItem(
               icon: const Icon(Icons.analytics_outlined),
-              title: const Text("Analytics"),
+              title: Text(context.translate.analytics),
               selectedColor: AppColors.primary,
             ),
 
             // expenses
             SalomonBottomBarItem(
               icon: const Icon(Icons.receipt_outlined),
-              title: const Text("Expenses"),
+              title: Text(context.translate.expenses),
               selectedColor: AppColors.primary,
               activeIcon: const Icon(Icons.receipt_rounded),
             ),

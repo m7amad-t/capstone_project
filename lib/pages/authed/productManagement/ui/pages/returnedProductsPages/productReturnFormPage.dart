@@ -109,7 +109,7 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
 
                 // title
                 Text(
-                  'Product Return Form',
+                  context.translate.return_product_form,
                   style: _textStyle.displayLarge,
                 ),
                 gap(height: AppSizes.s10), 
@@ -150,10 +150,10 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                                 return null; 
                             }
                             if (value == null || value.isEmpty) {
-                              return 'Please enter cost of the product';
+                              return context.translate.please_enter_cost;
                             }
                             if (double.tryParse(value) == null) {
-                              return 'Please enter valid cost';
+                              return context.translate.please_enter_valid_cost;
                             }
                         
                             return null;
@@ -162,8 +162,8 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                           inputFormatters: [
                             AppInputFormatter.price,
                           ],
-                          decoration: const InputDecoration(
-                            hintText: 'Cost per item',
+                          decoration:  InputDecoration(
+                            hintText: context.translate.cost_per_product,
                           ),
                         ).paddingOnly(bottom: AppPaddings.p10, ); 
                         },
@@ -183,10 +183,10 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                         controller: _refundController,
                         validator: (value) {
                           if (value == null) {
-                            return 'Refund amount is required';
+                            return context.translate.please_enter_refund;
                           }
                           if (double.tryParse(value) == null) {
-                            return 'Please enter valid refund';
+                            return context.translate.please_enter_valid_refund;
                           }
 
                           return null;
@@ -195,8 +195,8 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                         inputFormatters: [
                           AppInputFormatter.price,
                         ],
-                        decoration: const InputDecoration(
-                          hintText: 'Refund',
+                        decoration:  InputDecoration(
+                          hintText: context.translate.refund,
                         ),
                       ),
 
@@ -206,8 +206,8 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                       TextField(
                         controller: _noteController,
                         maxLines: 4,
-                        decoration: const InputDecoration(
-                          hintText: 'Note',
+                        decoration:  InputDecoration(
+                          hintText: context.translate.note,
                         ),
                       ),
                     ],
@@ -221,8 +221,8 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                     Expanded(
                       child: TextButton(
                         onPressed: _onReturnProductButton,
-                        child: const Text(
-                          'Return Product',
+                        child:  Text(
+                          context.translate.return_product,
                         ),
                       ),
                     ),
@@ -255,7 +255,7 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButtonFormField<RETURN_PRODUCT_REASON?>(
                     hint: Text(
-                      'Select a Reason',
+                      context.translate.select_a_reason,
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                     decoration: InputDecoration(
@@ -275,7 +275,7 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                     value: _returnReason.value,
                     validator: (value) {
                       if (value == null) {
-                        return 'Please Select a reason';
+                        return context.translate.select_a_reason;
                       }
                       return null;
                     },
@@ -284,7 +284,7 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                         DropdownMenuItem(
                           value: reason,
                           child: Text(
-                            reason.name,
+                            reason.name(context),
                             style: textStyle.bodyMedium,
                           ),
                         ),
@@ -315,7 +315,7 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButtonFormField<bool?>(
                     hint: Text(
-                      'Select Product return place',
+                      context.translate.select_product,
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                     decoration: InputDecoration(
@@ -335,7 +335,7 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                     value: _returnTOInventory.value,
                     validator: (value) {
                       if (value == null) {
-                        return 'Please select product place';
+                        return context.translate.please_select_product;
                       }
                       return null;
                     },
@@ -343,14 +343,14 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                       DropdownMenuItem(
                         value: true,
                         child: Text(
-                          'Put back to inventory',
+                          context.translate.return_to_inventory,
                           style: textStyle.bodyMedium,
                         ),
                       ),
                       DropdownMenuItem(
                         value: false,
                         child: Text(
-                          'Put to losses',
+                          context.translate.return_to_damages_inventory,
                           style: textStyle.bodyMedium,
                         ),
                       ),
@@ -419,10 +419,10 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                     return context.translate.enter_quantity;
                   }
                   if (int.tryParse(value) == null) {
-                    return context.translate.enter_valid_quantity;
+                    return context.translate.enter_quantity;
                   }
                   if (int.parse(value) < 0) {
-                    return context.translate.enter_valid_quantity;
+                    return context.translate.please_enter_quantity;
                   }
 
                   return null;
@@ -451,7 +451,7 @@ class _ReturnProductFormState extends State<ReturnProductForm> {
                     ),
                     borderRadius: BorderRadius.circular(0),
                   ),
-                  hintText: 'Retured Quantity',
+                  hintText: context.translate.returned_quantity,
                 ),
               ),
             ),

@@ -1,115 +1,243 @@
 {
-    "@@locale": "ku", 
-    "welcome_back" : "بەخێربێنەوە", 
-    "username" : "ناوی بەکارهێنەر", 
-    "enter_username" : "ناوی بەکارهێنەرت بنووسە", 
-    "password" : "وشەی تێپەڕ", 
-    "enter_password" : "وشەی تێپەڕت بنووسە",
-    "home_screen": "ماڵەوە",
-    "home": "ماڵەوە",
-    "profile": "پڕۆفایل",
-    "items": "ئایتم",
-    "something_went_wrong": "هەڵەیەک ڕوویدا",
-    "no_data_found": "هیچ داتایەک بەردەست نیە",
-    "no_internet_connection": "ئینتەرنێت نیە",
-    "currency": "IQD",
-    "dark_mode": "دۆخی تاریکی",
-    "light_mode": "دۆخی ڕوناکی",
-    "language": "زمان",
-    "english": "English",
-    "arabic": "العربية",
-    "kurdish" : "کوردی",
-    "total_price": "کۆی گشتی",
-    "search_what_do_you_want": "بگەڕێ بەدوای ئەوەی ئەتەوێت",
-    "no_items_found": "هیچ بەرهەمێک نەدۆزرایەوە",
-    "note" : "تێبینی",
-    "edit": "دەسکاری کردن",
-    "sub_total": "کۆی بنچینەی",
-    "total_amount": "کۆی گشتی",
-    "search_for_items": "بگەڕێ بەدوای ئایتم",
-    "register": "تۆمارکردن",
-    "login": "چوونەژوورەوە",
-    "or" : "یان",
-    "name_should_not_be_empty" : "ناو نابێت بەتاڵ بێت",
-    "enter_your_password" : "وشەی نهێنیت بنووسە",
-    "add" : "زیادکردن",
-    "save" : "هەڵگرتن",
-    "other" : "هیتر",
-    "total" : "گشتی",
-    "more" : "زیاتر",
-    "discount" : "داشکاندن",
-    "credentials_are_incorrect" : "زانیاریەکان نادروستن",
-    "login_successful" : "چونە ژورەوە سەرکەوتوو بوو",
-    "ok" : "باشە",
-    "log_out" : "چونەدەرەوە",
-    "are_you_sure_you_want_to_logout" : "دڵنیایت لە چونە دەرەوە؟",
-    "cancel" : "ڕەتکردنەوە",
-    "name" : "ناو",
-    "enter_your_name" : "ناوت بنووسە",
-    "confirm" : "دڵنیاکردنەوە",
-    "logout" : "چونەدەرەوە",
-    "profile_updated_successfully" : "بەسەرکەووتووی پڕۆفیلت نوێ کرایەوە",
-    "password_changed_successfully" : "بەسەرکەوتووی وشەی نهێنیت نوێ کرایەوە",
-    "delete_account" : "سڕینەوەی هەژمار",
-    "delete_account_confirmation" : "ذڵنیایت دەتەوێت هەژمارەکەت بسڕیتەوە؟",
-    "yes" : "بەڵێ",
-    "no" : "نەخێر",
-    "all" : "هەموو",
-    "sale" : "فرۆشتن",    
-    "sale_analytics" : "شیکاری فرۆشتن",    
-    "expenses" : "خەرجی",    
-    "expenses_tracking" : "خەرجیەکان",
-    "product_management" : "ڕێکخستنی بەرهەمەکان",    
-    "product" : "بەرهەم",    
-    "product_name" : "ناوی بەرهەم",    
-    "enter_product_name" : "ناوی بەرهەم بنووسە",    
-    "sign_in" : "چونەژورەوە",
-    "sign_out" : "چونەدەرەوە",
-    "order_by" : "ڕیزکردن بە پێی",
-    "order_by_name" : "ناو",
-    "order_by_price" : "نرخ",
-    "order_by_default" : "بنەڕەتی",
-    "order_by_quantity" : "بڕ",
-    "price" : "نرخ",
-    "price_high_to_low" : "لە زۆرەوە بۆ کەم",
-    "price_low_to_high" : "لە کەمەوە بۆ زۆر",
-    "quantity" : "بڕ",
-    "quantity_low_to_high" : "لە کەمەوە بۆ زۆر",
-    "quantity_high_to_low" : "لە زۆرەوە بۆ کەم",
-    "name_a_to_z" : "ئ-ی",
-    "name_z_to_a" : "ی-ئ",
-    "description" : "وەسف",
-    "category" : "کاتیگۆری",
-    "category_management" : "ڕیکخسنی کاتیگۆریەکان",
-    "category_name" : "ناوی کاتیگۆری",
-    "enter_category_name" : "ناوی کاتیگۆری بنووسە",
-    "updated_succesfully" : "بەسەرکەتووی نوێ کرایەوە",
-    "inserted_succesfully" : "بەسەرکەتووی زیاد کرا",
-    "no_category_found" : "هیج کاتیگۆریەک نەدۆزرایەوە",
-    "no_category_found_note" : "پێویستە هەموو بەرهەمێک کاتیگۆری هەبێت",
 
-    "deleting_category_warning" : "ناتوانیت ئەم کاتیگۆریە بسڕیتەوە چونکە ئایتمی هەیە!",
+  "@@locale": "ku",
 
-    "categories" : "کاتیگۆریەکان",
-    "edit_category" : "دەسکاری کردنی کاتیگۆری",
-    "insert_category" : "دروستکردنی کاتیگۆری",
-    "updating" : "نوێ کردنەوە",
-    "inserted_successfuly" : "بەسەرکەوتووی زیادکرا",
-    "uploading" : "زیادکردن",
-    "product_updated_successfuly" : "بەسەرکەتووی بەرهەمەکە نوێ کرایەوە",
-    "enter_name" : "ناو بنووسە",
-    "enter_price" : "نرخ بنووسە",
-    "enter_valid_price" : "نرخی درووست بنووسە",
-    "enter_quantity" : "بڕ بنووسە",
-    "enter_valid_quantity" : "بڕی درووست بنووسە", 
-    "ru_sure_want_to_delete" : "دڵنیایت لە سڕینەوەی؟",
-    "product_deleted_successfully" : "بەرهەمەکە بە سەرکوتووت سڕایەوە",
-    "deleted_successfully" : "بە سەرکوتووت سڕایەوە",
-    "deleted" : "سڕینەوە",
-    "error" : "هەڵەیەک ڕوویدا"
+  "signin" : "چونەژوررەوە",
+  "signing_in" : "چونەژورەوە",
+  "faild" : "هەڵەیەک ڕویدا",
+  "signed_in" : "چویتەژورەوە",
+  "successfully_signed_in" : "بەسەرکەویووی چویتەژورەوە",
+  "something_went_wrong" : "هەڵەیەک ڕویدا",
+  
+  "welcome_back" : "بەخێربێیتەوە",
+  "username" : "ناوی بەکارهێنەر", 
+  "enter_username" : "ناوی بەکار هێنەر بنووسە", 
+  "password" : "وشەی نهێنی", 
+  "enter_password" : "وشەی نهێنی بنووسە", 
+  "wrong_credintials": "وشەی نهێنی یان ناوی بەکارهێنەرت هەڵەیە",
+  "home": "ماڵەوە",
+  "enter_product_name" : "ناوی بەرهەم بنووسە",
+  "sale_history" : "مێژوی فرۆشتن",
+  "select_date_range" : "مەودا هەڵبژێرە",
+  "change_selected_date_range" : "مەودای هەڵبژێردراو بگۆڕە",
+  "id" : "ID",
+  "quantity" : "بڕ",
+  "price" : "نرخ",
+  "name" : "ناو",
+  "total" : "کۆی گشتی",
+  "sub_total" : "کۆی لاوەکی",
+  "light_mode" : "دۆخی ڕوناک",
+  "language" : "زمان",
+  "sign_out" : "چوونەدەرەوە",
+  "are_u_sure_want_sign_out" : "دڵنیای لە چوونە دەرەوە",
+  "no" : "نەخێر",
+  "yes" : "بەڵێ",
+  "inventory": "کۆگا",
+  "inventory_management": "ڕێکخستنی کۆگا",
+  "product_management": "ڕێکخستنی بەرهەم",
+  "categroy_management": "ڕێکخستنی کاتیگۆری",
+  "buy_product": "کڕینی بەرهەم",
+  "purchase_history": "مێژووی کڕین",
+  "return_product": "بەرهەمی گەڕاوە",
+  "damaged_products": "تەلەف",
+  "expired_products": "بەرهەمی بەسەرچوو",
+  "products": "بەرهەمەکان",
+  
+  "product_details": "زانیاری بەرهە،",
+  "return_records": "مێژووی کڕین",
+  "bought_records": "مێژووی کڕین",
+  
+  
+  "all": "هەمووی",
+  "expired": "بەسەرچوو",
+  "damaged": "تەلەف",
+  "costumer_reason": "هۆکای مشتەری",
+  "deffective": "تێکچوو",
+  "missing_parts": "پارچەی ونبووە",
+  "not_what_expected": "ئەوە نەبوو کەچاوەڕوان ئەکرا",
+  "no_data_found": "هیچ زانیاریەک نییە",
+  "updating_product": "نوێکردنەوەی بەرهەم",
+  
+  "product_name": "ناوی بەرههەم",
+  "product": "بەرههەم",
+  "pelase_enter_product_name": "تکایە ناوی بەرهەم بنووسە",
+  
+  "enter_product_price": "نرخی بەرهەم بنووسە",
+  "pelase_enter_product_price": "تکایە ناوی بەرهەم بنووسە",
+  
+  "description": "کورتە",
+  "enter_product_descrpiption": "کورتەیەک بووسە",
+  "please_enter_product_descrpiption": "تکایە کورتەیەک بنووسە",
+  
+  "category": "کاتیگۆری",
+  "category_name": "ناوی کاتیگۆری",
 
-
+  "select_category": "کاتیگۆری هەڵبژێرە",
+  "please_select_category": "تکایە کاتیگۆری هەڵبژێرە",
+  
+  "enter_quantity": "بڕ بنووسە",
+  "please_enter_quantity": "تکایە بڕ بنووسە",
+  
+  "save": "هڵگرتن",
+  
+  "updating_product_details": "نوێکردنەوەی زانیاری بەرهەم",
+  "product_details_updated": "زانیاری بەرهەم نوێ کرایەوە",
+  "failed_to_update_product_details": "نەتوانرا زانیاریەکان نوێ بکرێنەوە",
+  
+  "add_new_product": "زیادکرنی بەرهەم",
+  "product_purchased_successfully": "بەسەرکەوتووی بەرهەمەکە کڕدرا",
+  "adding_new_product": "زیادکردنی بەرهەم",
+  "product_added_successfully": "بەسەرکەوتووی بەرهەمەکە زیادکرا",
+  "failed_to_add_product": "نەتوانرا بەرهەمەکە زیاد بکرێت",
+  
+  "add_category": "زیادکرندی کاتیگۆری",
+  "add_new_category": "زیادکرنی کاتیگۆری",
+  "adding_new_category": "زیادکردنی کاتیگۆری",
+  "category_added_successfully": "کاتیگۆری بەسەرکەوتووی زیادکرا",
+  "failed_to_add_category": "نەتوانترا کاتیگۆری زیاد بکرێت",
+  
 
     
-  }
+  "updating_category": "نوێ کردنەوەی کاتیغۆری",
+  "update_category": "نوێکردنەوەی کاتیگۆری",
+  "category_updated_successfully": "کاتیگۆری نوێ کرایەوە",
+  "failed_to_update_category": "نەتوانرا کاوتیگۆری نوێ بکرێتەوە",
+  "category_updated" : "کاتیگۆری نوێکرایەوە",
+  "new_category_added" : "کاتیگۆری تازە زیادکرا",
+
+  "enter_category_name" : "ناوی کاتیگۆری بنووسە",
+  "already_have_this_category" : "کاتیگۆری بەم ناوە هەیە",
+
+
+  "buying_product": "کڕینی بەرهەم",
+  "cost" : "تێچوو",
+  "please_enter_cost" : "تکایە تێچوو بنووسە",
+  "please_enter_valid_cost" : "تکایە نرخی درووست بنووسە",
+
+  "package": "کارتۆن",
+  "select_unit": "یەکە هەڵبژێرە",
+  "please_select_unit": "تکایە یەکەیەک هەڵبژێرە",
+
+  "select_cost_type": "جۆری تێچوو هەڵبژێرە",
+  "please_select_cost_type": "تکایە جۆری تێچوو هەڵبژێرە",
   
+  "note": "تێبینی",
+
+  "select_expire_date": "ڕۆژی بەسەرچوون دیاری بکە",
+  
+  "total_cost": "کۆی تێچوو",
+  "cost_per_product": "تێچووی بەرهەم",
+  "cost_per_package": "تێچووی کارتۆن",
+  
+  "check_out": "دڵنیابوونەوە",
+  "buy": "کڕین",
+  "buying_product_from": "فۆڕمی كڕینی بەرهەم",
+  
+  "returned_products": "بەرهەمە گەڕاوەکان", 
+  "returned_to_inventory": "گەڕاوەتەوە بۆ کۆگا", 
+  
+  "return_product_form": "فۆڕمی گەڕانەوە", 
+  "refund": "قەرەبوو", 
+  
+  "select_a_reason": "هۆکای هەڵبژێرە", 
+  "please_select_a_reason": "تکایە هۆکار هەڵبژێرە", 
+  "select_return_place": "گەڕانەوە بۆ", 
+  "please_select_return_place": "تکایە شوێنی گەڕانەوە هەڵبژێرە", 
+
+  "returned_quantity": "بڕی گەڕاوە", 
+  "please_enter_returned_quantity": "تکایە بڕی گەڕاوە بنووسە", 
+  "please_enter_refund": "تکایە قەرەبوو بنووسە", 
+  "please_enter_valid_refund": "تکایە بڕی قەرەبووی درووست بنووسە", 
+  "return_it": "گەڕاندنەوە", 
+  "returning": "گەڕاندنەوە", 
+  "returning_product": "گەڕاندەنەوەی بەرهەم", 
+  "product_returned_successfully": "بەسەرکوتووی گەڕاندرایەوە", 
+  "failed_to_return_product": "نەتوانرا بگەڕێندرێتەوە", 
+  
+  
+  "purchase_cost": "تێچووی کڕین",
+  "total_lost": "کۆی زەرەر",
+  
+
+  
+  "damaged_inventory": "کۆگای تەلەف", 
+  "damaged_product_form": "فۆڕمی تەلەف", 
+  "please_enter_cost_per_product": "تکایە تێچووی بەرهەم بنووسە", 
+  "add_to_damaged_inventoy": "خستنە کۆگای تەلەف",
+  "moving_to_damaged_inventory": "گواستنەوە بۆ تەلەف",
+  
+  
+  "cart": "سەبەتە",
+  "confirm_payment": "دڵنیا بوونەوە",
+  "sellign_product": "فرۆشتنی بەرهەم",
+  "initiating_transaction": "جێبەجێ کردنی فرۆشتن",
+  "sold_product_successfully": "فرۆشتن سەرکوتوو بوو",
+  
+  
+  "add_product": "زیادکرنی بەرهەم",
+  "your_cart_is_empty": "سەبەتە بەتاڵە", 
+
+  "analytics" : "شیکاری", 
+  "expenses" : "خەرجیەکان", 
+
+  "go_home" : "ماڵەوە", 
+
+  "confirmation_of_moving_product_to_damaged" : "دڵنیای لە گواستنەوەی بەرهەم بۆ تەلەف؟",
+
+
+  
+  "delete" : "سڕینەوە",
+  "deleting" : "سڕینەوە",
+  "deleting_product_confirmation" : "دڵنیای لە سڕینەوەی بەرهەمەکە؟",
+  "deleting_catgeory_confirmation" : "دڵنیای لە سڕینەوەی کاتیگۆریەکە؟", 
+
+  
+  "product_deleted_successfully" : "بەرهەمەکە بەسەرکوتووی سڕایەوە",
+  "category_deleted_successfully" : "کاتیگۆریەکە بەسەرکەوتووی سڕایەوە",
+  "category_cant_deleted" : "ناتوانیت ئەم کاتیگۆریە بسڕیتەوە",
+  "failed_to_delete_product" : "نەتوانرا بەرهەمەکە بسڕدرێتەوە",
+  "failed_to_delete_category" : "نەتوانرا کاتیگۆریەکە بسڕدرێتەوە", 
+
+  "sold_quantity" : "بڕی فرۆشراو",
+  "subtotal_was" : "کۆی بنەڕەتی", 
+  
+  "total_would_be" : "کۆی گشتی", 
+
+  
+  "select_product" : "بەرهەم هەڵبژێرە",
+  "please_select_product" : "تکایە بەرهەم هەڵبژێرە",
+  
+
+  "return_to_inventory" : "گەڕاندنەوە بۆ کۆگا",
+  "return_to_damages_inventory" : "گەڕاندنەوە بۆ تەلەف", 
+
+  "please_enter_valid_quantity" : "تکایە بڕی درووست بنووسە",
+
+  "out_of_stock" : "بەردەست نیە", 
+
+  "discount_amount" : "بڕی داشکێندراو" , 
+
+
+  "invoice" : "پسوڵە",
+
+  "to" : "بۆ",
+
+
+  "enter_discount_amount" : "بڕی داشکێنراو بنووسە",
+
+
+  "order_by" : "ڕیزکردن بە پێی",
+  "order_by_name" : "ناو",
+  "order_by_price" : "نرخ",
+  "order_by_default" : "بنەڕەتی",
+  "order_by_quantity" : "بڕ",
+  "price_high_to_low" : "لە زۆرەوە بۆ کەم",
+  "price_low_to_high" : "لە کەمەوە بۆ زۆر",
+  "quantity_low_to_high" : "لە کەمەوە بۆ زۆر",
+  "quantity_high_to_low" : "لە زۆرەوە بۆ کەم",
+  "name_a_to_z" : "ئ-ی",
+  "name_z_to_a" : "ی-ئ"
+
+
+
+}

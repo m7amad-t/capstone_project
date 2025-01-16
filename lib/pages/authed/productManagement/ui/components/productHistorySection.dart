@@ -6,15 +6,12 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/UI/components/boughtedProductCard.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductBloc/buying_product_bloc_bloc.dart';
-import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductsBloc/buying_products_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/models/productReturnedModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/blocForOneProduct/returned_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/shared/enum.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/components/returnedProductCard.dart';
 import 'package:shop_owner/shared/UI/appLoadingCards.dart';
-// import 'package:shop_owner/pages/authed/productManagement/ui/components/returnedProductCard.dart';
-// import 'package:shop_owner/pages/authed/productManagement/logic/returnedProductBlocs/shared/enum.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -22,6 +19,7 @@ import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class ProductHistorySection extends StatefulWidget {
   final ProductModel product;
@@ -171,7 +169,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      "Bought Records",
+                      context.translate.purchase_history,
                       style: textStyle.bodyMedium!.copyWith(
                         color: !isReturned
                             ? AppColors.onPrimary
@@ -221,7 +219,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
               Expanded(
                 flex: 1,
                 child: Text(
-                  'Selected Range',
+                  context.translate.select_date_range,
                   style: textStyle.displaySmall,
                 ),
               ),
@@ -231,7 +229,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
-                    "${getAppDate(value.start)}     to     ${getAppDate(value.end)}",
+                    "${getAppDate(value.start)}     ${context.translate.to}     ${getAppDate(value.end)}",
                     style: textStyle.displaySmall,
                   ),
                 ),
@@ -253,7 +251,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
             Expanded(
               flex: 1,
               child: Text(
-                'Selected Range',
+                context.translate.select_date_range,
                 style: textStyle.displaySmall,
               ),
             ),
@@ -263,7 +261,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
-                  "${getAppDate(value.start)}     to     ${getAppDate(value.end)}",
+                  "${getAppDate(value.start)}     ${context.translate.to}     ${getAppDate(value.end)}",
                   style: textStyle.displaySmall,
                 ),
               ),
@@ -296,7 +294,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    value == null ? 'Select Range' : 'Change Range',
+                    value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
                     style: textStyle.bodyLarge!.copyWith(
                       color: value == null
                           ? AppColors.onPrimary
@@ -334,7 +332,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    value == null ? 'Select Range' : 'Change Range',
+                    value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
                     style: textStyle.bodyLarge!.copyWith(
                       color: value == null
                           ? AppColors.onPrimary
@@ -387,13 +385,13 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
                         DropdownMenuItem(
                           value: null,
                           child: Text(
-                            "All",
+                            context.translate.all,
                             style: textStyle.bodyMedium,
                           ),
                         ),
                         // return reasons
                         for (final option in RETURN_REASON_LIST)
-                          _dropDownItem(option, option.name, textStyle),
+                          _dropDownItem(option, option.name(context), textStyle),
                       ],
                       onChanged: (value) {
                         context
@@ -430,7 +428,6 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
     return BlocBuilder<ReturnedProductBloc, ReturnedProductBlocState>(
       builder: (context, state) {
         if (state is LoadingReturedProduct) {
-          print('LOG : its loading state...');
           return RepaintBoundary(
             child: AppLoadingCards(
               height: AppSizes.s200,
@@ -440,7 +437,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
         }
 
         if (state is FailedToLoadProductReturnedRecords) {
-          return const Text('Failed to load returned records');
+          return  Text(context.translate.something_went_wrong);
         }
 
         List<ProductReturnedModel> records = [];
@@ -450,7 +447,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
         }
 
         if (records.isEmpty) {
-          return Text("No Data found");
+          return Text(context.translate.no_data_found);
         }
 
         return AnimatedContainer(
@@ -483,7 +480,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
         }
 
         if (state is FailedToLoadProductBoughtHistory) {
-          return const Text('Failed to load bought records');
+          return Text(context.translate.something_went_wrong);
         }
 
         List<ProductBoughtModel> records = [];
@@ -492,9 +489,9 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
           records = state.records;
         }
 
-        print(
-            "LOG : records length in buying history : product section : ${records.length}");
-
+        if (records.isEmpty) {
+          return Text(context.translate.no_data_found);
+        }
         return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,

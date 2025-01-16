@@ -35,36 +35,36 @@ class ProductManagementPage extends StatelessWidget {
 
       // categories
       {
-        'name': context.translate.category_management,
+        'name': context.translate.categroy_management,
         "path": '${AppRoutes.productManagement}/${AppRoutes.category}',
         'icon': Image.asset(AssetPaths.categoryManagement)
       },
       // Buy Products
       {
-        'name': 'Buy products',
+        'name':  context.translate.buy_product,
         "path": '${AppRoutes.productManagement}/${AppRoutes.buyProducts}',
         'icon': Image.asset(AssetPaths.buyingProducts)
       },
       // buying history
       {
-        'name': 'Boughted history',
+        'name': context.translate.purchase_history,
         "path": '${AppRoutes.productManagement}/${AppRoutes.boughtedProducts}',
         'icon': Image.asset(AssetPaths.buoughtedProducts)
       },
       // return product..
       {
-        'name': 'Returned products',
+        'name': context.translate.return_product,
         "path": '${AppRoutes.productManagement}/${AppRoutes.returnedProduct}',
         'icon': Image.asset(AssetPaths.returnedProducts)
       },
       {
-        'name': 'Damaged Products',
+        'name': context.translate.damaged_inventory,
         "path": '${AppRoutes.productManagement}/${AppRoutes.damagedProducts}',
         'icon': Image.asset(AssetPaths.damagedProducts)
       },
       // return product..
       {
-        'name': 'Expired Products',
+        'name': context.translate.expired_products,
         "path": '${AppRoutes.productManagement}/${AppRoutes.expiredProducts}',
         'icon': Image.asset(AssetPaths.expiredProducts)
       },

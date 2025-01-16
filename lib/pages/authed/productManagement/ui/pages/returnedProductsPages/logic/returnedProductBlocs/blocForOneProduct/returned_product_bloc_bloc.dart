@@ -16,6 +16,7 @@ import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 part 'returned_product_bloc_event.dart';
 part 'returned_product_bloc_state.dart';
@@ -257,8 +258,8 @@ class ReturnedProductBloc
               );
           showSnackBar(
             message: SuccessSnackBar(
-              title: 'Product Returned to Inventory',
-              message: "Product Returned to Inventory",
+              title: event.context.translate.product_returned_successfully,
+              message: event.context.translate.product_returned_successfully,
             ),
           );
         } else {
@@ -281,8 +282,8 @@ class ReturnedProductBloc
           // send the item to the dmaged good inventory...
           showSnackBar(
             message: SuccessSnackBar(
-              title: 'Product Returned to Damaged product Inventory',
-              message: "Product Returned to Damged Goods Inventory",
+              title: event.context.translate.product_returned_successfully,
+              message: event.context.translate.product_returned_successfully,
             ),
           );
         }

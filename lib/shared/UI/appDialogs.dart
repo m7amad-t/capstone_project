@@ -84,7 +84,7 @@ class AppDialogs extends AppDialogsBase {
               ),
               gap(height: AppSizes.s10),
               Text(
-                context.translate.login,
+                context.translate.signing_in,
                 style: Theme.of(context).textTheme.displayLarge,
               ),
               gap(height: AppSizes.s10),
@@ -145,9 +145,7 @@ class AppDialogs extends AppDialogsBase {
                     context.read<LanguageBloc>().add(
                           ChangeLanguage(local: local),
                         );
-                    if (Navigator.of(context).canPop()) {
-                      Navigator.of(context).pop();
-                    }
+                    GoRouter.of(context).pop(); 
                   },
                   trailing: Container(
                     margin: EdgeInsets.symmetric(
@@ -188,7 +186,7 @@ class AppDialogs extends AppDialogsBase {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                context.translate.are_you_sure_you_want_to_logout,
+                context.translate.are_u_sure_want_sign_out,
                 style: _textStyle.displayMedium!
                   ..copyWith(
                     color: AppColors.error,
@@ -202,9 +200,7 @@ class AppDialogs extends AppDialogsBase {
                 children: [
                   TextButton(
                     onPressed: () {
-                      if (Navigator.of(context).canPop()) {
-                        Navigator.of(context).pop();
-                      }
+                      GoRouter.of(context).pop();
                       context.read<AuthBloc>().add(Logout(context: context));
                     },
                     style: const ButtonStyle(
@@ -218,9 +214,7 @@ class AppDialogs extends AppDialogsBase {
                   // dispose button
                   TextButton(
                     onPressed: () {
-                      if (Navigator.of(context).canPop()) {
-                        Navigator.of(context).pop();
-                      }
+                     GoRouter.of(context).pop(); 
                     },
                     style: const ButtonStyle(
                       backgroundColor:
@@ -255,7 +249,7 @@ class AppDialogs extends AppDialogsBase {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "are you sure you want to move this product to the damaged storage",
+                context.translate.confirmation_of_moving_product_to_damaged,
                 textAlign: TextAlign.center,
                 style: _textStyle.displayMedium!
                   ..copyWith(
@@ -326,7 +320,7 @@ class AppDialogs extends AppDialogsBase {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                context.translate.ru_sure_want_to_delete,
+                context.translate.deleting_product_confirmation,
                 style: _textStyle.displayMedium,
               ),
 
@@ -347,7 +341,7 @@ class AppDialogs extends AppDialogsBase {
 
                       // send the request to backend
                       // simulating it
-                      showLoadingDialog(super.context, 'deleting');
+                      showLoadingDialog(super.context, context.translate.deleting);
                       await Future.delayed(const Duration(seconds: 2));
                       disposeAnyActiveDialogs();
                       GoRouter.of(context).pop();
@@ -404,7 +398,7 @@ class AppDialogs extends AppDialogsBase {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                context.translate.ru_sure_want_to_delete,
+                context.translate.deleting_catgeory_confirmation,
                 style: _textStyle.displayMedium,
               ),
 
@@ -420,7 +414,7 @@ class AppDialogs extends AppDialogsBase {
                       disposeAnyActiveDialogs();
                       // send the request to backend
                       // simulating it
-                      showLoadingDialog(super.context, 'deleting');
+                      showLoadingDialog(super.context, context.translate.deleting);
                       await Future.delayed(const Duration(seconds: 2));
                       super.context.read<ProductBloc>().add(
                             DeleteCategory(
@@ -436,7 +430,7 @@ class AppDialogs extends AppDialogsBase {
                         message: SuccessSnackBar(
                           title:
                               "${super.context.translate.product_deleted_successfully} ${category.name}",
-                          message: super
+                          message:super
                               .context
                               .translate
                               .product_deleted_successfully,
@@ -482,7 +476,7 @@ class AppDialogs extends AppDialogsBase {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                context.translate.deleting_category_warning,
+                context.translate.category_cant_deleted,
                 style: _textStyle.displayMedium!.copyWith(
                   color: AppColors.error,
                 ),
@@ -500,7 +494,7 @@ class AppDialogs extends AppDialogsBase {
                       disposeAnyActiveDialogs();
                     },
                     child: Text(
-                      context.translate.ok,
+                      context.translate.yes,
                     ),
                   ),
                 ],
@@ -528,7 +522,7 @@ class AppDialogs extends AppDialogsBase {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                context.translate.ru_sure_want_to_delete,
+                context.translate.confirm_payment,
                 style: _textStyle.displayMedium,
               ),
 
@@ -544,7 +538,7 @@ class AppDialogs extends AppDialogsBase {
                       disposeAnyActiveDialogs();
                       // send the request to backend
                       // simulating it
-                      showLoadingDialog(super.context, 'deleting');
+                      showLoadingDialog(super.context, super.context.translate.initiating_transaction);
                       await Future.delayed(const Duration(seconds: 2));
                       super.context.read<ProductBloc>().add(
                             DeleteCategory(

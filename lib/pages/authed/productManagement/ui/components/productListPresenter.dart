@@ -136,14 +136,14 @@ class _ProductListPresenterState extends State<ProductListPresenter> {
   }
 
   Widget _noCategory() {
-    return const Center(
-      child: Text("Not category "),
+    return Center(
+      child: Text(context.translate.no_data_found),
     );
   }
 
   Widget _failed() {
-    return const Expanded(
-      child: Text("Failed to load"),
+    return Expanded(
+      child: Text( context.translate.something_went_wrong),
     );
   }
 
@@ -205,7 +205,7 @@ class _ProductListPresenterState extends State<ProductListPresenter> {
                 _debounceSearch(query);
               },
               decoration: InputDecoration(
-                hintText: context.translate.search_for_items,
+                hintText: context.translate.enter_product_name,
               ),
             ),
           ),
@@ -247,7 +247,7 @@ class _ProductListPresenterState extends State<ProductListPresenter> {
   Widget _productListSection(BuildContext context, ProductBlocState state) {
     if (state is FailedToLoad) {
       return Center(
-        child: Text(context.translate.enter_password),
+        child: Text(context.translate.something_went_wrong),
       );
     }
 

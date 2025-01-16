@@ -14,6 +14,7 @@ import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 part 'buying_product_bloc_event.dart';
 part 'buying_product_bloc_state.dart';
@@ -162,7 +163,7 @@ class BuyingProductBloc
       BoughtProductInSingleProduct event,
       emit,
     ) async {
-      locator<AppDialogs>().showCostumTextLoading('Buying Product..');
+      locator<AppDialogs>().showCostumTextLoading(event.context.translate.buying_product);
 
       Future.delayed(const Duration(seconds: 1));
 
@@ -186,8 +187,8 @@ class BuyingProductBloc
 
       showSnackBar(
           message: SuccessSnackBar(
-              title: "Bought product successfuly",
-              message: "Bought product successfuly"));
+              title: event.context.translate.product_purchased_successfully,
+              message: event.context.translate.product_purchased_successfully, ));
 
       GoRouter.of(event.context)
           .go("${AppRoutes.productManagement}/${AppRoutes.buyProducts}");

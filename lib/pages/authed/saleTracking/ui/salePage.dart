@@ -96,14 +96,14 @@ class _SalePageState extends State<SalePage> {
   }
 
   Widget _noCategory() {
-    return const Center(
-      child: Text("no categories found "),
+    return  Center(
+      child: Text(context.translate.no_data_found),
     );
   }
 
   Widget _failed() {
-    return const Expanded(
-      child: Text("Failed to Load"),
+    return Expanded(
+      child: Text(context.translate.something_went_wrong),
     );
   }
 
@@ -162,7 +162,7 @@ class _SalePageState extends State<SalePage> {
                 _debounceSearch(query);
               },
               decoration: InputDecoration(
-                hintText: context.translate.search_for_items,
+                hintText: context.translate.product_name,
               ),
             ),
           ),
@@ -203,8 +203,8 @@ class _SalePageState extends State<SalePage> {
 
   Widget _productListSection(BuildContext context, ProductBlocState state) {
     if (state is FailedToLoad) {
-      return const Center(
-        child: Text("Failed to load"),
+      return Center(
+        child: Text(context.translate.something_went_wrong),
       );
     }
 
@@ -228,14 +228,14 @@ class _SalePageState extends State<SalePage> {
     }
 
     if (categories.isEmpty) {
-      return const Center(
-        child: Text("no category found"),
+      return Center(
+        child: Text(context.translate.no_data_found),
       );
     }
 
     if (products.isEmpty) {
-      return const Center(
-        child: Text("no product found"),
+      return  Center(
+        child: Text(context.translate.no_data_found),
       );
     }
 

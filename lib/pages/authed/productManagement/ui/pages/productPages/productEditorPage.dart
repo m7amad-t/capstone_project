@@ -124,12 +124,12 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
 
     // if product is not provided then create new one , else update the one how provided,
 
-    String loadingDialog =
-        _isUpdating ? context.translate.updating : context.translate.uploading;
+    String loadingDialog = _isUpdating
+        ? context.translate.updating_product
+        : context.translate.adding_new_product;
 
     // show loading dialog
-    locator<AppDialogs>()
-        .showCostumTextLoading("$loadingDialog ${context.translate.product}");
+    locator<AppDialogs>().showCostumTextLoading(loadingDialog);
 
     // in here send the request to backend and wait for the ressult..
 
@@ -176,8 +176,8 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
 
     // snackbar title
     String title = _isUpdating
-        ? context.translate.product_updated_successfuly
-        : context.translate.inserted_succesfully;
+        ? context.translate.product_details_updated
+        : context.translate.product_added_successfully;
     showSnackBar(
       message: SuccessSnackBar(
         title: title,
@@ -355,7 +355,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
                         AppColors.error,
                       ),
                     ),
-                    child: Text(context.translate.deleted),
+                    child: Text(context.translate.delete),
                   ),
                 ),
               ],
@@ -386,7 +386,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
           child: TextFormField(
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return context.translate.enter_name;
+                return context.translate.enter_product_name;
               }
               return null;
             },
@@ -423,13 +423,13 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
           child: TextFormField(
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return context.translate.enter_price;
+                return context.translate.enter_product_price;
               }
               if (double.tryParse(value) == null) {
-                return context.translate.enter_valid_price;
+                return context.translate.pelase_enter_product_price;
               }
               if (double.parse(value) < 0) {
-                return context.translate.enter_valid_price;
+                return context.translate.enter_product_price;
               }
               return null;
             },
@@ -601,10 +601,10 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
                         return context.translate.enter_quantity;
                       }
                       if (int.tryParse(value) == null) {
-                        return context.translate.enter_valid_quantity;
+                        return context.translate.please_enter_quantity;
                       }
                       if (int.parse(value) < 0) {
-                        return context.translate.enter_valid_quantity;
+                        return context.translate.please_enter_valid_quantity;
                       }
 
                       return null;
@@ -628,7 +628,9 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: AppColors.primary.withAlpha(100), width: 2),
+                          color: AppColors.primary.withAlpha(100),
+                          width: 2,
+                        ),
                         borderRadius: BorderRadius.circular(0),
                       ),
                       hintText: context.translate.quantity,

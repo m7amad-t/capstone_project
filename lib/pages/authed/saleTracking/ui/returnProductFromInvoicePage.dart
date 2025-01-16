@@ -40,7 +40,7 @@ class _ReturnParoductFromInvoicePageState
   late final TextEditingController _boughtedFor;
 
 
-  ValueNotifier<bool?> _returnTOInventory = ValueNotifier(null);
+  final ValueNotifier<bool?> _returnTOInventory = ValueNotifier(null);
 
   @override
   void initState() {
@@ -152,7 +152,7 @@ class _ReturnParoductFromInvoicePageState
                 gap(height: AppSizes.s30),
                 // title
                 Text(
-                  'Product Return Form',
+                  context.translate.return_product_form,
                   style: _textStyle.displayLarge,
                 ),
                 gap(height: AppSizes.s30),
@@ -180,7 +180,7 @@ class _ReturnParoductFromInvoicePageState
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'SubTotal was',
+                        context.translate.subtotal_was,
                         style: _textStyle.displaySmall,
                       ),
                       Text(
@@ -214,7 +214,7 @@ class _ReturnParoductFromInvoicePageState
                             children: [
                               Expanded(
                                 child: _info(
-                                  "Sold Quantity",
+                                  context.translate.sold_quantity,
                                   "${value.quantity}",
                                   _textStyle,
                                   true,
@@ -223,7 +223,7 @@ class _ReturnParoductFromInvoicePageState
                               gap(width: AppSizes.s10),
                               Expanded(
                                 child: _info(
-                                  "Total would be",
+                                  context.translate.total_would_be,
                                   "\$${(value.product.price * value.quantity).toStringAsFixed(2)}",
                                   _textStyle,
                                   false,
@@ -257,10 +257,10 @@ class _ReturnParoductFromInvoicePageState
                                 return null; 
                             }
                             if (value == null || value.isEmpty) {
-                              return 'Please enter cost of the product';
+                              return context.translate.please_enter_cost_per_product;
                             }
                             if (double.tryParse(value) == null) {
-                              return 'Please enter valid cost';
+                              return context.translate.please_enter_valid_cost;
                             }
                         
                             return null;
@@ -269,8 +269,8 @@ class _ReturnParoductFromInvoicePageState
                           inputFormatters: [
                             AppInputFormatter.price,
                           ],
-                          decoration: const InputDecoration(
-                            hintText: 'Cost per item',
+                          decoration: InputDecoration(
+                            hintText: context.translate.cost_per_product,
                           ),
                         ).paddingOnly(bottom: AppPaddings.p10, ); 
                         },
@@ -296,10 +296,10 @@ class _ReturnParoductFromInvoicePageState
                         controller: _refundController,
                         validator: (value) {
                           if (value == null) {
-                            return 'Refund amount is required';
+                            return context.translate.please_enter_refund;
                           }
                           if (double.tryParse(value) == null) {
-                            return 'Please enter valid refund';
+                            return context.translate.please_enter_valid_refund;
                           }
 
                           return null;
@@ -319,8 +319,8 @@ class _ReturnParoductFromInvoicePageState
                       TextField(
                         controller: _noteController,
                         maxLines: 4,
-                        decoration: const InputDecoration(
-                          hintText: 'Note',
+                        decoration:  InputDecoration(
+                          hintText: context.translate.note,
                         ),
                       ),
                     ],
@@ -334,8 +334,8 @@ class _ReturnParoductFromInvoicePageState
                     Expanded(
                       child: TextButton(
                         onPressed: _onReturnProductButton,
-                        child: const Text(
-                          'Return Product',
+                        child:  Text(
+                          context.translate.return_it,
                         ),
                       ),
                     ),
@@ -396,7 +396,7 @@ class _ReturnParoductFromInvoicePageState
                 child: DropdownButtonHideUnderline(
                   child: DropdownButtonFormField<RETURN_PRODUCT_REASON?>(
                     hint: Text(
-                      'Select a Reason',
+                      context.translate.select_a_reason,
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                     decoration: InputDecoration(
@@ -416,7 +416,7 @@ class _ReturnParoductFromInvoicePageState
                     value: _returnReason.value,
                     validator: (value) {
                       if (value == null) {
-                        return 'Please Select a reason';
+                        return context.translate.please_select_a_reason;
                       }
                       return null;
                     },
@@ -425,7 +425,7 @@ class _ReturnParoductFromInvoicePageState
                         DropdownMenuItem(
                           value: reason,
                           child: Text(
-                            reason.name,
+                            reason.name(context),
                             style: textStyle.bodyMedium,
                           ),
                         ),
@@ -457,7 +457,7 @@ class _ReturnParoductFromInvoicePageState
                 child: DropdownButtonHideUnderline(
                   child: DropdownButtonFormField<ProductSellModel?>(
                     hint: Text(
-                      'Select a Product',
+                      context.translate.select_product,
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                     decoration: InputDecoration(
@@ -477,7 +477,7 @@ class _ReturnParoductFromInvoicePageState
                     value: _slectedProduct.value,
                     validator: (value) {
                       if (value == null) {
-                        return 'Select a Product';
+                        return context.translate.please_select_product;
                       }
                       return null;
                     },
@@ -517,7 +517,7 @@ class _ReturnParoductFromInvoicePageState
                 child: DropdownButtonHideUnderline(
                   child: DropdownButtonFormField<bool?>(
                     hint: Text(
-                      'Select Product return place',
+                      context.translate.select_return_place,
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                     decoration: InputDecoration(
@@ -537,7 +537,7 @@ class _ReturnParoductFromInvoicePageState
                     value: _returnTOInventory.value,
                     validator: (value) {
                       if (value == null) {
-                        return 'Please select product place';
+                        return context.translate.please_select_return_place;
                       }
                       return null;
                     },
@@ -545,14 +545,14 @@ class _ReturnParoductFromInvoicePageState
                       DropdownMenuItem(
                         value: true,
                         child: Text(
-                          'Put back to inventory',
+                          context.translate.return_to_inventory,
                           style: textStyle.bodyMedium,
                         ),
                       ),
                       DropdownMenuItem(
                         value: false,
                         child: Text(
-                          'Put to losses',
+                          context.translate.return_to_damages_inventory,
                           style: textStyle.bodyMedium,
                         ),
                       ),
@@ -624,10 +624,10 @@ class _ReturnParoductFromInvoicePageState
                     return context.translate.enter_quantity;
                   }
                   if (int.tryParse(value) == null) {
-                    return context.translate.enter_valid_quantity;
+                    return context.translate.please_enter_valid_cost;
                   }
                   if (int.parse(value) < 0) {
-                    return context.translate.enter_valid_quantity;
+                    return context.translate.please_enter_valid_quantity;
                   }
 
                   return null;
@@ -656,7 +656,7 @@ class _ReturnParoductFromInvoicePageState
                     ),
                     borderRadius: BorderRadius.circular(0),
                   ),
-                  hintText: 'Retured Quantity',
+                  hintText: context.translate.returned_quantity,
                 ),
               ),
             ),

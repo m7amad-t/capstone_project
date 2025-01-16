@@ -39,14 +39,14 @@ class ReturnedProductCard extends StatelessWidget {
                         gap(height: AppPaddings.p10),
             
                         // top section (name , reason ,refund and quantity)
-                        _topSection(textStyle, context.fromLTR),
+                        _topSection(context),
             
                         gap(height: AppSizes.s10),
             
                         // invoce title
-                        if (record.invoice != null) _invoceCardView(textStyle),
+                        if (record.invoice != null) _invoceCardView(context),
                         // date time and returned to..
-                        _trailingSection(textStyle),
+                        _trailingSection(context),
                       ],
                     ),
                   ),
@@ -69,7 +69,9 @@ class ReturnedProductCard extends StatelessWidget {
  );
   }
 
-  Widget _topSection(TextTheme textStyle, bool isLTR) {
+  Widget _topSection(BuildContext context) {
+    TextTheme textStyle =TextTheme.of(context);  
+    bool isLTR = context.fromLTR; 
     if (isLTR) {
       return Row(
         children: [
@@ -108,7 +110,7 @@ class ReturnedProductCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                             Text(
-                            "Refunded",
+                            context.translate.refund,
                             style: textStyle.displaySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                               // color: AppColors.warning,
@@ -210,7 +212,7 @@ class ReturnedProductCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "Refunded",
+                          context.translate.refund,
                           style: textStyle.displaySmall!.copyWith(
                             fontWeight: FontWeight.bold,
                             // color: AppColors.warning,
@@ -228,7 +230,8 @@ class ReturnedProductCard extends StatelessWidget {
     );
   }
 
-  Widget _invoceCardView(TextTheme textStyle) {
+  Widget _invoceCardView(BuildContext context) {
+    TextTheme textStyle  = TextTheme.of(context); 
     return Column(
       children: [
         // invoice header..
@@ -236,7 +239,7 @@ class ReturnedProductCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Invoice',
+             context.translate.invoice ,
               style: textStyle.displayMedium!.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -274,14 +277,16 @@ class ReturnedProductCard extends StatelessWidget {
   }
 
   // this is the return date time , and return place
-  Widget _trailingSection(TextTheme textStyle) {
+  Widget _trailingSection(BuildContext context) {
+    TextTheme textStyle  = TextTheme.of(context); 
+
     return Row(
       children: [
         Expanded(
           child: AutoSizeText(
             record.backToInventory
-                ? "Back to inventory"
-                : "Putted to Damaged Goods",
+                ? context.translate.return_to_inventory
+                : context.translate.return_to_damages_inventory,
             style: textStyle.displaySmall,
           ),
         ),

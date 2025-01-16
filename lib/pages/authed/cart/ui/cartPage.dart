@@ -12,6 +12,7 @@ import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 import 'package:shop_owner/utils/inputFormater.dart';
 
 class CartPage extends StatefulWidget {
@@ -184,7 +185,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    'Your Cart is empty',
+                    context.translate.your_cart_is_empty,
                     style: textStyle.displayMedium,
                   ),
                   Row(
@@ -194,8 +195,8 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                           onPressed: () {
                             GoRouter.of(context).go(AppRoutes.home);
                           },
-                          child: const Text(
-                            'Add Item',
+                          child:  Text(
+                            context.translate.add_product,
                           ),
                         ),
                       ),
@@ -281,7 +282,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Total',
+                                  context.translate.total,
                                   style: textStyle.displayLarge,
                                 ),
                               ),
@@ -305,7 +306,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                 Expanded(
                                   flex: 3,
                                   child: Text(
-                                    'Discount Amount',
+                                    context.translate.discount_amount,
                                     style: textStyle.displayMedium,
                                   ),
                                 ),
@@ -317,13 +318,13 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                       AppInputFormatter.price,
                                     ],
                                     keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
+                                    decoration: InputDecoration(
+                                      enabledBorder: const  OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: AppColors.borderBrand,
                                         ),
                                       ),
-                                      hintText: 'enter discount amount',
+                                      hintText: context.translate.enter_discount_amount,
                                     ),
                                     controller: _discount,
                                   ),
@@ -356,8 +357,8 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                         },
                                       );
                                     },
-                                    child: const Text(
-                                      'Check out',
+                                    child: Text(
+                                     context.translate.check_out ,
                                     ),
                                   ),
                                 ),

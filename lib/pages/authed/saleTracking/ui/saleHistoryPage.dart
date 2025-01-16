@@ -12,6 +12,7 @@ import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class SaleHistoryPage extends StatefulWidget {
   const SaleHistoryPage({super.key});
@@ -139,7 +140,7 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
                               ),
                               alignment: Alignment.center,
                               child: Text(
-                                value == null ? 'Select Range' : 'Change Range',
+                                value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
                                 style: textStyle.bodyLarge!.copyWith(
                                   color: value == null
                                       ? AppColors.onPrimary
@@ -202,7 +203,7 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
     return BlocBuilder<SellingBloc, SellingBlocState>(
       builder: (context, state) {
         if (state is FailedToLoadSellignRecords) {
-          return const Text('Failed to load sales records');
+          return Text(context.translate.something_went_wrong);
         }
         if (state is LoadingProductSellingRecords) {
           return AppLoadingCards(height: AppSizes.s250,  duration: 1200);

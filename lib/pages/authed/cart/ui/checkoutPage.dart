@@ -6,6 +6,8 @@ import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bl
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class CheckoutPage extends StatefulWidget {
   final double discount;
@@ -33,15 +35,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    DataCell cellData(String text, TextTheme textStyle) {
-      return DataCell(
-        Text(
-          text,
-          style: textStyle.bodySmall,
-        ),
-      );
-    }
-
     final textStyle = Theme.of(context).textTheme;
     return BlocBuilder<CartBloc, CartBlocState>(
       builder: (context, state) {
@@ -75,36 +68,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         children: [
                           DataTable(
                             columns: [
-                              DataColumn(
-                                label: Text(
-                                  'ID',
-                                  style: textStyle.bodyMedium,
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Name',
-                                  style: textStyle.bodyMedium,
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Quantity',
-                                  style: textStyle.bodyMedium,
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Price',
-                                  style: textStyle.bodyMedium,
-                                ),
-                              ),
-                              DataColumn(
-                                label: Text(
-                                  'Total',
-                                  style: textStyle.bodyMedium,
-                                ),
-                              ),
+                              _getColumn(context.translate.id, context),
+                              _getColumn(context.translate.name, context),
+                              _getColumn(context.translate.quantity, context),
+                              _getColumn(context.translate.price, context),
+                              _getColumn(context.translate.total, context),
                             ],
                             rows: [
                               for (final row in rows)
@@ -142,8 +110,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
               ],
             ),
-            
-            
+
             // cart information
             Positioned(
               bottom: AppPaddings.p6,
@@ -162,8 +129,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         sigmaY: 10,
                       ),
                       child: Container(
-                        color:AppColors.primary
-                          .withAlpha(30),
+                        color: AppColors.primary.withAlpha(30),
                       ),
                     ),
                   ),
@@ -174,8 +140,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                     decoration: BoxDecoration(
                       backgroundBlendMode: BlendMode.color,
-                     color:AppColors.primary
-                          .withAlpha(30),
+                      color: AppColors.primary.withAlpha(30),
                       borderRadius: BorderRadius.all(
                         Radius.circular(
                           AppSizes.s8,
@@ -190,7 +155,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             children: [
                               Expanded(
                                 child: Text(
-                                  'Total',
+                                  context.translate.total,
                                   style: textStyle.displayLarge,
                                 ),
                               ),
@@ -209,11 +174,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           flex: 2,
                           child: Row(
                             children: [
-
-                              
                               Expanded(
                                 child: Text(
-                                  'SubTotal',
+                                  context.translate.sub_total,
                                   style: textStyle.displaySmall,
                                 ),
                               ),
@@ -248,8 +211,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                           .read<CartBloc>()
                                           .add(PlaceOrder(context: context));
                                     },
-                                    child: const Text(
-                                      'Confirm payment',
+                                    child: Text(
+                                      context.translate.confirm_payment,
                                     ),
                                   ),
                                 ),
@@ -266,6 +229,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ],
         );
       },
+    );
+  }
+
+  DataColumn _getColumn(String lable, BuildContext context) {
+    return DataColumn(
+      label: Text(
+        lable,
+        style: TextTheme.of(context).bodyMedium,
+      ),
+    );
+  }
+
+  DataCell cellData(String text, TextTheme textStyle) {
+    return DataCell(
+      Text(
+        text,
+        style: textStyle.bodySmall,
+      ),
     );
   }
 }

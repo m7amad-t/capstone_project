@@ -139,14 +139,14 @@ class ExpiredProductCard extends StatelessWidget {
                     _info(
                       textStyle: textStyle,
                       isLTR: isLTR,
-                      lable: "Boughted for",
+                      lable: context.translate.purchase_cost,
                       value: "\$${record.boughtedFor.toStringAsFixed(2)}",
                     ),
                     gap(height: AppPaddings.p10),
                     _info(
                       textStyle: textStyle,
                       isLTR: isLTR,
-                      lable: "Total lost",
+                      lable: context.translate.total_lost,
                       value: "\$${totalLost.toStringAsFixed(2)}",
                       valueColor: AppColors.error,
                     ),
@@ -291,14 +291,14 @@ class ExpiredProductCard extends StatelessWidget {
                   _info(
                     textStyle: textStyle,
                     isLTR: isLTR,
-                    lable: "Boughted for",
+                    lable: context.translate.purchase_cost,
                     value: "\$${record.boughtedFor.toStringAsFixed(2)}",
                   ),
                   gap(height: AppPaddings.p10),
                   _info(
                     textStyle: textStyle,
                     isLTR: isLTR,
-                    lable: "Total lost",
+                    lable: context.translate.total_lost,
                     value: "\$${totalLost.toStringAsFixed(2)}",
                     valueColor: AppColors.error,
                   ),

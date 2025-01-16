@@ -9,6 +9,7 @@ import 'package:shop_owner/shared/UI/appLoadingCards.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class ExpiredProductsPage extends StatefulWidget {
   const ExpiredProductsPage({super.key});
@@ -32,7 +33,7 @@ class _ExpiredProductsPageState extends State<ExpiredProductsPage> {
     return Scaffold(
       body: RefreshIndicator(
         onRefresh: () async {
-          print(''); 
+    context.read<ExpiredProductsBloc>().add(ReloadExpiredProducts()); 
         },
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
@@ -56,7 +57,7 @@ class _ExpiredProductsPageState extends State<ExpiredProductsPage> {
         }
 
         if (state is FailedToLoadExpiredProducts) {
-          return Text('Failed to load');
+          return Text(context.translate.something_went_wrong);
         }
 
         List<ExpiredProductModel> records = [];
@@ -66,7 +67,7 @@ class _ExpiredProductsPageState extends State<ExpiredProductsPage> {
         }
 
         if (records.isEmpty) {
-          return Text('No expired products found');
+          return Text(context.translate.no_data_found);
         }
 
         return ListView.builder(

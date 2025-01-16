@@ -41,8 +41,8 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
         // send snakbar
         showSnackBar(
           message: FailedSnackBar(
-            title: event.context.translate.something_went_wrong,
-            message: event.context.translate.something_went_wrong,
+            title: event.context.translate.wrong_credintials,
+            message: "",
           ),
         );
         return;
@@ -59,8 +59,8 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
       // send snackabr
       showSnackBar(
         message: SuccessSnackBar(
-          title: event.context.translate.login_successful,
-          message: event.context.translate.login_successful,
+          title: event.context.translate.successfully_signed_in,
+          message: "",
         ),
       );
       // call auth bloc to auth curent user , redirect user to home page

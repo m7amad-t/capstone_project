@@ -15,6 +15,7 @@ import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class ReturnedProducstHistoryPage extends StatefulWidget {
   const ReturnedProducstHistoryPage({super.key});
@@ -120,7 +121,7 @@ class _ReturnedProducstHistoryPageState
             Expanded(
               flex: 1,
               child: Text(
-                'Selected Range',
+                context.translate.select_date_range,
                 style: textStyle.displaySmall,
               ),
             ),
@@ -163,7 +164,7 @@ class _ReturnedProducstHistoryPageState
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    value == null ? 'Select Range' : 'Change Range',
+                    value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
                     style: textStyle.bodyLarge!.copyWith(
                       color: value == null
                           ? AppColors.onPrimary
@@ -193,7 +194,7 @@ class _ReturnedProducstHistoryPageState
 
         if (state is FailedToLoadProductsReturnedRecords) {
           return Text(
-            'Failed to load returned products.',
+            context.translate.something_went_wrong,
             style: textStyle.displaySmall,
             textAlign: TextAlign.center,
           );
@@ -247,29 +248,23 @@ class _ReturnedProducstHistoryPageState
                         )),
                   ),
                   hint: Text(
-                    'Select returned place',
+                    context.translate.select_return_place,
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   value: _selectedInventory.value,
                   items: [
-                    DropdownMenuItem(
-                      value: null,
-                      child: Text(
-                        'All',
-                        style: textStyle.bodyMedium,
-                      ),
-                    ),
+                    
                     DropdownMenuItem(
                       value: true,
                       child: Text(
-                        'Returned To Inventory',
+                        context.translate.return_to_inventory,
                         style: textStyle.bodyMedium,
                       ),
                     ),
                     DropdownMenuItem(
                       value: false,
                       child: Text(
-                        'Returned To Damaged',
+                        context.translate.return_to_damages_inventory,
                         style: textStyle.bodyMedium,
                       ),
                     ),
@@ -329,13 +324,13 @@ class _ReturnedProducstHistoryPageState
                         DropdownMenuItem(
                           value: null,
                           child: Text(
-                            "All",
+                            context.translate.all,
                             style: textStyle.bodyMedium,
                           ),
                         ),
                         // return reasons
                         for (final option in RETURN_REASON_LIST)
-                          _dropDownItem(option, option.name, textStyle),
+                          _dropDownItem(option, option.name(context), textStyle),
                       ],
                       onChanged: (value) {
                         context.read<ReturnedProductsBloc>().add(

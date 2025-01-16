@@ -12,6 +12,7 @@ import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class Boughtedproducts extends StatefulWidget {
   const Boughtedproducts({super.key});
@@ -151,7 +152,7 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            value == null ? 'Select Range' : 'Change Range',
+                            value == null ? context.translate.select_a_reason : context.translate.change_selected_date_range,
                             style: textStyle.bodyLarge!.copyWith(
                               color: value == null
                                   ? AppColors.onPrimary
@@ -174,8 +175,8 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
                                       textDirection: TextDirection.rtl,
                                       ),
                                       gap(width: AppPaddings.p10),
-                                  const Text(
-                                      "to" , 
+                                  Text(
+                                      context.translate.to , 
                                       textDirection: TextDirection.rtl,
                                       ),
                                       gap(width: AppPaddings.p10),
