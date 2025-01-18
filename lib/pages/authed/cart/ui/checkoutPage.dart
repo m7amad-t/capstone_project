@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
@@ -160,12 +161,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 ),
                               ),
                               Expanded(
-                                child: Text(
-                                  "\$${total.toStringAsFixed(2)}",
-                                  style: textStyle.bodyLarge!.copyWith(
+                                child: PriceWidget(price: total, style:  textStyle.bodyLarge!.copyWith(
                                     fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                  ),), 
+                                
                               ),
                             ],
                           ),
@@ -183,15 +182,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               Expanded(
                                 child: Opacity(
                                   opacity: isDiscounted ? 0.5 : 1,
-                                  child: Text(
-                                    "\$${subTotal.toStringAsFixed(2)}",
-                                    style: textStyle.bodyMedium!.copyWith(
+                                  child: PriceWidget(price: subTotal, style:  textStyle.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.bold,
                                       decoration: isDiscounted
                                           ? TextDecoration.lineThrough
                                           : null,
-                                    ),
-                                  ),
+                                    ), ), 
+                                  
                                 ),
                               ),
                             ],

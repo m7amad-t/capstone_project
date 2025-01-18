@@ -10,7 +10,7 @@ import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/utils/auth/authService.dart';
 import 'package:shop_owner/utils/auth/bloc/auth_bloc_bloc.dart';
 import 'package:shop_owner/utils/auth/cloudAuth.dart';
-import 'package:shop_owner/utils/auth/userModel.dart';
+import 'package:shop_owner/utils/auth/AuthedUser.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
@@ -29,7 +29,9 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
       // simulate a delay for the login process
       final CloudAuth authService = CloudAuth();
      
-      final User? user = await authService.auth(event.model);
+
+      final AuthedUser? user = await authService.auth(event.model);
+
 
 
       if (user == null) {
@@ -51,7 +53,7 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
       // sucessfully logged in
 
       // inject user model to locator
-      await locator<AuthService>().signUser(user);
+      await locator<AuthService>().signUser(user.user);
 
       // pop loading dialog
       locator<AppDialogs>().disposeAnyActiveDialogs();

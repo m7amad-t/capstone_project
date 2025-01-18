@@ -9,6 +9,7 @@ import 'package:shop_owner/pages/authed/productManagement/ui/components/productH
 import 'package:shop_owner/router/extraTemplates/productManagementExtra.dart';
 import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/shared/UI/imageDisplayer.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -26,9 +27,9 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
-
   @override
   Widget build(BuildContext context) {
+    final textStyle = TextTheme.of(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -56,19 +57,25 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               // top section , background image and avatar
               _topSecton(),
 
-              _productName(context).paddingSymmetric(horizontal: AppPaddings.p10  ),
+              _productName(context)
+                  .paddingSymmetric(horizontal: AppPaddings.p10),
 
-              gap(height: AppSizes.s10), 
+              gap(height: AppSizes.s10),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [_priceSection(), gap(width: 10), _quantitySection()],
+                  children: [
+                    _priceSection(textStyle),
+                    gap(width: 10),
+                    _quantitySection()
+                  ],
                 ),
               ),
-              gap(height: AppSizes.s10), 
+              gap(height: AppSizes.s10),
 
-              _discription(context).paddingSymmetric(horizontal: AppPaddings.p10),
+              _discription(context)
+                  .paddingSymmetric(horizontal: AppPaddings.p10),
 
               gap(height: AppSizes.s10),
               // product details section
@@ -78,7 +85,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
                 child: ProductHistorySection(
                   product: widget.product,
-                ),  
+                ),
               ),
 
               // trailling gap
@@ -151,13 +158,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
-  Widget _priceSection() {
+  Widget _priceSection(TextTheme textStyle) {
     return _template(
-      context.translate.price,
-      "\$${widget.product.price.toStringAsFixed(2)}",
-    );
+        context.translate.price, widget.product.price.toStringAsFixed(2),
+        valueWidget: PriceWidget(
+          price: widget.product.price,
+          style: textStyle.bodyMedium!.copyWith(
+            color: AppColors.primary,
+            fontWeight: FontWeight.bold,
+          ),
+        ));
   }
- 
+
   Widget _quantitySection() {
     return _template(
       context.translate.quantity,
@@ -165,7 +177,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
-  Widget _template(String lable, String value) {
+  Widget _template(String lable, String value, {Widget? valueWidget}) {
     final textStyle = Theme.of(context).textTheme;
 
     return Expanded(
@@ -190,16 +202,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             children: [
               Text(
                 lable,
-                style: textStyle.displayMedium!
-                    .copyWith(color: AppColors.primary),
+                style: textStyle.bodyMedium!.copyWith(color: AppColors.primary),
               ),
-              Text(
-                value,
-                style: textStyle.displayMedium!.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              valueWidget ??
+                  Text(
+                    value,
+                    style: textStyle.bodyMedium!.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
             ],
           ),
         ),

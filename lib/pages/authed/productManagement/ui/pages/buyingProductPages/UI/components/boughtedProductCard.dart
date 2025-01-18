@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
 import 'package:shop_owner/shared/UI/imageDisplayer.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -139,13 +140,11 @@ class BoughtedProductCard extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                             
-                                    Text(
-                                      "\$${record.pricePerItem.toStringAsFixed(2)}",
-                                      style: textStyle.bodyMedium!.copyWith(
+                                    PriceWidget(price: record.pricePerItem, style:  textStyle.bodyMedium!.copyWith(
                                         fontWeight: FontWeight.bold,
                                         // color: AppColors.primary,
-                                      ),
-                                    ),
+                                      ), ), 
+                                    
                                   ],
                                 ),
                               ),
@@ -232,13 +231,11 @@ class BoughtedProductCard extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(
-                                      "\$${(record.pricePerItem * record.quantity).toStringAsFixed(2)}",
-                                      style: textStyle.bodyMedium!.copyWith(
+                                    PriceWidget(price: (record.pricePerItem * record.quantity), style: textStyle.bodyMedium!.copyWith(
                                         fontWeight: FontWeight.bold,
                                         // color: AppColors.primary,
-                                      ),
-                                    ),
+                                      ), ),
+                                    
                                     gap(width: AppSizes.s10),
 
                                     const Icon(
@@ -404,13 +401,9 @@ class BoughtedProductCard extends StatelessWidget {
                                   //   color: AppColors.primary,
                                   // ),
                                   gap(width: AppSizes.s10),
-                                  Text(
-                                    "\$${record.pricePerItem.toStringAsFixed(2)}",
-                                    style: textStyle.bodyMedium!.copyWith(
-                                      // fontWeight: FontWeight.bold,
-                                      // color: AppColors.primary,
-                                    ),
-                                  ),
+                                  PriceWidget(price: record.pricePerItem , style: textStyle.bodyMedium!.copyWith(
+                                    ),),
+                                  
                                 ],
                               ),
                             ),
@@ -435,13 +428,8 @@ class BoughtedProductCard extends StatelessWidget {
                                     // color: AppColors.primary,
                                   ),
                                   gap(width: AppSizes.s10),
-                                  Text(
-                                    "\$${(record.pricePerItem * record.quantity).toStringAsFixed(2)}",
-                                    style: textStyle.bodyMedium!.copyWith(
-                                      // fontWeight: FontWeight.bold,
-                                      // color: AppColors.primary,
-                                    ),
-                                  ),
+                                  PriceWidget(price: (record.pricePerItem * record.quantity), style: textStyle.bodyMedium!.copyWith(
+                                    ), ),
                                 ],
                               ),
                             ),

@@ -13,7 +13,9 @@ class ProductOrderOptionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
+
       constraints: BoxConstraints(
+        maxHeight: AppSizes.s100,
         maxWidth: locator<DynamicSizes>().p100,
       ),
       child: BlocBuilder<ProductBloc, ProductBlocState>(

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/models/productReturnedModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/components/sellingHistorycard.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -18,12 +19,18 @@ class ReturnedProductCard extends StatelessWidget {
     final textStyle = Theme.of(context).textTheme;
     return LayoutBuilder(
       builder: (context, constraints) {
+        
+        double prefredSize = 400; 
+
+        if(constraints.maxWidth > prefredSize){
+          prefredSize = constraints.maxWidth;
+        }
         return SizedBox(
           width: constraints.maxWidth,
           child: FittedBox(
           fit : BoxFit.fitWidth, 
           child: SizedBox(
-            width: AppSizes.s400, 
+            width: prefredSize, 
             child: Card(
               child: Stack( 
                 children: [
@@ -116,13 +123,11 @@ class ReturnedProductCard extends StatelessWidget {
                               // color: AppColors.warning,
                             ),
                           ),
-                          Text(
-                            "\$${record.refund.toStringAsFixed(2)}",
-                            style: textStyle.displaySmall!.copyWith(
+
+                          PriceWidget(price: record.refund, style: textStyle.displaySmall!.copyWith(
                               fontWeight: FontWeight.bold,
                               // color: AppColors.warning,
-                            ),
-                          ),
+                            ),), 
                         
                         ],
                       ),
@@ -204,13 +209,9 @@ class ReturnedProductCard extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "\$${record.refund.toStringAsFixed(2)}",
-                          style: textStyle.displaySmall!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            // color: AppColors.warning,
-                          ),
-                        ),
+                     
+                        
+                        
                         Text(
                           context.translate.refund,
                           style: textStyle.displaySmall!.copyWith(
@@ -218,6 +219,13 @@ class ReturnedProductCard extends StatelessWidget {
                             // color: AppColors.warning,
                           ),
                         ),
+                           PriceWidget(
+                          price: record.refund,
+                          style: textStyle.displaySmall!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            // color: AppColors.warning,
+                          ),
+                        ), 
                       ],
                     ),
                   ),
@@ -250,19 +258,25 @@ class ReturnedProductCard extends StatelessWidget {
         // devider
         Divider(
           indent: AppSizes.s40,
-          height: 0,
+          height: AppSizes.s4,
           endIndent: AppSizes.s40,
         ),
 
         // invoice card
         LayoutBuilder(
           builder: (context, constraints) {
+            
+        double prefredSize = 400; 
+
+        if(constraints.maxWidth > prefredSize){
+          prefredSize = constraints.maxWidth;
+        }
             return SizedBox(
               width: constraints.maxWidth,
               child: FittedBox(
                 fit: BoxFit.fitWidth,
                 child: SizedBox(
-                  width: 400,
+                  width: prefredSize,
                   child: SellingHistoryCard(
                     record: record.invoice!,
                     isTapable: false,
@@ -333,13 +347,11 @@ class ReturnedProductCard extends StatelessWidget {
           ),
           child: Opacity(
             opacity: 1,
-            child: Text(
-              "\$${record.product.price}",
-              style: textStyle.bodySmall!.copyWith(
+            child: PriceWidget(price: record.product.price, style:  textStyle.bodySmall!.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColors.primary,
-              ),
-            ),
+              ),),
+            
           ),
         ),
       ],

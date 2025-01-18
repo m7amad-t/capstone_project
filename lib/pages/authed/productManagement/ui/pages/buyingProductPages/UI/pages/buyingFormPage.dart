@@ -5,6 +5,7 @@ import 'package:shop_owner/pages/authed/productManagement/logic/models/productMo
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/enum/enum.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/buyingProductBloc/buying_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -111,7 +112,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
 
           // title of the form
           Text(
-            'Buying Product Form',
+            context.translate.buying_product_from,
             style: textStyle.titleMedium,
           ),
 
@@ -164,12 +165,6 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
             "( ${widget.product.name} )",
             style: textStyle.displayLarge,
           ),
-          // Text(
-          //   widget.product.price.toStringAsFixed(2),
-          //   style: textStyle.bodyMedium!.copyWith(
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ],
       );
     });
@@ -192,7 +187,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                 child: DropdownButtonHideUnderline(
                   child: DropdownButtonFormField<PURCHASE_UNITE_TYPE?>(
                     hint: Text(
-                      'Select Unite',
+                      context.translate.select_unit,
                       style: Theme.of(context).textTheme.displaySmall,
                     ),
                     decoration: InputDecoration(
@@ -212,7 +207,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                     value: _selectedPurchaseUnit.value,
                     validator: (value) {
                       if (value == null) {
-                        return 'Please select a unite';
+                        return context.translate.please_select_unit;
                       }
                       return null;
                     },
@@ -272,7 +267,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                     return DropdownButtonHideUnderline(
                       child: DropdownButtonFormField<COST_UNITE_TYPE?>(
                         hint: Text(
-                          'Select entered cost unit type',
+                          context.translate.select_cost_type,
                           style: Theme.of(context).textTheme.displaySmall,
                         ),
                         decoration: InputDecoration(
@@ -293,7 +288,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                         value: _selectedCostUnitType.value,
                         validator: (input) {
                           if (input == null) {
-                            return 'Please select a unite';
+                            return context.translate.select_cost_type;
                           }
                           return null;
                         },
@@ -411,10 +406,11 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                               return context.translate.enter_quantity;
                             }
                             if (int.tryParse(value) == null) {
-                              return "context.translate.enter_valid_quantity";
+                              return context.translate.please_enter_quantity;
                             }
                             if (int.parse(value) < 0) {
-                              return "context.translate.enter_valid_quantity";
+                              return context
+                                  .translate.please_enter_valid_quantity;
                             }
 
                             return null;
@@ -424,7 +420,6 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                           inputFormatters: [
                             AppInputFormatter.numbersOnly,
                           ],
-                          
                           keyboardType: TextInputType.number,
                           style: textStyle.bodySmall,
                           decoration: InputDecoration(
@@ -586,10 +581,12 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                                   return context.translate.enter_quantity;
                                 }
                                 if (int.tryParse(value) == null) {
-                                  return "context.translate.enter_valid_quantity";
+                                  return context
+                                      .translate.please_enter_valid_quantity;
                                 }
                                 if (int.parse(value) < 0) {
-                                  return "context.translate.enter_valid_quantity";
+                                  return context
+                                      .translate.please_enter_valid_quantity;
                                 }
 
                                 return null;
@@ -599,7 +596,6 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                               inputFormatters: [
                                 AppInputFormatter.numbersOnly,
                               ],
-                          
                               keyboardType: TextInputType.number,
                               style: textStyle.bodySmall,
                               decoration: InputDecoration(
@@ -679,7 +675,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                     child: Padding(
                       padding: EdgeInsets.only(top: AppSizes.s1),
                       child: Text(
-                        "No. of items per package",
+                        context.translate.number_product_per_package,
                         style: textStyle.bodySmall,
                       ),
                     ),
@@ -703,10 +699,10 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                   return context.translate.enter_quantity;
                 }
                 if (double.tryParse(value) == null) {
-                  return "context.translate.enter_valid_quantity";
+                  return context.translate.please_enter_valid_quantity;
                 }
                 if (double.parse(value) < 0) {
-                  return "context.translate.enter_valid_quantity";
+                  return context.translate.please_enter_valid_quantity;
                 }
 
                 return null;
@@ -716,11 +712,11 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
               inputFormatters: [
                 AppInputFormatter.price,
               ],
-             
+
               keyboardType: TextInputType.number,
               style: textStyle.bodySmall,
-              decoration: const InputDecoration(
-                hintText: "cost",
+              decoration: InputDecoration(
+                hintText: context.translate.cost,
               ),
             ),
           ),
@@ -730,24 +726,26 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
   }
 
   Widget _noteInputSection() {
-    return Builder(builder: (context) {
-      final textStyle = TextTheme.of(context);
-      return Row(
-        children: [
-          Expanded(
-            child: TextFormField(
-              maxLines: 4,
-              // textAlign: TextAlign.center,
-              controller: _noteController,
-              style: textStyle.bodySmall,
-              decoration: const InputDecoration(
-                hintText: "Note",
+    return Builder(
+      builder: (context) {
+        final textStyle = TextTheme.of(context);
+        return Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                maxLines: 4,
+                // textAlign: TextAlign.center,
+                controller: _noteController,
+                style: textStyle.bodySmall,
+                decoration: InputDecoration(
+                  hintText: context.translate.note,
+                ),
               ),
             ),
-          ),
-        ],
-      );
-    });
+          ],
+        );
+      },
+    );
   }
 
   Widget _expireDateSelectorSection() {
@@ -797,7 +795,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                             );
                           }
                           return Text(
-                            'Change expire date',
+                            context.translate.change_expire_date,
                             style: textStyle.bodyMedium!.copyWith(
                               color: AppColors.primary,
                             ),
@@ -810,7 +808,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                     Row(
                       children: [
                         Text(
-                          'Selected expire date',
+                          context.translate.select_expire_date,
                           style: textStyle.displaySmall,
                         ),
                         gap(width: AppSizes.s10),
@@ -852,8 +850,14 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                           children: [
                             _summary(
                               textStyle,
-                              "Total Cost",
-                              "\$${total.toStringAsFixed(2)}",
+                              context.translate.total_cost,
+                              valueWidget: PriceWidget(
+                                price: total,
+                                style: textStyle.displayMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              total.toStringAsFixed(2),
                               context.fromLTR,
                             ),
                             gap(height: AppPaddings.p10),
@@ -861,8 +865,14 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                                 PURCHASE_UNITE_TYPE.PACKAGE)
                               _summary(
                                 textStyle,
-                                "Cost Per Package",
-                                "\$${perPackage.toStringAsFixed(2)}",
+                                context.translate.cost_per_package,
+                                valueWidget: PriceWidget(
+                                  price: perPackage,
+                                  style: textStyle.displayMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                perPackage.toStringAsFixed(2),
                                 context.fromLTR,
                               ),
                             if (_selectedPurchaseUnit.value ==
@@ -870,15 +880,21 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                               gap(height: AppPaddings.p10),
                             _summary(
                               textStyle,
-                              "Cost Per Item",
-                              "\$${perItem.toStringAsFixed(2)}",
+                              context.translate.cost_per_product,
+                              valueWidget: PriceWidget(
+                                price: perItem,
+                                style: textStyle.displayMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              perItem.toStringAsFixed(2),
                               context.fromLTR,
                             ),
                             if (_selectedPurchaseUnit.value ==
                                 PURCHASE_UNITE_TYPE.PACKAGE)
                               _summary(
                                 textStyle,
-                                'Total Items',
+                                context.translate.total_products,
                                 (_stok.value * _itemQuantityInPackage.value)
                                     .toString(),
                                 context.fromLTR,
@@ -898,8 +914,8 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
     );
   }
 
-  Widget _summary(textStyle, String lable, String value, bool isLTR) {
-    if (isLTR) {
+  Widget _summary(textStyle, String lable, String value, bool isLTR,
+      {Widget? valueWidget}) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -907,31 +923,17 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
             lable,
             style: textStyle.displayMedium,
           ),
-          Text(
-            value,
-            style: textStyle.displayMedium!.copyWith(
-              fontWeight: FontWeight.bold,
+          if (valueWidget != null) valueWidget,
+          if (valueWidget == null)
+            Text(
+              value,
+              style: textStyle.displayMedium!.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
         ],
       );
-    }
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          value,
-          style: textStyle.displayMedium!.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(
-          lable,
-          style: textStyle.displayMedium,
-        ),
-      ],
-    );
   }
 
   Widget _checkOut() {
@@ -966,7 +968,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                   }
                 },
                 child: Text(
-                  'Check out',
+                  context.translate.check_out,
                   style: textStyle.bodyMedium!.copyWith(
                     color: AppColors.onPrimary,
                   ),

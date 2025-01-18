@@ -7,7 +7,6 @@ import 'package:shop_owner/pages/authed/productManagement/logic/models/productCa
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/service/productServices.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
-import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 part 'product_bloc_event.dart';
 part 'product_bloc_state.dart';

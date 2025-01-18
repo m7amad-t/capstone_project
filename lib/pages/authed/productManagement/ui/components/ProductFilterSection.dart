@@ -18,6 +18,7 @@ class ProductFilterSection extends StatelessWidget {
     
     return ConstrainedBox(
       constraints: BoxConstraints(
+        maxHeight: AppSizes.s70,
         maxWidth: locator<DynamicSizes>().p100,
       ),
       child: Container(

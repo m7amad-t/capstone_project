@@ -1,0 +1,56 @@
+{
+  "expenses": [
+    {
+      "expense_id": 1,
+      "expense_name": "Rent",
+      "records": [
+        {
+          "id": 1,
+          "amount": 100.0,
+          "note": null,
+          "dateTime": "2025-01-14T10:00:00Z",
+          "doneBy": {
+            "uid": "aoF8-xnu6-j2dk-ast7-sfdh",
+            "name": "Mohammed"
+          }
+        }, 
+        {
+            "id": 2,
+            "amount": 100.0,
+            "note": "rent for june",
+            "dateTime": "2025-01-14T10:00:00Z",
+            "doneBy": {
+              "uid": "aoF8-xnu6-j2dk-ast7-sfdh",
+              "name": "Mohammed"
+            }
+          }
+      ]
+    }, 
+    {
+      "expense_id": 1,
+      "expense_name": "Utilites",
+      "records": [
+        {
+          "id": 5,
+          "amount": 1000.0,
+          "note": null,
+          "dateTime": "2025-01-14T10:00:00Z",
+          "doneBy": {
+            "uid": "aoF8-xnu6-j2dk-ast7-sfdh",
+            "name": "Mohammed"
+          }
+        }, 
+        {
+            "id": 7,
+            "amount": 100.0,
+            "note": "rent for june",
+            "dateTime": "2025-01-14T10:00:00Z",
+            "doneBy": {
+              "uid": "aoF8-xnu6-j2dk-ast7-sfdh",
+              "name": "Mohammed"
+            }
+          }
+      ]
+    }
+  ]
+}

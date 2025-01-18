@@ -11,7 +11,7 @@ final class InitAuthState extends AuthBlocState {}
 
 
 final class UserAuthed extends AuthBlocState{
-  final User user ; 
+  final AuthedUser user ; 
   const UserAuthed({required this.user});
   @override
   List<Object> get props => [user];

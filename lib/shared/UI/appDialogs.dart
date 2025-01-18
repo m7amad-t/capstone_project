@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/l10n/l10n.dart';
+import 'package:shop_owner/pages/authed/expensesTrackig/logic/ExpensesRecordsBloc/expenses_records_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/expensesTrackig/logic/expensesBloc/expenses_bloc_bloc.dart';
+import 'package:shop_owner/pages/authed/expensesTrackig/logic/models/expensesModel.dart';
+import 'package:shop_owner/pages/authed/expensesTrackig/logic/models/expensesRecords.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/bloc/product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productCategoryModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/expiredPages/logic/expiredProductsBloc/expired_products_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/expiredPages/logic/models/expiredProductModel.dart';
+import 'package:shop_owner/pages/authed/profile/logic/systemUserBloc/system_users_bloc_bloc.dart';
 import 'package:shop_owner/router/navigationService.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
@@ -19,6 +24,7 @@ import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/style/languages/logic/bloc/language_bloc_bloc.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/auth/bloc/auth_bloc_bloc.dart';
+import 'package:shop_owner/utils/auth/userModel.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
@@ -85,6 +91,7 @@ class AppDialogs extends AppDialogsBase {
               gap(height: AppSizes.s10),
               Text(
                 context.translate.signing_in,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.displayLarge,
               ),
               gap(height: AppSizes.s10),
@@ -116,6 +123,7 @@ class AppDialogs extends AppDialogsBase {
               gap(height: AppSizes.s10),
               Text(
                 text,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.displayLarge,
               ),
             ],
@@ -145,7 +153,7 @@ class AppDialogs extends AppDialogsBase {
                     context.read<LanguageBloc>().add(
                           ChangeLanguage(local: local),
                         );
-                    GoRouter.of(context).pop(); 
+                    disposeAnyActiveDialogs();
                   },
                   trailing: Container(
                     margin: EdgeInsets.symmetric(
@@ -172,6 +180,7 @@ class AppDialogs extends AppDialogsBase {
     anyDialogVisible = false;
   }
 
+
   Future<void> showLogoutConfiramtion({
     bool isDismissable = true,
   }) async {
@@ -187,6 +196,7 @@ class AppDialogs extends AppDialogsBase {
             children: [
               Text(
                 context.translate.are_u_sure_want_sign_out,
+                textAlign: TextAlign.center,
                 style: _textStyle.displayMedium!
                   ..copyWith(
                     color: AppColors.error,
@@ -215,6 +225,197 @@ class AppDialogs extends AppDialogsBase {
                   TextButton(
                     onPressed: () {
                      GoRouter.of(context).pop(); 
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(AppColors.success),
+                    ),
+                    child: Text(
+                      context.translate.no,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    anyDialogVisible = false;
+  }
+
+  Future<void> showDeleteUserconfirmation({
+    bool isDismissable = true,
+    required User user ,
+  }) async {
+    anyDialogVisible = true;
+    await showDialog(
+      barrierDismissible: isDismissable,
+      context: super.context,
+      builder: (context) {
+        final _textStyle = Theme.of(context).textTheme;
+        return _showDialog(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                context.translate.ru_sure_wanna_delete_user,
+                style: _textStyle.displayMedium!
+                  ..copyWith(
+                    color: AppColors.error,
+                  ),
+              ),
+
+              gap(height: AppSizes.s20),
+              // confirm button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      disposeAnyActiveDialogs();
+                      context.read<SystemUsersBloc>().add(DeleteUser(user: user)); 
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(AppColors.error),
+                    ),
+                    child: Text(
+                      context.translate.yes,
+                    ),
+                  ),
+
+                  // dispose button
+                  TextButton(
+                    onPressed: () {
+                     disposeAnyActiveDialogs(); 
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(AppColors.success),
+                    ),
+                    child: Text(
+                      context.translate.no,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    anyDialogVisible = false;
+  }
+
+  Future<void> showExpenseRecordDeleteConfiramtion({
+    bool isDismissable = true,
+    required ExpensesRecordsModel expenseRecord,
+    required ExpensesModel expesnes,
+  }) async {
+    anyDialogVisible = true;
+    await showDialog(
+      barrierDismissible: isDismissable,
+      context: super.context,
+      builder: (context) {
+        final _textStyle = Theme.of(context).textTheme;
+        return _showDialog(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                context.translate.ru_sure_wanna_delete_expense_type,
+                style: _textStyle.displayMedium!
+                  ..copyWith(
+                    color: AppColors.error,
+                  ),
+              ),
+
+              gap(height: AppSizes.s20),
+              // confirm button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      disposeAnyActiveDialogs();
+                      context.read<ExpensesRecordsBloc>().add(DeleteRecord(records:expenseRecord , expesnes: expesnes  ));
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(AppColors.error),
+                    ),
+                    child: Text(
+                      context.translate.yes,
+                    ),
+                  ),
+
+                  // dispose button
+                  TextButton(
+                    onPressed: () {
+                     disposeAnyActiveDialogs(); 
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor:
+                          WidgetStatePropertyAll(AppColors.success),
+                    ),
+                    child: Text(
+                      context.translate.no,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+    anyDialogVisible = false;
+  }
+
+  Future<void> showExpenseTypeDeleteConfiramtion({
+    bool isDismissable = true,
+    required ExpensesModel expesnes,
+  }) async {
+    anyDialogVisible = true;
+    await showDialog(
+      barrierDismissible: isDismissable,
+      context: super.context,
+      builder: (context) {
+        final _textStyle = Theme.of(context).textTheme;
+        return _showDialog(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                context.translate.ru_sure_wanna_delete_expense_type,
+                textAlign: TextAlign.center,
+                style: _textStyle.displayMedium!
+                  ..copyWith(
+                    color: AppColors.error,
+                  ),
+              ),
+
+              gap(height: AppSizes.s20),
+              // confirm button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      disposeAnyActiveDialogs();
+                      context.read<ExpensesBloc>().add(DeleteExpense(expenseType: expesnes  ));
+                    },
+                    style: const ButtonStyle(
+                      backgroundColor: WidgetStatePropertyAll(AppColors.error),
+                    ),
+                    child: Text(
+                      context.translate.yes,
+                    ),
+                  ),
+
+                  // dispose button
+                  TextButton(
+                    onPressed: () {
+                     disposeAnyActiveDialogs(); 
                     },
                     style: const ButtonStyle(
                       backgroundColor:
@@ -321,6 +522,7 @@ class AppDialogs extends AppDialogsBase {
             children: [
               Text(
                 context.translate.deleting_product_confirmation,
+                textAlign: TextAlign.center,
                 style: _textStyle.displayMedium,
               ),
 
@@ -399,6 +601,7 @@ class AppDialogs extends AppDialogsBase {
             children: [
               Text(
                 context.translate.deleting_catgeory_confirmation,
+                textAlign: TextAlign.center,
                 style: _textStyle.displayMedium,
               ),
 
@@ -477,6 +680,7 @@ class AppDialogs extends AppDialogsBase {
             children: [
               Text(
                 context.translate.category_cant_deleted,
+                textAlign: TextAlign.center,
                 style: _textStyle.displayMedium!.copyWith(
                   color: AppColors.error,
                 ),
@@ -523,6 +727,7 @@ class AppDialogs extends AppDialogsBase {
             children: [
               Text(
                 context.translate.confirm_payment,
+                textAlign: TextAlign.center,
                 style: _textStyle.displayMedium,
               ),
 

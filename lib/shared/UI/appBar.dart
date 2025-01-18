@@ -17,9 +17,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppRoutes.login: context.translate.signin,
       AppRoutes.productManagement: context.translate.product_management,
       AppRoutes.saleAnalytics: context.translate.analytics,
+      AppRoutes.profile: context.translate.profile,
       // AppRoutes.saleTracking: context.translate.sale,
-      AppRoutes.cart: "Cart",
-      AppRoutes.expensesTracking:context.translate.expenses,
+      AppRoutes.cart: context.translate.cart,
+      AppRoutes.expensesTracking: context.translate.expenses,
       AppRoutes.addProduct: context.translate.add_product,
       AppRoutes.editProduct: context.translate.updating_product,
       AppRoutes.product: context.translate.products,
@@ -38,7 +39,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppRoutes.buyProductsFrom: context.translate.buying_product_from,
       AppRoutes.returnedProductsHistory: context.translate.purchase_history,
       AppRoutes.saleHistory: context.translate.sale_history,
-
     };
 
     for (final key in locations.keys) {
@@ -62,7 +62,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppRoutes.productManagement,
       AppRoutes.cart,
       AppRoutes.saleAnalytics,
-      // AppRoutes.saleTracking,
+      AppRoutes.profile,
       AppRoutes.expensesTracking
     ];
     if (primaryRoutes.contains(location)) {
@@ -72,38 +72,37 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return true;
   }
 
-  Widget _historyB(String path){
-
-    return Builder(
-      builder: (context) {
-        return IconButton(onPressed: (){
-          GoRouter.of(context).push(path); 
-        }, icon: Icon(Icons.history , color:  AppColors.onPrimary , size : AppSizes.s35,),);
-      }
-    );
-
+  Widget _historyB(String path) {
+    return Builder(builder: (context) {
+      return IconButton(
+        onPressed: () {
+          GoRouter.of(context).push(path);
+        },
+        icon: Icon(
+          Icons.history,
+          color: AppColors.onPrimary,
+          size: AppSizes.s35,
+        ),
+      );
+    });
   }
 
   Widget? _historyButton(String location) {
     final List<Map<String, String>> histories = [
       // buy product page ..
       {
-        'location' : AppRoutes.buyProducts,
-         'path' :    AppRoutes.boughtedProducts,
+        'location': AppRoutes.buyProducts,
+        'path': AppRoutes.boughtedProducts,
       }
     ];
 
-
-    for(int i  = 0 ; i < histories.length ; i++){
-
-      if(location.endsWith(histories[i]['location']!)){
-        return _historyB(histories[i]['path']!); 
+    for (int i = 0; i < histories.length; i++) {
+      if (location.endsWith(histories[i]['location']!)) {
+        return _historyB(histories[i]['path']!);
       }
-
     }
 
-    return null; 
-
+    return null;
   }
 
   bool _showTotalInCart(String location) {
@@ -162,7 +161,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
       //   _historyButton(location) ?? const SizedBox()
       // ],
-      
+
       title: Text(
         _title(context, location),
       ),

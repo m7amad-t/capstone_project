@@ -2,6 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/pages/authed/cart/ui/cartPage.dart';
 import 'package:shop_owner/pages/authed/cart/ui/checkoutPage.dart';
+import 'package:shop_owner/pages/authed/expensesTrackig/ui/pages/addExpensesRecordPage.dart';
+import 'package:shop_owner/pages/authed/expensesTrackig/ui/pages/addExpensesTypePage.dart';
+import 'package:shop_owner/pages/authed/expensesTrackig/ui/pages/expensRecordPage.dart';
+import 'package:shop_owner/pages/authed/expensesTrackig/ui/pages/expensesTrackingPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/addingDamagedProductFormPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/damagedProductHistoryPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/damagedProductsPage.dart';
@@ -18,6 +22,9 @@ import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProdu
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/productReturnPage.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/returnedProductHistory.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/productManagementPage.dart';
+import 'package:shop_owner/pages/authed/profile/ui/creatingUserPage.dart';
+import 'package:shop_owner/pages/authed/profile/ui/profilepage.dart';
+import 'package:shop_owner/pages/authed/saleAnalytics/ui/saleAnalyticsPage.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/returnProductFromInvoicePage.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/saleHistoryPage.dart';
@@ -25,6 +32,7 @@ import 'package:shop_owner/pages/authed/saleTracking/ui/salePage.dart';
 import 'package:shop_owner/pages/notAuthed/login/ui/loginPage.dart';
 import 'package:shop_owner/pages/notAuthed/splash/splashScreen.dart';
 import 'package:shop_owner/root.dart';
+import 'package:shop_owner/router/extraTemplates/expensesExtra.dart';
 import 'package:shop_owner/router/extraTemplates/invoiceExtra.dart';
 import 'package:shop_owner/router/navigationService.dart';
 import 'package:shop_owner/router/routes.dart';
@@ -48,11 +56,7 @@ class AppRouter {
           );
         },
         routes: <RouteBase>[
-          // GoRoute(
-          //   path: AppRoutes.root,
-          //   redirect: (_, __) => AppRoutes.main,
-          // ),
-          // splash screen - initial route
+          // splash screen
           GoRoute(
             path: AppRoutes.main,
             pageBuilder: (context, state) => NoTransitionPage(
@@ -70,120 +74,6 @@ class AppRouter {
             ),
           ),
 
-          // // product management screen
-          // GoRoute(
-          //   path: AppRoutes.productManagement,
-          //   pageBuilder: (context, state) => NoTransitionPage(
-          //     key: state.pageKey,
-          //     child: ProductManagementPage(key: state.pageKey),
-          //   ),
-          //   routes: [
-          //     // // update product
-          //     // GoRoute(
-          //     //   path: AppRoutes.editProduct,
-          //     //   pageBuilder: (context, state) {
-          //     //     final data = state.extra as Map<String, dynamic>;
-          //     //     return NoTransitionPage(
-          //     //       key: state.pageKey,
-          //     //       child: ProductEditorPage(
-          //     //         key: state.pageKey,
-          //     //         product: data['product'],
-          //     //         categories: data['categories'],
-          //     //       ),
-          //     //     );
-          //     //   },
-          //     // ),
-
-          //     // product
-          //     GoRoute(
-          //       path: AppRoutes.product,
-          //       pageBuilder: (context, state) => NoTransitionPage(
-          //         key: state.pageKey,
-          //         child: ProductsPage(
-          //           key: state.pageKey,
-          //         ),
-          //       ),
-          //       routes: <RouteBase>[
-          //       // add product
-          //         GoRoute(
-          //           path: AppRoutes.addProduct,
-          //           pageBuilder: (context, state) {
-          //             final data = state.extra as Map<String, dynamic>;
-          //             return NoTransitionPage(
-          //               key: state.pageKey,
-          //               child: ProductEditorPage(
-          //                 key: state.pageKey,
-          //                 product: null,
-          //                 categories: data['categories'],
-          //               ),
-          //             );
-          //           },
-          //         ),
-
-          //         // update product
-          //         GoRoute(
-          //           path: AppRoutes.editCategory,
-          //           pageBuilder: (context, state) {
-          //             final data = state.extra as Map<String, dynamic>;
-          //             return NoTransitionPage(
-          //               key: state.pageKey,
-          //               child: ProductEditorPage(
-          //                 key: state.pageKey,
-          //                 product: data['product'],
-          //                 categories: data['categories'],
-          //               ),
-          //             );
-          //           },
-          //         ),
-          //       ],
-          //     ),
-          //     // category
-          //     GoRoute(
-          //       path: AppRoutes.category,
-          //       pageBuilder: (context, state) => NoTransitionPage(
-          //         key: state.pageKey,
-          //         child: CategoriesPage(
-          //           key: state.pageKey,
-          //         ),
-          //       ),
-          //       routes: <RouteBase>[
-          //       // add ccategory
-          //         GoRoute(
-          //           path: AppRoutes.addCategory,
-          //           pageBuilder: (context, state) {
-          //             final data = state.extra as Map<String, dynamic>;
-          //             return NoTransitionPage(
-          //               key: state.pageKey,
-          //               child: CategoryEditorPage(
-          //                 key: state.pageKey,
-          //                 category: null,
-          //                 categories: data['categories'],
-          //               ),
-          //             );
-          //           },
-          //         ),
-
-          //         // update category
-          //         GoRoute(
-          //           path: AppRoutes.editCategory,
-          //           pageBuilder: (context, state) {
-          //             final data = state.extra as Map<String, dynamic>;
-          //             return NoTransitionPage(
-          //               key: state.pageKey,
-          //               child: CategoryEditorPage(
-          //                 key: state.pageKey,
-          //                 category: data['category'],
-          //                 categories: data['categories'],
-          //               ),
-          //             );
-          //           },
-          //         ),
-          //       ],
-          //     ),
-
-          //   ],
-          // ),
-
           // Shell route for bottom navigation
           StatefulShellRoute.indexedStack(
             builder: (context, state, navigationShell) => RootPage(
@@ -191,7 +81,7 @@ class AppRouter {
               child: navigationShell,
             ),
             branches: [
-              // First tab - Sale tracking
+              // first tab - Sale tracking (home)
               StatefulShellBranch(
                 routes: [
                   GoRoute(
@@ -241,7 +131,40 @@ class AppRouter {
                 ],
               ),
 
-              // Second tab - Product Management
+              // second tab - Cart
+              StatefulShellBranch(
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.cart,
+                    pageBuilder: (context, state) => NoTransitionPage(
+                      key: state.pageKey,
+                      child: CartPage(key: state.pageKey),
+                    ),
+                    routes: <RouteBase>[
+                      GoRoute(
+                          path: AppRoutes.cartCheckout,
+                          pageBuilder: (context, state) {
+                            double discount = 0;
+                            Map<String, dynamic> extra =
+                                state.extra as Map<String, dynamic>;
+                            if (extra.containsKey('discount') &&
+                                extra['discount'] != null) {
+                              discount = extra['discount'];
+                            }
+                            return NoTransitionPage(
+                              key: state.pageKey,
+                              child: CheckoutPage(
+                                key: state.pageKey,
+                                discount: discount,
+                              ),
+                            );
+                          }),
+                    ],
+                  ),
+                ],
+              ),
+
+              // third tab - Product Management
               StatefulShellBranch(
                 routes: [
                   GoRoute(
@@ -424,7 +347,7 @@ class AppRouter {
                           ),
                         ],
                       ),
-                    
+
                       // Damaged products
                       GoRoute(
                         path: AppRoutes.damagedProducts,
@@ -437,14 +360,11 @@ class AppRouter {
                         routes: [
                           // Damaged history page...
                           GoRoute(
-                            path: AppRoutes.damagedProductsHistory,
-                            pageBuilder: (context, state) => NoTransitionPage(
-                                key: state.pageKey,
-                                child:const DamagedProductsHistoryPage()
-                              )
-                            
-                          ),
-                       
+                              path: AppRoutes.damagedProductsHistory,
+                              pageBuilder: (context, state) => NoTransitionPage(
+                                  key: state.pageKey,
+                                  child: const DamagedProductsHistoryPage())),
+
                           // add damaged products
                           GoRoute(
                             path: AppRoutes.damagedProductForm,
@@ -459,30 +379,25 @@ class AppRouter {
                               );
                             },
                           ),
-                       
                         ],
                       ),
-                    
+
                       // Expired products
                       GoRoute(
                         path: AppRoutes.expiredProducts,
                         pageBuilder: (context, state) => NoTransitionPage(
-                          key: state.pageKey,
-                          child: ExpiredProductsPage(
                             key: state.pageKey,
-                          )
-                        ),
+                            child: ExpiredProductsPage(
+                              key: state.pageKey,
+                            )),
                         routes: [
                           // Damaged history page...
                           GoRoute(
-                            path: AppRoutes.damagedProductsHistory,
-                            pageBuilder: (context, state) => NoTransitionPage(
-                                key: state.pageKey,
-                                child:const DamagedProductsHistoryPage()
-                              )
-                            
-                          ),
-                       
+                              path: AppRoutes.damagedProductsHistory,
+                              pageBuilder: (context, state) => NoTransitionPage(
+                                  key: state.pageKey,
+                                  child: const DamagedProductsHistoryPage())),
+
                           // add damaged products
                           GoRoute(
                             path: AppRoutes.damagedProductForm,
@@ -497,24 +412,21 @@ class AppRouter {
                               );
                             },
                           ),
-                       
                         ],
                       ),
-                    
-                    
                     ],
                   ),
                 ],
               ),
 
-              // First tab - Cart
+              // forth tab - analytics
               StatefulShellBranch(
                 routes: [
                   GoRoute(
-                    path: AppRoutes.cart,
+                    path: AppRoutes.saleAnalytics,
                     pageBuilder: (context, state) => NoTransitionPage(
                       key: state.pageKey,
-                      child: CartPage(key: state.pageKey),
+                      child: SaleAnalyticPage(key: state.pageKey),
                     ),
                     routes: <RouteBase>[
                       GoRoute(
@@ -535,6 +447,97 @@ class AppRouter {
                               ),
                             );
                           }),
+                    ],
+                  ),
+                ],
+              ),
+
+              // fifth tab - expenses
+              StatefulShellBranch(
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.expensesTracking,
+                    pageBuilder: (context, state) => NoTransitionPage(
+                      key: state.pageKey,
+                      child: ExpensesTracking(
+                        key: state.pageKey,
+                      ),
+                    ),
+                    routes: <RouteBase>[
+                      // add new expenses type
+                      GoRoute(
+                        path: AppRoutes.addExpensesType,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: AddNewExpensesTypePage(
+                            key: state.pageKey,
+                          ),
+                        ),
+                      ),
+
+                      // add expenses records
+                      GoRoute(
+                        path: AppRoutes.addExpesnesRecord,
+                        pageBuilder: (context, state) {
+                          Map<String, dynamic> extra =
+                              state.extra as Map<String, dynamic>;
+
+                          return NoTransitionPage(
+                            key: state.pageKey,
+                            child: AddExpensesRecordPage(
+                              key: state.pageKey,
+                              expesnes: extra[ExpensExtra.expensesField],
+                            ),
+                          );
+                        },
+                      ),
+
+                      // Expens records
+                      GoRoute(
+                        path: AppRoutes.expensRecordHistory,
+                        pageBuilder: (context, state) {
+                          Map<String, dynamic> extra =
+                              state.extra as Map<String, dynamic>;
+
+                          return NoTransitionPage(
+                            key: state.pageKey,
+                            child: ExpensesRecordsPage(
+                              key: state.pageKey,
+                              expenses: extra[ExpensExtra.expensesField],
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              // sixth tab - profile
+              StatefulShellBranch(
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.profile,
+                    pageBuilder: (context, state) => NoTransitionPage(
+                      key: state.pageKey,
+                      child: ProfilePage(
+                        key: state.pageKey,
+                      ),
+                    ),
+                    routes: <RouteBase>[
+                      // add new user
+                      GoRoute(
+                        path: AppRoutes.addUser,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: CreateUserPage(
+                            key: state.pageKey,
+                          ),
+                        ),
+                      ),
+
+                  
+                  
                     ],
                   ),
                 ],

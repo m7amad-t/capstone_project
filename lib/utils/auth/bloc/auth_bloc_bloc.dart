@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/utils/auth/authService.dart';
+import 'package:shop_owner/utils/auth/AuthedUser.dart';
 import 'package:shop_owner/utils/auth/userModel.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 
@@ -20,7 +21,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       emit(Loading());
 
       // remove user from secure storage
-      await locator<AuthService>().deleteCredentials(locator<User>());
+      await locator<AuthService>().deleteCredentials(locator<AuthedUser>().user);
 
       // aslo unregister user from locator
       if (locator.isRegistered<User>()) {
@@ -40,10 +41,7 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       // 
       // await Future.delayed(Duration(seconds: 1)) ; 
 
-      //
-      final User? user = await locator<AuthService>().getCredentials();
-
-
+      final AuthedUser? user = await locator<AuthService>().getCredentials();
 
       if (user == null) {
 
@@ -57,19 +55,19 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
         
 
         // check if user isn't injected to locator
-        if (!locator.isRegistered<User>()) {
+        if (!locator.isRegistered<AuthedUser>()) {
 
-          locator.registerSingleton<User>(user);
+          locator.registerSingleton<AuthedUser>(user);
         } else {
 
           // if there is already user injected , remove it
-          locator.unregister<User>();
+          locator.unregister<AuthedUser>();
           // inject new user to locator
-          locator.registerSingleton<User>(user);
+          locator.registerSingleton<AuthedUser>(user);
 
         }
 
-        emit(UserAuthed(user: locator<User>()));
+        emit(UserAuthed(user: locator<AuthedUser>()));
 
         // navigate user to home page
         GoRouter.of(event.context).go(AppRoutes.home); 

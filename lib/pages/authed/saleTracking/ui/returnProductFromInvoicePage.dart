@@ -7,6 +7,7 @@ import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProdu
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProductsPages/logic/returnedProductBlocs/shared/enum.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/productSellModel.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -39,7 +40,6 @@ class _ReturnParoductFromInvoicePageState
   late final TextEditingController _refundController;
   late final TextEditingController _boughtedFor;
 
-
   final ValueNotifier<bool?> _returnTOInventory = ValueNotifier(null);
 
   @override
@@ -50,7 +50,6 @@ class _ReturnParoductFromInvoicePageState
     _refundController = TextEditingController();
     _quantityController.addListener(_quantityControllerListener);
     _boughtedFor = TextEditingController();
-
   }
 
   @override
@@ -118,7 +117,8 @@ class _ReturnParoductFromInvoicePageState
         reason: _returnReason.value!,
         note: _noteController.text,
         backToInventory: _returnTOInventory.value!,
-        costPerItem: _boughtedFor.text.isEmpty ? null : double.parse(_boughtedFor.text) ,
+        costPerItem:
+            _boughtedFor.text.isEmpty ? null : double.parse(_boughtedFor.text),
         invoice: widget.invoice,
       );
 
@@ -162,11 +162,11 @@ class _ReturnParoductFromInvoicePageState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Invoice Total was',
+                      context.translate.total_invocie_was,
                       style: _textStyle.displayMedium,
                     ),
-                    Text(
-                      "\$${widget.invoice.total.toStringAsFixed(2)}",
+                    PriceWidget(
+                      price: widget.invoice.total,
                       style: _textStyle.displayMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -183,8 +183,8 @@ class _ReturnParoductFromInvoicePageState
                         context.translate.subtotal_was,
                         style: _textStyle.displaySmall,
                       ),
-                      Text(
-                        "\$${_subTotal.toStringAsFixed(2)}",
+                      PriceWidget(
+                        price: _subTotal,
                         style: _textStyle.displaySmall!.copyWith(
                           // fontWeight: FontWeight.bold,
                           decoration: TextDecoration.lineThrough,
@@ -200,7 +200,6 @@ class _ReturnParoductFromInvoicePageState
                   key: _formKey,
                   child: Column(
                     children: [
-                    
                       // selection of the returned product section
                       _productSelectorSection(),
                       gap(height: AppSizes.s4),
@@ -224,7 +223,14 @@ class _ReturnParoductFromInvoicePageState
                               Expanded(
                                 child: _info(
                                   context.translate.total_would_be,
-                                  "\$${(value.product.price * value.quantity).toStringAsFixed(2)}",
+                                  valueWidget: PriceWidget(
+                                    price: value.product.price,
+                                    style: _textStyle.displaySmall!.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  (value.product.price * value.quantity)
+                                      .toStringAsFixed(2),
                                   _textStyle,
                                   false,
                                 ),
@@ -233,51 +239,55 @@ class _ReturnParoductFromInvoicePageState
                           );
                         },
                       ),
-                      
+
                       gap(height: AppSizes.s10),
                       // reason of return section
                       _resonSelectorSection(),
-                      
+
                       gap(height: AppSizes.s20),
-                      
+
                       _returnBackToSection(),
-                      
+
                       gap(height: AppSizes.s20),
-                      
+
                       ValueListenableBuilder(
                         valueListenable: _returnTOInventory,
                         builder: (context, isToInventory, child) {
-                          if(isToInventory == null || isToInventory == true ){
-                            return const SizedBox(); 
+                          if (isToInventory == null || isToInventory == true) {
+                            return const SizedBox();
                           }
                           return TextFormField(
-                          controller: _boughtedFor ,
-                          validator: (value) {
-                            if(isToInventory == true) {
-                                return null; 
-                            }
-                            if (value == null || value.isEmpty) {
-                              return context.translate.please_enter_cost_per_product;
-                            }
-                            if (double.tryParse(value) == null) {
-                              return context.translate.please_enter_valid_cost;
-                            }
-                        
-                            return null;
-                          },
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            AppInputFormatter.price,
-                          ],
-                          decoration: InputDecoration(
-                            hintText: context.translate.cost_per_product,
-                          ),
-                        ).paddingOnly(bottom: AppPaddings.p10, ); 
+                            controller: _boughtedFor,
+                            validator: (value) {
+                              if (isToInventory == true) {
+                                return null;
+                              }
+                              if (value == null || value.isEmpty) {
+                                return context
+                                    .translate.please_enter_cost_per_product;
+                              }
+                              if (double.tryParse(value) == null) {
+                                return context
+                                    .translate.please_enter_valid_cost;
+                              }
+
+                              return null;
+                            },
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              AppInputFormatter.price,
+                            ],
+                            decoration: InputDecoration(
+                              hintText: context.translate.cost_per_product,
+                            ),
+                          ).paddingOnly(
+                            bottom: AppPaddings.p10,
+                          );
                         },
                       ),
-                     
+
                       gap(height: AppSizes.s10),
-                      
+
                       // quantity section of the return quantity section
                       ValueListenableBuilder(
                         valueListenable: _slectedProduct,
@@ -308,8 +318,8 @@ class _ReturnParoductFromInvoicePageState
                         inputFormatters: [
                           AppInputFormatter.price,
                         ],
-                        decoration: const InputDecoration(
-                          hintText: 'Refund',
+                        decoration: InputDecoration(
+                          hintText: context.translate.refund,
                         ),
                       ),
 
@@ -319,7 +329,7 @@ class _ReturnParoductFromInvoicePageState
                       TextField(
                         controller: _noteController,
                         maxLines: 4,
-                        decoration:  InputDecoration(
+                        decoration: InputDecoration(
                           hintText: context.translate.note,
                         ),
                       ),
@@ -334,7 +344,7 @@ class _ReturnParoductFromInvoicePageState
                     Expanded(
                       child: TextButton(
                         onPressed: _onReturnProductButton,
-                        child:  Text(
+                        child: Text(
                           context.translate.return_it,
                         ),
                       ),
@@ -352,12 +362,8 @@ class _ReturnParoductFromInvoicePageState
     );
   }
 
-  Widget _info(
-    String lable,
-    String value,
-    TextTheme _textStyle,
-    bool isLeading,
-  ) {
+  Widget _info(String lable, String value, TextTheme _textStyle, bool isLeading,
+      {Widget? valueWidget}) {
     return Row(
       mainAxisAlignment:
           isLeading ? MainAxisAlignment.start : MainAxisAlignment.end,
@@ -369,12 +375,13 @@ class _ReturnParoductFromInvoicePageState
         gap(width: AppSizes.s10),
         Container(
           alignment: Alignment.centerLeft,
-          child: Text(
-            value,
-            style: _textStyle.displaySmall!.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: valueWidget ??
+              Text(
+                value,
+                style: _textStyle.displaySmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
         ),
       ],
     );

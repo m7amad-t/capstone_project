@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/damagedproductsBloc/damaged_product_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/logic/models/DamagedProductsModel.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/DamagedProducts/ui/components/damagedProductCard.dart';
@@ -137,7 +136,6 @@ class _DamagedProductsHistoryPageState
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextTheme.of(context);
     return RefreshIndicator(
       onRefresh: () async {
         context.read<DamagedProductBloc>().add(ReloadDamaegdProducts());
@@ -258,7 +256,7 @@ class _DamagedProductsHistoryPageState
               child: Container(
                 alignment: Alignment.center,
                 child: Text(
-                  "${getAppDate(value.start)}     to     ${getAppDate(value.end)}",
+                  "${getAppDate(value.start)}     ${context.translate.to}     ${getAppDate(value.end)}",
                   style: textStyle.displaySmall,
                 ),
               ),
@@ -295,7 +293,7 @@ class _DamagedProductsHistoryPageState
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    value == null ? context.translate.select_a_reason : context.translate.change_selected_date_range,
+                    value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
                     style: textStyle.bodyLarge!.copyWith(
                       color: value == null
                           ? AppColors.onPrimary
@@ -310,4 +308,6 @@ class _DamagedProductsHistoryPageState
       ],
     );
   }
+
+
 }

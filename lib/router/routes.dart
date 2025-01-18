@@ -43,4 +43,17 @@ class AppRoutes {
   // ---------------------- [[ cart childs ]] -------------------------------
   static String cartCheckout= "checkout";
 
+  
+  // ---------------------- [[ expenses childs ]] -------------------------------
+  static String addExpensesType= "add_expenses_type";
+  static String addExpesnesRecord= "add_expenses_record";
+  static String expensRecordHistory= "expens_record_history";
+
+
+
+  // ---------------------- [[ profile childs ]] -------------------------------
+  static String addUser= "add_user";
+
+
+
 }

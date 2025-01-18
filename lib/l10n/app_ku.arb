@@ -226,6 +226,33 @@
   "enter_discount_amount" : "بڕی داشکێنراو بنووسە",
 
 
+
+"add_new_expense" : "زیادکرنی خەرجی نوێ",    
+"addin_new_expense" : "زیادکرنی خەرجی نوێ",    
+"expense_name" : "ناوی خەرجی",    
+"enter_expense_name" : "ناوی خەرجی بنووسە",    
+"expense_already_exist" : "ئەم خەرجییە پێشتر تۆمار کراوە",    
+"expense_added_successfuly" : "خەرجیەکە بەسەرکەوتووی زیادکرا",    
+"faield_to_add_expense" : "نەتوانرا خەرجیەکە زیاد بکرێت",    
+"ru_sure_wanna_delete_expense_type" : "دڵنیاییت لە سڕینەوەی جۆری جەرخی؟",    
+"faield_to_delete_expense_type" : "نەتوانرا جۆری خەرخی بسڕدرێتەوە",    
+"expense_type_deleted_successfully" : "جۆری خەرجی سڕایەوە",    
+
+
+"incur_expense" : "ئەنجامدانی خەرجی",
+"incurring_expense" : "ئەنجامدانی خەرجی",    
+"expense_cost" : "تێچووی خەرجی",    
+"enter_expense_cost" : "تێچووی خەرجی بنووسە",    
+"expense_logged_successfuly" : "خەرجی بەسەرکەتووی ئەنجامدرا",    
+"failed_to_add_expense_record" : "نەتوانرا خەرجی ئەنخام بدرێت",  
+"ru_sure_wanna_delete_expens" : "دڵنیای لە سڕینەوەی خەرخی؟",    
+"expense_record_deleted_successfully" : "خەرجی سڕایەوە",     
+"failed_to_delete_expense_record" : "نەتوانرا خەرجی بسڕدرێتەوە",    
+
+
+  "total_invocie_was":"کۆی گشتی پسوڵە", 
+
+
   "order_by" : "ڕیزکردن بە پێی",
   "order_by_name" : "ناو",
   "order_by_price" : "نرخ",
@@ -236,7 +263,46 @@
   "quantity_low_to_high" : "لە کەمەوە بۆ زۆر",
   "quantity_high_to_low" : "لە زۆرەوە بۆ کەم",
   "name_a_to_z" : "ئ-ی",
-  "name_z_to_a" : "ی-ئ"
+  "name_z_to_a" : "ی-ئ",
+  
+  "number_product_per_package": "کۆی بەرهەم بۆ هەر کارتۆنێك", 
+  "total_products": "کۆی گشتی بەرهەم", 
+  
+  
+  "expire_date": "بەرواری بەسەرچوون", 
+  "change_expire_date": "بەرواری بەسەرچوون بگۆڕە", 
+  
+  "system_user": "بەرکارهێنەری سیستەم",
+  "system_users": "بەرکارهێنەرەکانی سیستەم",
+  "create_new_user": "دروستکردنی بەرکارهێنەری نوێ",
+  "createing_new_user": "دروستکردنی بەرکارهێنەری نوێ",
+  "new_user_created_sucessfully": "بەرکارهێنەری تازە بەسەرکەتووی زیادکرا",
+  "failed_to_create_new_user": "نەتوانرا بەرکارهێنەرەی تازە زیاد بکرێت",
+  "admin": "ئەدمین",
+  "employee": "کارمەند",
+  
+
+
+  "username_is_taken": "ناوی بەکارهێنەر گیراوە", 
+  "enter_name": "ناو بنووسە", 
+                      
+  "ru_sure_wanna_delete_user": "دڵنیای لە سڕینەوە بەکارهێنەەرەکە", 
+  "failed_to_delete_user": "نەتوانرا ئەم بەکارهێنەرە بسڕدرێتەوە", 
+  "cant_delete_ur_account": "ناتوانیت هەژماریت خۆت بسڕیتەوە", 
+  "user_deleted_successfully": "دڵنیای لە سڕینەوە بەکارهێنەەرەکە", 
+                      
+
+  "change_currency" : "گۆڕینی دراو",
+  "currency" : "دراو",
+  "store_currency" : "دراوی فرۆشتگا",
+  "change_store_currency" : "گۆڕینی دراوی فرۆشتگا",
+  "dinar" : "دینار",
+  "dollar" : "دۆلار",
+  "dirham" : "درهەم",
+  "euro" : "یۆرۆ",
+  "lira" : "لیرە",
+  
+  "profile" : "پڕۆفایل"
 
 
 

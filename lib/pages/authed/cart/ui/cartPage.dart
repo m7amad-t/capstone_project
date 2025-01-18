@@ -8,6 +8,7 @@ import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bl
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/components/menuCard.dart';
 import 'package:shop_owner/router/routes.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -140,8 +141,9 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                         product: cartItems[index].product,
                         showMoreDetails: true,
                       ).paddingOnly(
-                        top: index == 0 ? AppPaddings.p30 : AppPaddings.p10, 
-                        bottom: index == cartItems.length -1 ? AppSizes.s200 : 0  , 
+                        top: index == 0 ? AppPaddings.p30 : AppPaddings.p10,
+                        bottom:
+                            index == cartItems.length - 1 ? AppSizes.s200 : 0,
                       );
                     },
                   );
@@ -195,7 +197,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                           onPressed: () {
                             GoRouter.of(context).go(AppRoutes.home);
                           },
-                          child:  Text(
+                          child: Text(
                             context.translate.add_product,
                           ),
                         ),
@@ -287,8 +289,8 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                 ),
                               ),
                               Expanded(
-                                child: Text(
-                                  "\$${total.toStringAsFixed(2)}",
+                                child: PriceWidget(
+                                  price: total,
                                   style: textStyle.bodyLarge!.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -319,12 +321,13 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                     ],
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
-                                      enabledBorder: const  OutlineInputBorder(
+                                      enabledBorder: const OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: AppColors.borderBrand,
                                         ),
                                       ),
-                                      hintText: context.translate.enter_discount_amount,
+                                      hintText: context
+                                          .translate.enter_discount_amount,
                                     ),
                                     controller: _discount,
                                   ),
@@ -358,7 +361,7 @@ class _CartPageState extends State<CartPage> with WidgetsBindingObserver {
                                       );
                                     },
                                     child: Text(
-                                     context.translate.check_out ,
+                                      context.translate.check_out,
                                     ),
                                   ),
                                 ),

@@ -7,18 +7,18 @@ import 'package:shop_owner/shared/assetPaths.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/style/theme/logic/bloc/them_bloc_bloc.dart';
-import 'package:shop_owner/utils/auth/userModel.dart';
+import 'package:shop_owner/utils/auth/AuthedUser.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 Widget appDrawer(BuildContext context) {
   final textStyle = Theme.of(context).textTheme;
-  // get proper height for drawer 
+  // get proper height for drawer
   double preferredHeight = 650; // or more..
   // get screen height
   double screenHeight = MediaQuery.of(context).size.height;
 
-  if(screenHeight > preferredHeight){
+  if (screenHeight > preferredHeight) {
     preferredHeight = screenHeight;
   }
 
@@ -26,9 +26,9 @@ Widget appDrawer(BuildContext context) {
     height: screenHeight,
     child: SingleChildScrollView(
       child: ConstrainedBox(
-         constraints: BoxConstraints(
-            maxHeight: preferredHeight,
-          ),
+        constraints: BoxConstraints(
+          maxHeight: preferredHeight,
+        ),
         child: Drawer(
           child: Column(
             children: [
@@ -37,7 +37,7 @@ Widget appDrawer(BuildContext context) {
                 flex: 1,
                 child: Container(),
               ),
-              
+
               // prfile section
               Expanded(
                 flex: 3,
@@ -56,14 +56,14 @@ Widget appDrawer(BuildContext context) {
                           child: Image.asset(AssetPaths.user),
                         ),
                       ),
-              
+
                       // name
                       Expanded(
                         flex: 2,
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            locator<User>().name,
+                            locator<AuthedUser>().user.name,
                             style: textStyle.displayLarge,
                           ),
                         ),
@@ -72,7 +72,7 @@ Widget appDrawer(BuildContext context) {
                   ),
                 ),
               ),
-              
+
               // list tiles
               Expanded(
                 flex: 5,
@@ -92,7 +92,7 @@ Widget appDrawer(BuildContext context) {
                             .add(ChangeTheme(context: context)),
                       ),
                     ),
-              
+
                     // app language
                     const LanguageListTile()
                   ],
@@ -112,7 +112,8 @@ Widget appDrawer(BuildContext context) {
                           locator<AppDialogs>().showLogoutConfiramtion();
                         },
                         style: const ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(AppColors.error),
+                          backgroundColor:
+                              WidgetStatePropertyAll(AppColors.error),
                         ),
                         child: Text(
                           context.translate.sign_out,

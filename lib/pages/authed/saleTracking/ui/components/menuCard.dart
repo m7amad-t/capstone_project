@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/cartBloc/cart_bloc_bloc.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/cartModel.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/shared/UI/productMainCardSection.dart';
 import 'package:shop_owner/shared/UI/imageDisplayer.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
@@ -80,7 +81,6 @@ class _MenuCardState extends State<MenuCard> {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder<CartBloc, CartBlocState>(
       buildWhen: (previous, current) {
         if (current is GotCart) {
@@ -96,91 +96,95 @@ class _MenuCardState extends State<MenuCard> {
       },
       builder: (context, state) {
         final _textStyle = Theme.of(context).textTheme;
-        return LayoutBuilder(
-          builder: (context , constraints) {
-            return SizedBox(
-              width: constraints.maxWidth,
-              child: FittedBox(
-                fit: BoxFit.fitWidth,
-                child: SizedBox(
-                  width: AppSizes.s400,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: widget.showMoreDetails ? AppSizes.s250 : AppSizes.s150,
-                    ),
-                    child: Card(
-                      child: Column(
-                        children: [
-                          // main section , which is product image, name and description...
-                          Expanded(
-                            flex: 2,
-                            child: ProductMainCardSection(
-                              product: widget.product,
-                              isCart: true,
-                            ),
+        return LayoutBuilder(builder: (context, constraints) {
+          double prefredSize = 400;
+
+          if (constraints.maxWidth > prefredSize) {
+            prefredSize = constraints.maxWidth;
+          }
+          return SizedBox(
+            width: constraints.maxWidth,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: SizedBox(
+                width: prefredSize,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight:
+                        widget.showMoreDetails ? AppSizes.s250 : AppSizes.s150,
+                  ),
+                  child: Card(
+                    child: Column(
+                      children: [
+                        // main section , which is product image, name and description...
+                        Expanded(
+                          flex: 2,
+                          child: ProductMainCardSection(
+                            product: widget.product,
+                            isCart: true,
                           ),
-                
-                          // advance section , which is are the total section...
-                          if (widget.showMoreDetails)
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: AppPaddings.p10),
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: AppPaddings.p18,
-                                    vertical: AppPaddings.p10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(AppSizes.s8),
-                                    color: AppColors.primary.withAlpha(100),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Text(
-                                        "total",
-                                        style: _textStyle.bodyMedium!
-                                            .copyWith(color: AppColors.primary),
-                                      ),
-                                      // gap(width: AppSizes.s10),
-                                      Text(
-                                        _getTotal(state),
-                                        style: _textStyle.bodyMedium!.copyWith(
-                                          color: AppColors.primary,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                
-                          // quantity controller
+                        ),
+
+                        // advance section , which is are the total section...
+                        if (widget.showMoreDetails)
                           Expanded(
                             flex: 1,
                             child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: AppPaddings.p10),
                               alignment: Alignment.bottomCenter,
-                              child: _getProperWidget(state),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: AppPaddings.p18,
+                                  vertical: AppPaddings.p10,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(AppSizes.s8),
+                                  color: AppColors.primary.withAlpha(100),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      "total",
+                                      style: _textStyle.bodyMedium!
+                                          .copyWith(color: AppColors.primary),
+                                    ),
+                                    // gap(width: AppSizes.s10),
+                                    PriceWidget(price: _getTotal(state), style: _textStyle.bodyMedium!.copyWith(
+                                        color: AppColors.primary,
+                                        fontWeight: FontWeight.bold,
+                                      ), ),
+                                   
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+
+                        // quantity controller
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            alignment: Alignment.bottomCenter,
+                            child: _getProperWidget(state),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-            );
-          }
-        );
+            ),
+          );
+        });
       },
     );
   }
 
-  String _getTotal(CartBlocState state) {
+  double? _getTotal(CartBlocState state) {
     // first find the element
     late final CartModel? cartItem;
     for (final element in state.cartData) {
@@ -189,12 +193,12 @@ class _MenuCardState extends State<MenuCard> {
       }
     }
 
-    if (cartItem == null) return "\$??";
+    if (cartItem == null) return null;
 
     double subTotal = widget.product.price * cartItem.quantity;
     double total = subTotal * (1);
 
-    return "\$${total.toStringAsFixed(2)}";
+    return total;
   }
 
   Widget _loadingCart() {
@@ -390,7 +394,7 @@ class _MenuCardState extends State<MenuCard> {
     return Container();
   }
 
-  Widget cardLTR(context, isLTR, _textStyle, CartBlocState state) {
+  Widget cardLTR(context, isLTR, TextTheme _textStyle, CartBlocState state) {
     return ConstrainedBox(
       constraints: BoxConstraints(
         maxHeight: AppSizes.s140,
@@ -486,6 +490,7 @@ class _MenuCardState extends State<MenuCard> {
                           children: [
                             Row(
                               children: [
+                                // name
                                 Expanded(
                                   flex: 3,
                                   child: Text(
@@ -495,12 +500,13 @@ class _MenuCardState extends State<MenuCard> {
                                     ),
                                   ),
                                 ),
+                                // price
                                 Expanded(
                                   flex: 1,
                                   child: Opacity(
                                     opacity: 0.4,
-                                    child: Text(
-                                      "\$${widget.product.price}",
+                                    child: PriceWidget(
+                                      price: widget.product.price,
                                       style: _textStyle.bodySmall!.copyWith(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -523,7 +529,9 @@ class _MenuCardState extends State<MenuCard> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(widget.product.quantity.toString(),
-                              style: _textStyle.bodyLarge),
+                              style: _textStyle.bodyLarge!.copyWith(
+                                fontWeight: FontWeight.bold,
+                              )),
                         ),
                       ),
                     ],

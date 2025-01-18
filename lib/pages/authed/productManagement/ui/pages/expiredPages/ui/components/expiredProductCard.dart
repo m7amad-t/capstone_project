@@ -3,6 +3,7 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/expiredPages/logic/models/expiredProductModel.dart';
 import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/UI/imageDisplayer.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -30,13 +31,22 @@ class ExpiredProductCard extends StatelessWidget {
     final textStyle = TextTheme.of(context);
 
     return LayoutBuilder(
+      
       builder: (context, constraints) {
+
+        
+        double prefredSize = 400; 
+
+        if(constraints.maxWidth > prefredSize){
+          prefredSize = constraints.maxWidth;
+        }
+
         return SizedBox(
           width: constraints.maxWidth,
           child: FittedBox(
             fit: BoxFit.fitWidth,
             child: SizedBox(
-              width: AppSizes.s400,
+              width: prefredSize,
               child: Card(
                   child: SizedBox(
                 height: AppSizes.s150,
@@ -140,14 +150,14 @@ class ExpiredProductCard extends StatelessWidget {
                       textStyle: textStyle,
                       isLTR: isLTR,
                       lable: context.translate.purchase_cost,
-                      value: "\$${record.boughtedFor.toStringAsFixed(2)}",
+                      value:record.boughtedFor,
                     ),
                     gap(height: AppPaddings.p10),
                     _info(
                       textStyle: textStyle,
                       isLTR: isLTR,
                       lable: context.translate.total_lost,
-                      value: "\$${totalLost.toStringAsFixed(2)}",
+                      value: totalLost,
                       valueColor: AppColors.error,
                     ),
                     gap(height: AppPaddings.p10),
@@ -292,14 +302,14 @@ class ExpiredProductCard extends StatelessWidget {
                     textStyle: textStyle,
                     isLTR: isLTR,
                     lable: context.translate.purchase_cost,
-                    value: "\$${record.boughtedFor.toStringAsFixed(2)}",
+                    value: record.boughtedFor,
                   ),
                   gap(height: AppPaddings.p10),
                   _info(
                     textStyle: textStyle,
                     isLTR: isLTR,
                     lable: context.translate.total_lost,
-                    value: "\$${totalLost.toStringAsFixed(2)}",
+                    value: totalLost,
                     valueColor: AppColors.error,
                   ),
                   gap(height: AppPaddings.p10),
@@ -355,71 +365,37 @@ class ExpiredProductCard extends StatelessWidget {
     required TextTheme textStyle,
     required bool isLTR,
     required String lable,
-    required String value,
+    required double value,
     Color? valueColor,
   }) {
-    if (isLTR) {
-      return Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  lable,
-                  style: textStyle.bodyMedium!.copyWith(
-                      // fontWeight: FontWeight.bold,
-                      // color: AppColors.warning,
-                      ),
-                ),
-                Text(
-                  value,
-                  style: textStyle.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: valueColor,
-                    // color: AppColors.warning,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(),
-          ),
-        ],
-      );
-    }
-
     return Row(
       children: [
-        Expanded(
-          child: Container(),
-        ),
+
         Expanded(
           flex: 3,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                value,
+                lable,
+                style: textStyle.bodyMedium!.copyWith(
+                    ),
+              ),
+              PriceWidget(
+                price: value,
                 style: textStyle.bodyMedium!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: valueColor,
                   // color: AppColors.warning,
                 ),
               ),
-              Text(
-                lable,
-                style: textStyle.bodyMedium!.copyWith(
-                    // fontWeight: FontWeight.bold,
-                    // color: AppColors.warning,
-                    ),
-              ),
             ],
           ),
         ),
       ],
     );
+
   }
+
+
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
+import 'package:shop_owner/shared/constants.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 
@@ -98,6 +99,42 @@ class AppLoadingCards extends StatelessWidget {
               ),
             ],
           ).paddingSymmetric(horizontal: AppPaddings.p10),
+        ),
+      );
+    });
+  }
+
+  static Widget grid(int count) {
+    return Builder(builder: (context) {
+      double maxGridItemWidth = AppConstants.gridCardPrefiredWidth;
+
+      // screen width
+      double screenWidth = MediaQuery.of(context).size.width;
+
+      // caluculate proper number of items in one row
+      int itemsPerRow = (screenWidth / maxGridItemWidth).floor();
+
+      return GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(
+          vertical: AppSizes.s20,
+        ),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: itemsPerRow,
+          childAspectRatio: 1,
+          crossAxisSpacing: AppSizes.s10,
+          mainAxisSpacing: AppSizes.s10,
+        ),
+        itemCount: count,
+        itemBuilder: (context, index) => Shimmer.fromColors(
+                baseColor: Theme.of(context).cardColor,
+                highlightColor:
+                    Theme.of(context).textTheme.bodyLarge!.color!.withAlpha(20),
+                loop: 10,
+                child: Card(
+                ),
+                
         ),
       );
     });

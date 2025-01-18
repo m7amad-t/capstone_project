@@ -211,6 +211,30 @@
   "enter_discount_amount" : "أدخل مقدار الخصم", 
 
 
+  "total_invocie_was" : "إجمالي الفاتورة كان",
+
+  "add_new_expense" : "إضافة نوع مصروف جديد",    
+  "addin_new_expense" : "جاري إضافة نوع مصروف جديد",   
+  "expense_name" : "اسم المصروف",    
+  "enter_expense_name" : "أدخل اسم المصروف",    
+  "expense_already_exist" : "المصروف موجود بالفعل",    
+  "expense_added_successfuly" : "تمت إضافة المصروف بنجاح",    
+  "faield_to_add_expense" : "فشل في إضافة المصروف",    
+  "ru_sure_wanna_delete_expense_type" : "هل أنت متأكد أنك تريد حذف نوع المصروف؟",    
+  "faield_to_delete_expense_type" : "فشل في حذف نوع المصروف",    
+  "expense_type_deleted_successfully" : "تم حذف نوع المصروف بنجاح",  
+
+  "incur_expense" : "تحمل المصروف", 
+  "incurring_expense" : "تحمل المصروف",   
+  "expense_cost" : "تكلفة المصروف",    
+  "enter_expense_cost" : "أدخل تكلفة المصروف",    
+  "expense_logged_successfuly" : "تم تسجيل المصروف بنجاح",    
+  "failed_to_add_expense_record" : "فشل في تسجيل المصروف",  
+  "ru_sure_wanna_delete_expens" : "هل أنت متأكد أنك تريد حذف سجل المصروف؟",
+  "expense_record_deleted_successfully" : "تم حذف المصروف بنجاح",    
+  "failed_to_delete_expense_record" : "فشل في حذف سجل المصروف",   
+  
+  
   "order_by": "ترتيب حسب",
   "order_by_name": "الاسم",
   "order_by_price": "السعر",
@@ -221,8 +245,51 @@
   "quantity_high_to_low": "من الأعلى إلى الأقل",
   "quantity_low_to_high": "من الأقل إلى الأعلى",
   "name_a_to_z": "أ-ي",
-  "name_z_to_a": "ي-أ"
+  "name_z_to_a": "ي-أ",
 
+
+  "number_product_per_package": "إجمالي عدد المنتجات لكل عبوة",
+  "total_products": "إجمالي عدد المنتجات",
+
+
+  "system_user": "مستخدم النظام",  
+  "system_users": "مستخدمو النظام",  
+  "create_new_user": "إنشاء مستخدم جديد",  
+  "createing_new_user": "جاري إنشاء مستخدم جديد",  
+  "new_user_created_sucessfully": "تم إنشاء المستخدم الجديد بنجاح",  
+  "failed_to_create_new_user": "فشل في إنشاء المستخدم الجديد",  
+  "admin": "مدير",  
+  "employee": "موظف",  
+
+  "username_is_taken": "اسم المستخدم مأخوذ",  
+  "enter_name": "أدخل الاسم",  
+
+
+
+  "ru_sure_wanna_delete_user": "هل أنت متأكد أنك تريد حذف المستخدم",  
+
+
+  "failed_to_delete_user": "Failed to delete user", 
+  "cant_delete_ur_account": "Can not delete your account", 
+  "user_deleted_successfully": "User account deleted sucessfully", 
+                      
+
+  "expire_date": "تاريخ الانتهاء",  
+  "change_expire_date": "تغيير تاريخ الانتهاء",  
+
+  "change_currency" : "تغيير العملة",  
+  "currency" : "العملة",  
+  "store_currency" : "عملة المتجر",
+
+  "change_store_currency" : "تغيير عملة المتجر", 
+  "dinar" : "دينار",  
+  "dollar" : "دولار",  
+  "dirham" : "درهم",  
+  "euro" : "يورو",  
+  "lira" : "ليرة",  
+
+
+  "profile" : "الملف الشخصي"  
 
 
 

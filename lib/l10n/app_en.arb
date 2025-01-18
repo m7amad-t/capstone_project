@@ -223,8 +223,32 @@
   
   "enter_discount_amount" : "Enter discount amount",
 
+  "total_invocie_was":"Total invocie was", 
 
-  
+
+  "add_new_expense" : "Add new expense type",    
+  "addin_new_expense" : "Adding new expense type",    
+  "expense_name" : "Expense name",    
+  "enter_expense_name" : "Enter expense name",    
+  "expense_already_exist" : "Expense already exist",    
+  "expense_added_successfuly" : "Expense added successfully",    
+  "faield_to_add_expense" : "Failed to add expense",    
+  "ru_sure_wanna_delete_expense_type" : "Are you sure you want to delete the expense type",    
+  "faield_to_delete_expense_type" : "Failed to delete expense type",    
+  "expense_type_deleted_successfully" : "Expense type deleted successfully",    
+
+
+  "incur_expense" : "Incur expens",    
+  "incurring_expense" : "Incurring expens",    
+  "expense_cost" : "expens cost",    
+  "enter_expense_cost" : "Enter expens cost",    
+  "expense_logged_successfuly" : "Expenses logged successfuly",    
+  "failed_to_add_expense_record" : "Failed to log expense",    
+  "ru_sure_wanna_delete_expens" : "Are you sure you want to delete expense record?",    
+  "expense_record_deleted_successfully" : "Expense deleted successfully",     
+  "failed_to_delete_expense_record" : "Failed to delete expense record",    
+
+
 
   "order_by" : "Order By",
   "order_by_name" : "Name",
@@ -236,7 +260,49 @@
   "quantity_high_to_low" : "High to Low",
   "quantity_low_to_high" : "Low to High",
   "name_a_to_z" : "A-Z",
-  "name_z_to_a" : "Z-A"
+  "name_z_to_a" : "Z-A", 
+
+
+  "number_product_per_package": "Total number of products per package", 
+  "total_products": "Total number of products", 
+
+    
+  "expire_date": "Expired date", 
+  "change_expire_date": "Change expiration date", 
+
+
+  
+  "system_user": "System user",
+  "system_users": "System users",
+  "create_new_user": "Create new user",
+  "createing_new_user": "Creating new user",
+  "new_user_created_sucessfully": "New user cretaed successfully",
+  "failed_to_create_new_user": "Failed to create new user",
+  "admin": "Admin",
+  "employee": "Employee",
+  
+  
+  
+  "username_is_taken": "Username is taken", 
+  "enter_name": "Enter name", 
+
+  "ru_sure_wanna_delete_user": "Are you sure you want to delete user", 
+                      
+
+  "change_currency" : "Change currency",
+  "currency" : "Currency",
+  "store_currency" : "Store currency",
+  "change_store_currency" : "Change store currency",
+
+  "dinar" : "Dinar",
+  "dollar" : "Dollar",
+  "dirham" : "Dirham",
+  "euro" : "Euro",
+  "lira" : "Lira",
+  
+
+  "profile" : "Profile"
+
 
   
 

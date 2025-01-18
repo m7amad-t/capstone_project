@@ -4,6 +4,7 @@ import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.d
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/productSellModel.dart';
 import 'package:shop_owner/router/extraTemplates/invoiceExtra.dart';
 import 'package:shop_owner/router/routes.dart';
+import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
@@ -50,12 +51,17 @@ class SellingHistoryCard extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
+        double prefredSize = 400;
+
+        if (constraints.maxWidth > prefredSize) {
+          prefredSize = constraints.maxWidth;
+        }
         return SizedBox(
           width: constraints.maxWidth,
           child: FittedBox(
             fit: BoxFit.fitWidth,
             child: SizedBox(
-              width: width ?? AppSizes.s400,
+              width: prefredSize,
               child: Card(
                 child: Stack(
                   children: [
@@ -74,9 +80,9 @@ class SellingHistoryCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             gap(height: AppPaddings.p20),
-                            _dataTable(textStyle , context),
+                            _dataTable(textStyle, context),
                             gap(height: AppPaddings.p20),
-                            _totalAndTimeSection(subTotal, textStyle ,  context),
+                            _totalAndTimeSection(subTotal, textStyle, context),
                             gap(height: AppSizes.s10),
                           ],
                         ),
@@ -121,7 +127,8 @@ class SellingHistoryCard extends StatelessWidget {
     );
   }
 
-  Widget _totalAndTimeSection(double subTotal, TextTheme textStyle ,BuildContext context) {
+  Widget _totalAndTimeSection(
+      double subTotal, TextTheme textStyle, BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -152,8 +159,8 @@ class SellingHistoryCard extends StatelessWidget {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    "\$${record.total.toStringAsFixed(2)}",
+                  PriceWidget(
+                    price: record.total,
                     style: textStyle.bodyMedium!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -162,12 +169,11 @@ class SellingHistoryCard extends StatelessWidget {
                   if (record.total != subTotal)
                     Opacity(
                       opacity: 0.4,
-                      child: Text(
-                        subTotal.toStringAsFixed(2),
-                        style: textStyle.bodySmall!.copyWith(
+                      child: 
+                      PriceWidget(price: subTotal, style: textStyle.bodySmall!.copyWith(
                           decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
+                        ),), 
+                      
                     ),
                 ],
               ),
@@ -183,7 +189,7 @@ class SellingHistoryCard extends StatelessWidget {
     );
   }
 
-  Widget _dataTable(TextTheme textStyle , BuildContext context) {
+  Widget _dataTable(TextTheme textStyle, BuildContext context) {
     return DataTable(
       dataRowMinHeight: AppSizes.s40,
       columnSpacing: AppSizes.s30,
@@ -212,10 +218,12 @@ class SellingHistoryCard extends StatelessWidget {
         _cell(record.product.id.toString(), textStyle.bodySmall!),
         _cell(trimedName(record.product.name), textStyle.bodySmall!),
         _cell(record.quantity.toString(), textStyle.bodySmall!),
-        _cell(
-          "\$${(record.product.price * record.quantity).toStringAsFixed(2)}",
-          textStyle.bodySmall!,
+        DataCell(
+          PriceWidget(
+              price: (record.product.price * record.quantity),
+              style: textStyle.bodySmall!),
         ),
+    
       ],
     );
   }
