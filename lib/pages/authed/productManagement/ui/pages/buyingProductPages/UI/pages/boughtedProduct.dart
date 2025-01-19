@@ -152,11 +152,13 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
                           ),
                           alignment: Alignment.center,
                           child: Text(
-                            value == null ? context.translate.select_a_reason : context.translate.change_selected_date_range,
+                            value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
                             style: textStyle.bodyLarge!.copyWith(
                               color: value == null
                                   ? AppColors.onPrimary
                                   : AppColors.primary,
+
+
                             ),
                           ),
                         ),

@@ -108,8 +108,8 @@ class _ExpensesTrackingState extends State<ExpensesTracking> {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.symmetric(
-        vertical: AppSizes.s20,
+      padding: EdgeInsets.only(
+        bottom: AppSizes.s20,
       ),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: itemsPerRow,

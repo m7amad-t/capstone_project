@@ -36,6 +36,7 @@
   "inventory_management": "ڕێکخستنی کۆگا",
   "product_management": "ڕێکخستنی بەرهەم",
   "categroy_management": "ڕێکخستنی کاتیگۆری",
+  "edit_category": "دەسکاری کردنی کاتیگۆری",
   "buy_product": "کڕینی بەرهەم",
   "purchase_history": "مێژووی کڕین",
   "return_product": "بەرهەمی گەڕاوە",
@@ -43,7 +44,7 @@
   "expired_products": "بەرهەمی بەسەرچوو",
   "products": "بەرهەمەکان",
   
-  "product_details": "زانیاری بەرهە،",
+  "product_details": "زانیاری بەرهەم",
   "return_records": "مێژووی کڕین",
   "bought_records": "مێژووی کڕین",
   
@@ -59,7 +60,7 @@
   "updating_product": "نوێکردنەوەی بەرهەم",
   
   "product_name": "ناوی بەرههەم",
-  "product": "بەرههەم",
+  "product": "بەرهەم",
   "pelase_enter_product_name": "تکایە ناوی بەرهەم بنووسە",
   
   "enter_product_price": "نرخی بەرهەم بنووسە",
@@ -133,6 +134,7 @@
   "buy": "کڕین",
   "buying_product_from": "فۆڕمی كڕینی بەرهەم",
   
+  "return_a_product": "گەڕاندنەوەی بەرهەم", 
   "returned_products": "بەرهەمە گەڕاوەکان", 
   "returned_to_inventory": "گەڕاوەتەوە بۆ کۆگا", 
   
@@ -230,6 +232,7 @@
 "add_new_expense" : "زیادکرنی خەرجی نوێ",    
 "addin_new_expense" : "زیادکرنی خەرجی نوێ",    
 "expense_name" : "ناوی خەرجی",    
+"expense_history" : "مێژووی خەرجیەکان",    
 "enter_expense_name" : "ناوی خەرجی بنووسە",    
 "expense_already_exist" : "ئەم خەرجییە پێشتر تۆمار کراوە",    
 "expense_added_successfuly" : "خەرجیەکە بەسەرکەوتووی زیادکرا",    

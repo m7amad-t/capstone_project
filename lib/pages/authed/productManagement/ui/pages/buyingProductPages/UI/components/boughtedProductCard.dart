@@ -2,6 +2,7 @@
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:shop_owner/pages/authed/productManagement/ui/pages/buyingProductPages/logic/models/productBoughtModel.dart';
 import 'package:shop_owner/shared/UI/imageDisplayer.dart';
 import 'package:shop_owner/shared/UI/priceWidget.dart';
@@ -116,7 +117,7 @@ class BoughtedProductCard extends StatelessWidget {
                               _trimName(record.product.name),
                               textAlign: TextAlign.end,
                               textDirection: TextDirection.rtl,
-                              style: textStyle.bodyMedium!.copyWith(
+                              style: textStyle.bodyLarge!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -127,30 +128,33 @@ class BoughtedProductCard extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-
-                            // price
-                             Expanded(
-                              child: Container(
+                            if (record.expireDate != null)
+                              Container(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: AppPaddings.p6,
                                   vertical: AppPaddings.p4,
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                            
-                                    PriceWidget(price: record.pricePerItem, style:  textStyle.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        // color: AppColors.primary,
-                                      ), ), 
-                                    
+                                    Text(
+                                      getAppDate(record.expireDate!),
+                                      style: textStyle.bodyMedium,
+                                    ),
+                                    gap(width: AppSizes.s10),
+                                    Icon(
+                                      Icons.calendar_month_outlined,
+                                      size: AppSizes.s20,
+
+                                      // color: AppColors.primary,
+                                    ),
                                   ],
                                 ),
+                              ).paddingOnly(
+                                top: AppPaddings.p10,
                               ),
-                            ),
-                           
-                          //  quantity
+
+                            //  quantity
                             Expanded(
                               child: Container(
                                 padding: EdgeInsets.symmetric(
@@ -161,25 +165,19 @@ class BoughtedProductCard extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    
                                     Text(
                                       record.quantity.toString(),
-                                      style: textStyle.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        // color: AppColors.primary,
-                                      ),
+                                      style: textStyle.bodyMedium,
                                     ),
                                     gap(width: AppSizes.s10),
-
-                                    const Icon(
+                                    Icon(
                                       Icons.inventory_2_outlined,
-                                      // color: AppColors.primary,
+                                      size: AppSizes.s20,
                                     ),
                                   ],
                                 ),
                               ),
                             ),
-                           
                           ],
                         ),
                         gap(height: AppPaddings.p6),
@@ -187,40 +185,6 @@ class BoughtedProductCard extends StatelessWidget {
                         // total
                         Row(
                           children: [
-                              Expanded(
-                              child: record.expireDate == null ?
-                              const SizedBox() :  
-                              
-                              Container(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: AppPaddings.p6,
-                                        vertical: AppPaddings.p4,
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                         
-                                          Text(
-                                            getAppDate(record.expireDate ?? DateTime.now()),
-                                            style:
-                                                textStyle.bodyMedium!.copyWith(
-                                              // fontWeight: FontWeight.bold,
-                                              // color: AppColors.primary,
-                                            ),
-                                          ),
-                                          gap(width: AppSizes.s10),
-
-                                           const Icon(
-                                            Icons.calendar_month_outlined,
-                                            weight: 0.1,
-                                            // color: AppColors.primary,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                            ), 
-                          
                             Expanded(
                               child: Container(
                                 padding: EdgeInsets.symmetric(
@@ -231,23 +195,21 @@ class BoughtedProductCard extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    PriceWidget(price: (record.pricePerItem * record.quantity), style: textStyle.bodyMedium!.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        // color: AppColors.primary,
-                                      ), ),
-                                    
+                                    PriceWidget(
+                                      price: (record.pricePerItem *
+                                          record.quantity),
+                                      style: textStyle.bodyMedium!, 
+                                    ),
                                     gap(width: AppSizes.s10),
-
-                                    const Icon(
+                                    Icon(
                                       Icons.receipt_long_rounded,
+                                      size: AppSizes.s20,
                                       // color: AppColors.primary,
                                     ),
-                                    
                                   ],
                                 ),
                               ),
                             ),
-                          
                           ],
                         ),
                         Opacity(
@@ -256,7 +218,7 @@ class BoughtedProductCard extends StatelessWidget {
                             record.note ?? "",
                             style: textStyle.bodySmall,
                           ),
-                        ),
+                        ).paddingSymmetric(horizontal: AppPaddings.p10),
                       ],
                     ),
                   ),
@@ -268,6 +230,58 @@ class BoughtedProductCard extends StatelessWidget {
                   ),
                 ],
               ),
+              Positioned(
+              left: AppPaddings.p10,
+              right: AppPaddings.p10,
+              bottom: AppPaddings.p4,
+              child: Row(
+                children: [
+                  Text(
+                    getAppDate(record.dateTime) , style: textStyle.bodySmall,
+                  ), 
+                  gap(width: AppSizes.s10),
+                   Icon(
+                    Icons.login,
+                    color: AppColors.success,
+                    size : AppSizes.s20, 
+                  ),
+
+                ],
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppPaddings.p10,
+                      vertical: AppPaddings.p6,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(AppSizes.s16),
+                        bottomLeft: Radius.circular(AppSizes.s16),
+                        // bottomRight: Radius.circular(5),
+                      ),
+                      color: AppColors.primary.withAlpha(30),
+                    ),
+                    child: Opacity(
+                      opacity: 1,
+                      child: PriceWidget(
+                        price: record.pricePerItem,
+                        style: textStyle.bodySmall!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             ],
           );
         }
@@ -351,7 +365,7 @@ class BoughtedProductCard extends StatelessWidget {
                           Expanded(
                             child: Text(
                               _trimName(record.product.name),
-                              style: textStyle.bodyMedium!.copyWith(
+                              style: textStyle.bodyLarge!.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -371,24 +385,22 @@ class BoughtedProductCard extends StatelessWidget {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.inventory_2_outlined,
+                                    size: AppSizes.s20,
                                     // color: AppColors.primary,
                                   ),
                                   gap(width: AppSizes.s10),
                                   Text(
                                     record.quantity.toString(),
-                                    style: textStyle.bodyMedium!.copyWith(
-                                      // fontWeight: FontWeight.bold,
-                                      // color: AppColors.primary,
-                                    ),
+                                    style: textStyle.bodyMedium, 
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Container(
+                          if (record.expireDate != null)
+                            Container(
                               padding: EdgeInsets.symmetric(
                                 horizontal: AppPaddings.p6,
                                 vertical: AppPaddings.p4,
@@ -396,18 +408,22 @@ class BoughtedProductCard extends StatelessWidget {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  // const Icon(
-                                  //   Icons.trending_down,
-                                  //   color: AppColors.primary,
-                                  // ),
+                                  Icon(
+                                    Icons.calendar_month_outlined,
+                                    size: AppSizes.s20,
+
+                                    // color: AppColors.primary,
+                                  ),
                                   gap(width: AppSizes.s10),
-                                  PriceWidget(price: record.pricePerItem , style: textStyle.bodyMedium!.copyWith(
-                                    ),),
-                                  
+                                  Text(
+                                    getAppDate(record.expireDate!),
+                                    style: textStyle.bodyMedium, 
+                                  ),
                                 ],
                               ),
+                            ).paddingOnly(
+                              top: AppPaddings.p10,
                             ),
-                          ),
                         ],
                       ),
                       gap(height: AppPaddings.p6),
@@ -423,53 +439,56 @@ class BoughtedProductCard extends StatelessWidget {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(
+                                   Icon(
                                     Icons.receipt_long_rounded,
+                                    size : AppSizes.s20, 
                                     // color: AppColors.primary,
                                   ),
                                   gap(width: AppSizes.s10),
-                                  PriceWidget(price: (record.pricePerItem * record.quantity), style: textStyle.bodyMedium!.copyWith(
-                                    ), ),
+                                  PriceWidget(
+                                    price:
+                                        (record.pricePerItem * record.quantity),
+                                    style: textStyle.bodyMedium!, 
+                                  ),
                                 ],
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: record.expireDate == null
-                                ? const SizedBox()
-                                : Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: AppPaddings.p6,
-                                      vertical: AppPaddings.p4,
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        const Icon(
-                                          Icons.calendar_month_outlined,
-                                          // color: AppColors.primary,
-                                        ),
-                                        gap(width: AppSizes.s10),
-                                        Text(
-                                          getAppDate(record.expireDate!),
-                                          style:
-                                              textStyle.bodyMedium!.copyWith(
-                                            // fontWeight: FontWeight.bold,
-                                            // color: AppColors.primary,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                          )
+                          // Expanded(
+                          //   child: record.expireDate == null
+                          //       ? const SizedBox()
+                          //       : Container(
+                          //           padding: EdgeInsets.symmetric(
+                          //             horizontal: AppPaddings.p6,
+                          //             vertical: AppPaddings.p4,
+                          //           ),
+                          //           child: Row(
+                          //             mainAxisSize: MainAxisSize.min,
+                          //             children: [
+                          //               const Icon(
+                          //                 Icons.calendar_month_outlined,
+                          //                 // color: AppColors.primary,
+                          //               ),
+                          //               gap(width: AppSizes.s10),
+                          //               Text(
+                          //                 getAppDate(record.expireDate!),
+                          //                 style: textStyle.bodyMedium!.copyWith(
+                          //                     // fontWeight: FontWeight.bold,
+                          //                     // color: AppColors.primary,
+                          //                     ),
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          // )
                         ],
                       ),
-                      gap(height: AppPaddings.p10), 
+
+                      gap(height: AppPaddings.p10),
                       // note
                       Opacity(
                         opacity: 0.5,
                         child: AutoSizeText(
-                          
                           _trimNote(record.note ?? ''),
                           style: textStyle.bodySmall,
                         ),
@@ -486,15 +505,54 @@ class BoughtedProductCard extends StatelessWidget {
               bottom: AppPaddings.p4,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Icon(Icons.login , color : AppColors.success , ), 
-                gap(width: AppSizes.s10), 
-                Text(
-                  getAppDate(record.dateTime), 
-
-                )
-              ],
-            ),),
+                children: [
+                   Icon(
+                    Icons.login,
+                    color: AppColors.success,
+                    size : AppSizes.s20, 
+                  ),
+                  gap(width: AppSizes.s10),
+                  Text(
+                    getAppDate(record.dateTime),
+                    style: textStyle.bodySmall,
+                  )
+                ],
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppPaddings.p10,
+                      vertical: AppPaddings.p6,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(AppSizes.s16),
+                        bottomLeft: Radius.circular(AppSizes.s16),
+                        // bottomRight: Radius.circular(5),
+                      ),
+                      color: AppColors.primary.withAlpha(30),
+                    ),
+                    child: Opacity(
+                      opacity: 1,
+                      child: PriceWidget(
+                        price: record.pricePerItem,
+                        style: textStyle.bodySmall!.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         );
       },
@@ -507,7 +565,7 @@ class BoughtedProductCard extends StatelessWidget {
 
     return "${text.substring(0, max - 1)}...";
   }
- 
+
   String _trimNote(String text) {
     int max = 70;
     if (text.length < max) return text;

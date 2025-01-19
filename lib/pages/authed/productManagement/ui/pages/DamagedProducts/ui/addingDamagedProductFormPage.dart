@@ -145,7 +145,7 @@ class _DamagedProductFormState extends State<DamagedProductForm> {
                         controller: _noteController,
                         maxLines: 4,
                         decoration:  InputDecoration(
-                          hintText: context.translate.cost,
+                          hintText: context.translate.note,
                         ),
                       ),
                     ],

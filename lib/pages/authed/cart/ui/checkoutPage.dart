@@ -25,7 +25,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   void initState() {
     super.initState();
     _transformationController = TransformationController();
-    _transformationController.value = Matrix4.diagonal3Values(0.7, 0.7, 1.0);
+    _transformationController.value = Matrix4.diagonal3Values(1, 1, 1.0);
   }
 
   @override
@@ -67,42 +67,62 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       boundaryMargin: const EdgeInsets.all(double.infinity),
                       child: Column(
                         children: [
-                          DataTable(
-                            columns: [
-                              _getColumn(context.translate.id, context),
-                              _getColumn(context.translate.name, context),
-                              _getColumn(context.translate.quantity, context),
-                              _getColumn(context.translate.price, context),
-                              _getColumn(context.translate.total, context),
-                            ],
-                            rows: [
-                              for (final row in rows)
-                                DataRow(
-                                  cells: [
-                                    cellData(
-                                      row.product.id.toString(),
-                                      textStyle,
+                          LayoutBuilder(
+                            
+                            builder: (context , contraints) {
+                              return SizedBox(
+                                width: contraints.maxWidth,
+                                child: FittedBox(
+                                  fit: BoxFit.fitWidth,
+                                  child: SizedBox(
+                                    width: AppSizes.s600,
+                                    child: DataTable(
+                                      columnSpacing: AppSizes.s50,
+                                      horizontalMargin: AppPaddings.p30,
+                                      
+                                    
+                                      columns: [
+                                        _getColumn(context.translate.id, context),
+                                        _getColumn(context.translate.name, context),
+                                        _getColumn(context.translate.quantity, context),
+                                        _getColumn(context.translate.price, context),
+                                        _getColumn(context.translate.total, context),
+                                      ],
+                                      rows: [
+                                        for (final row in rows)
+                                          DataRow(
+                                            cells: [
+                                              cellData(
+                                                row.product.id.toString(),
+                                                textStyle,
+                                              ),
+                                              cellData(
+                                                row.product.name,
+                                                textStyle,
+                                              ),
+                                              cellData(
+                                                row.quantity.toString(),
+                                                textStyle,
+                                              ),
+                                              DataCell(
+                                                PriceWidget(
+                                                  price: row.product.price,
+                                                  style: textStyle.bodySmall!,
+                                                ),
+                                              ),
+                                              cellData(
+                                                (row.product.price * row.quantity)
+                                                    .toStringAsFixed(2),
+                                                textStyle,
+                                              ),
+                                            ],
+                                          ),
+                                      ],
                                     ),
-                                    cellData(
-                                      row.product.name,
-                                      textStyle,
-                                    ),
-                                    cellData(
-                                      row.quantity.toString(),
-                                      textStyle,
-                                    ),
-                                    cellData(
-                                      row.product.price.toStringAsFixed(2),
-                                      textStyle,
-                                    ),
-                                    cellData(
-                                      (row.product.price * row.quantity)
-                                          .toStringAsFixed(2),
-                                      textStyle,
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                            ],
+                              );
+                            }
                           ),
                         ],
                       ),
@@ -161,10 +181,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 ),
                               ),
                               Expanded(
-                                child: PriceWidget(price: total, style:  textStyle.bodyLarge!.copyWith(
+                                child: PriceWidget(
+                                  price: total,
+                                  style: textStyle.bodyLarge!.copyWith(
                                     fontWeight: FontWeight.bold,
-                                  ),), 
-                                
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -182,13 +204,15 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               Expanded(
                                 child: Opacity(
                                   opacity: isDiscounted ? 0.5 : 1,
-                                  child: PriceWidget(price: subTotal, style:  textStyle.bodyMedium!.copyWith(
+                                  child: PriceWidget(
+                                    price: subTotal,
+                                    style: textStyle.bodyMedium!.copyWith(
                                       fontWeight: FontWeight.bold,
                                       decoration: isDiscounted
                                           ? TextDecoration.lineThrough
                                           : null,
-                                    ), ), 
-                                  
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],

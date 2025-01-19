@@ -72,7 +72,9 @@ class _MenuCardState extends State<MenuCard> {
                 product: widget.product,
                 quantity: int.parse(
                   _quantityController.text,
+
                 ),
+                context: context, 
               ),
             );
       },
@@ -209,7 +211,7 @@ class _MenuCardState extends State<MenuCard> {
     return Builder(builder: (context) {
       return InkWell(
         onTap: () {
-          context.read<CartBloc>().add(AddItemToCart(product: widget.product));
+          context.read<CartBloc>().add(AddItemToCart(product: widget.product , context: context));
         },
         child: Container(
           alignment: Alignment.center,
@@ -252,6 +254,7 @@ class _MenuCardState extends State<MenuCard> {
                   context.read<CartBloc>().add(
                         AddItemToCart(
                           product: widget.product,
+                          context: context , 
                         ),
                       );
                 },

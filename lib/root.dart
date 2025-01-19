@@ -44,9 +44,7 @@ class _RootPageState extends State<RootPage> {
           resizeToAvoidBottomInset: false,
           appBar: const CustomAppBar(),
           endDrawer: appDrawer(context),
-          body: Stack(children: [
-            widget.child,
-          ]),
+          body: widget.child,
           bottomNavigationBar: Container(
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(

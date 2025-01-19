@@ -53,7 +53,7 @@ class _CreateUserPageState extends State<CreateUserPage> {
       username:  _usernameController.text,
       uid: "aks2-askdj-askj-alks", name: _nameController.text, admin: isAdmin); 
 
-    context.read<SystemUsersBloc>().add(AddNewUser(user: newUser, password: _passwordController.text)); 
+    context.read<SystemUsersBloc>().add(AddNewUser(user: newUser, password: _passwordController.text  , context: context)); 
 
   }
 

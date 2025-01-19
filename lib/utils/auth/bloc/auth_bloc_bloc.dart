@@ -24,8 +24,8 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
       await locator<AuthService>().deleteCredentials(locator<AuthedUser>().user);
 
       // aslo unregister user from locator
-      if (locator.isRegistered<User>()) {
-        locator.unregister<User>();
+      if (locator.isRegistered<AuthedUser>()) {
+        locator.unregister<AuthedUser>();
       }
       emit(LoggedOut());
       // navigate user back to login screen

@@ -16,9 +16,11 @@ class SetCostumQuantity extends CartBlocEvent {}
 class AddItemToCart extends CartBlocEvent {
   final ProductModel product;
   final int? quantity;
-
+  final BuildContext context ; 
   const AddItemToCart({
     required this.product,
+    required this.context,
+  
     this.quantity,
   });
   @override

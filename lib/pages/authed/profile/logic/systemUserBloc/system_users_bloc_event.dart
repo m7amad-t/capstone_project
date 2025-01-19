@@ -1,7 +1,9 @@
 part of 'system_users_bloc_bloc.dart';
 
 sealed class SystemUsersBlocEvent extends Equatable {
-  const SystemUsersBlocEvent();
+
+  final BuildContext context ; 
+  const SystemUsersBlocEvent({required this.context});
 
   @override
   List<Object> get props => [];
@@ -14,7 +16,7 @@ final class AddNewUser extends SystemUsersBlocEvent {
 
   final User user ;
   final String password ; 
-  const AddNewUser({required this.user , required this.password}); 
+  const AddNewUser({required this.user , required this.password, required super.context}); 
 
   @override
   List<Object> get props => [user , password];
@@ -26,7 +28,7 @@ final class DeleteUser extends SystemUsersBlocEvent {
 
   final User user ;
 
-  const DeleteUser({required this.user});
+  const DeleteUser({required this.user, required super.context});
 
 
   @override
@@ -39,7 +41,7 @@ final class UpdateUser extends SystemUsersBlocEvent {
   final User user ;
   final Map<String, dynamic> updated;
 
-  const UpdateUser({required this.user, required this.updated}); 
+  const UpdateUser({required this.user, required this.updated, required super.context}); 
 
   @override
   List<Object> get props => [user ,updated];

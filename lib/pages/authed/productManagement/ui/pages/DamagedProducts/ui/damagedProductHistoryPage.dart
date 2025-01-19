@@ -242,24 +242,13 @@ class _DamagedProductsHistoryPageState
           return const SizedBox();
         }
         return Row(
+
           children: [
-            Expanded(
-              flex: 1,
-              child: Text(
-                context.translate.select_a_reason,
-                style: textStyle.displaySmall,
-              ),
-            ),
-            gap(width: AppPaddings.p10),
-            Expanded(
-              flex: 2,
-              child: Container(
-                alignment: Alignment.center,
-                child: Text(
-                  "${getAppDate(value.start)}     ${context.translate.to}     ${getAppDate(value.end)}",
-                  style: textStyle.displaySmall,
-                ),
-              ),
+            
+            // gap(width: AppPaddings.p10),
+            Text(
+              "${getAppDate(value.start)}     ${context.translate.to}     ${getAppDate(value.end)}",
+              style: textStyle.displaySmall,
             ),
           ],
         );

@@ -13,9 +13,7 @@ class _SaleAnalyticPageState extends State<SaleAnalyticPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.translate.analytics),
-      ),
+     
       body: Container(),
     );
   }

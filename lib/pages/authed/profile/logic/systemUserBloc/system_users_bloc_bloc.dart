@@ -16,13 +16,12 @@ part 'system_users_bloc_state.dart';
 
 class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
   SystemUsersBloc() : super(SystemUsersBlocInitial()) {
+    final CloudAuth _service = CloudAuth();
 
-    final CloudAuth _service = CloudAuth(); 
-   
-   
     Future<void> onAddUser(AddNewUser event, emit) async {
+      
       locator<AppDialogs>().showCostumTextLoading(
-          locator<BuildContext>().translate.createing_new_user);
+          event.context.translate.createing_new_user);
 
       // Simulating network request
       await Future.delayed(const Duration(seconds: 2));
@@ -34,20 +33,17 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
         'users': [...authed.users, event.user],
       };
       locator.registerSingleton<AuthedUser>(authed.update(newData));
-      
 
-
-      _service.addNewUser(locator<AuthedUser>(), event.user , event.password ); 
+      _service.addNewUser(locator<AuthedUser>(), event.user, event.password);
       locator<AppDialogs>().disposeAnyActiveDialogs();
-      GoRouter.of(locator<BuildContext>()).pop();
+      GoRouter.of(event.context).pop();
       emit(AuthUpdated(locator<AuthedUser>()));
     }
 
     Future<void> onRemoveUser(DeleteUser event, emit) async {
       locator<AppDialogs>().showCostumTextLoading(
-        locator<BuildContext>().translate.deleting,
+        event.context.translate.deleting,
       );
-
 
       // Simulating network request
       await Future.delayed(const Duration(seconds: 2));
@@ -57,7 +53,10 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
 
       if (event.user.uid == authed.user.uid) {
         locator<AppDialogs>().disposeAnyActiveDialogs();
-        showSnackBar(message: WarningSnackBar(title: locator<BuildContext>().translate.add_category, message: "")); 
+        showSnackBar(
+            message: WarningSnackBar(
+                title: event.context.translate.something_went_wrong,
+                message: ""));
         return;
       }
       locator.unregister<AuthedUser>();
@@ -72,7 +71,6 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
         'users': newUsers,
       };
 
-      
       locator.registerSingleton<AuthedUser>(authed.update(newData));
       locator<AppDialogs>().disposeAnyActiveDialogs();
 
@@ -80,8 +78,9 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
     }
 
     Future<void> onUpdateUser(UpdateUser event, emit) async {
-      locator<AppDialogs>()
-          .showCostumTextLoading(locator<BuildContext>().translate.deleting);
+      locator<AppDialogs>().showCostumTextLoading(
+        event.context.translate.deleting,
+      );
 
       // Simulating network request
       await Future.delayed(const Duration(seconds: 2));

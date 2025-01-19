@@ -62,62 +62,55 @@ class _ProfilePageState extends State<ProfilePage> {
             _currencySection(),
 
             gap(height: AppPaddings.p30),
-            
-            if(user.admin)
-            _onlyAdminSection(textStyle), 
-          
-          
-          ]
-          ,
+
+            if (user.admin) _onlyAdminSection(textStyle),
+          ],
         ),
       ),
     );
   }
 
-
-
-  Widget _onlyAdminSection(TextTheme textStyle){
-    return   Column(
-              children: [
-                Text(
-                  context.translate.system_users,
-                  style: textStyle.displayMedium,
-                ),
-                Divider(
-                  height: AppSizes.s10,
-                ),
-                Row(
+  Widget _onlyAdminSection(TextTheme textStyle) {
+    return Column(
+      children: [
+        Text(
+          context.translate.system_users,
+          style: textStyle.displayMedium,
+        ),
+        Divider(
+          height: AppSizes.s10,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  GoRouter.of(context)
+                      .go(AppRoutes.profile + "/" + AppRoutes.addUser);
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () {
-                          GoRouter.of(context)
-                              .go(AppRoutes.profile + "/" + AppRoutes.addUser);
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.person_add,
-                              color: AppColors.onPrimary,
-                              size: AppSizes.s26,
-                            ),
-                            gap(width: AppSizes.s10),
-                            Text(context.translate.create_new_user),
-                          ],
-                        ),
-                      ),
+                    Icon(
+                      Icons.person_add,
+                      color: AppColors.onPrimary,
+                      size: AppSizes.s26,
                     ),
+                    gap(width: AppSizes.s10),
+                    Text(context.translate.create_new_user),
                   ],
                 ),
-                gap(height: AppPaddings.p10),
-                _usersSection(),
-                
-                // trailling gap
-                gap(height: AppSizes.s150),
-              ],
-            ); 
-          
+              ),
+            ),
+          ],
+        ),
+        gap(height: AppPaddings.p10),
+        _usersSection(),
+
+        // trailling gap
+        gap(height: AppSizes.s150),
+      ],
+    );
   }
 
   Widget _currencySection() {
@@ -196,22 +189,26 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context, state) {
         authedModel = locator<AuthedUser>();
         return ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: authedModel.users.length,
-            itemBuilder: (context, index) {
-              final textStyle = TextTheme.of(context);
-              return users(authedModel.users[index], textStyle, context.fromLTR)
-                  .paddingOnly(bottom: AppPaddings.p10);
-            });
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: authedModel.users.length,
+          itemBuilder: (context, index) {
+            if(authedModel.users[index].uid ==  user.uid){
+              return SizedBox.shrink();
+            }
+            final textStyle = TextTheme.of(context);
+            return users(authedModel.users[index], textStyle, context.fromLTR)
+                .paddingOnly(bottom: AppPaddings.p10);
+          },
+        );
       },
     );
   }
 
   Widget users(User user, TextTheme textStyle, bool isLTR) {
     return InkWell(
-      onLongPress: (){
-        locator<AppDialogs>().showDeleteUserconfirmation(user: user); 
+      onLongPress: () {
+        locator<AppDialogs>().showDeleteUserconfirmation(user: user);
       },
       child: Container(
         padding: EdgeInsets.symmetric(

@@ -274,7 +274,7 @@ class AppDialogs extends AppDialogsBase {
                   TextButton(
                     onPressed: () {
                       disposeAnyActiveDialogs();
-                      context.read<SystemUsersBloc>().add(DeleteUser(user: user)); 
+                      context.read<SystemUsersBloc>().add(DeleteUser(user: user , context: super.context)); 
                     },
                     style: const ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(AppColors.error),

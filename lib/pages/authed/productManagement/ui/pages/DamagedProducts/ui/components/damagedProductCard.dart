@@ -300,13 +300,11 @@ class DamagedProductCard extends StatelessWidget {
                   gap(height: AppPaddings.p10),
                   Opacity(
                     opacity: 0.6,
-                    child: Expanded(
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          _trimNote(record.note ?? ""),
-                          style: textStyle.bodySmall,
-                        ),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        _trimNote(record.note ?? ""),
+                        style: textStyle.bodySmall,
                       ),
                     ),
                   ),

@@ -788,7 +788,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                         builder: (context, value, child) {
                           if (value == null) {
                             return Text(
-                              "Select Expire Date",
+                              context.translate.select_expire_date,
                               style: textStyle.bodyMedium!.copyWith(
                                 color: AppColors.onPrimary,
                               ),
