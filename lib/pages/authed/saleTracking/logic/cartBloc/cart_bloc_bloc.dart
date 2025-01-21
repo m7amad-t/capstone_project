@@ -13,7 +13,6 @@ import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
 import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 part 'cart_bloc_event.dart';

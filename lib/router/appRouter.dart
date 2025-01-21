@@ -24,6 +24,13 @@ import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProdu
 import 'package:shop_owner/pages/authed/productManagement/ui/productManagementPage.dart';
 import 'package:shop_owner/pages/authed/profile/ui/creatingUserPage.dart';
 import 'package:shop_owner/pages/authed/profile/ui/profilepage.dart';
+import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/categoriesAnalyticsPage.dart';
+import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/expensesAnalyticsPage.dart';
+import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/productAnalyticsPage.dart';
+import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/productListPresenterPage.dart';
+import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/totalRevenuePage.dart';
+import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/totalSalePage.dart';
+import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/trendingsPage.dart';
 import 'package:shop_owner/pages/authed/saleAnalytics/ui/saleAnalyticsPage.dart';
 import 'package:shop_owner/pages/authed/saleTracking/logic/models/invoiceModel.dart';
 import 'package:shop_owner/pages/authed/saleTracking/ui/returnProductFromInvoicePage.dart';
@@ -429,24 +436,93 @@ class AppRouter {
                       child: SaleAnalyticPage(key: state.pageKey),
                     ),
                     routes: <RouteBase>[
+                      // total revenue
                       GoRoute(
-                          path: AppRoutes.cartCheckout,
-                          pageBuilder: (context, state) {
-                            double discount = 0;
-                            Map<String, dynamic> extra =
-                                state.extra as Map<String, dynamic>;
-                            if (extra.containsKey('discount') &&
-                                extra['discount'] != null) {
-                              discount = extra['discount'];
-                            }
-                            return NoTransitionPage(
-                              key: state.pageKey,
-                              child: CheckoutPage(
+                        path: AppRoutes.totalRevenue,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: TotalRevenuePage(key: state.pageKey),
+                        ),
+                      ),
+
+                      // total sale
+                      GoRoute(
+                        path: AppRoutes.totalSale,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: TotalSalePage(key: state.pageKey),
+                        ),
+                      ),
+                    
+                      // expenses 
+                      GoRoute(
+                        path: AppRoutes.expensesAnalytics,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: ExpensesAnalyticsPage(key: state.pageKey),
+                        ),
+                      ),
+                      
+                      // trending 
+                      GoRoute(
+                        path: AppRoutes.trendingAnalytics,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: TrendingProductsPage(key: state.pageKey),
+                        ),
+                      ),
+
+                      // product list presenster
+                      GoRoute(
+                        path: AppRoutes.productAnalyticsList,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: ProductListPresenterForAnalytics(
+                              key: state.pageKey),
+                        ),
+                        routes: [
+                          // product analytics
+                          GoRoute(
+                            path: AppRoutes.productAnalytics,
+                            pageBuilder: (context, state) {
+                              final data = state.extra as Map<String, dynamic>;
+                              return NoTransitionPage(
                                 key: state.pageKey,
-                                discount: discount,
-                              ),
-                            );
-                          }),
+                                child: ProductAnalyticsPage(
+                                  key: state.pageKey,
+                                  product: data['product'],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      // product list presenster
+                      GoRoute(
+                        path: AppRoutes.categoryAnalytics,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: CategoriesAnalyticsPage(
+                            key: state.pageKey,
+                          ),
+                        ),
+                        routes: [
+                          // product analytics
+                          GoRoute(
+                            path: AppRoutes.productAnalytics,
+                            pageBuilder: (context, state) {
+                              final data = state.extra as Map<String, dynamic>;
+                              return NoTransitionPage(
+                                key: state.pageKey,
+                                child: ProductAnalyticsPage(
+                                  key: state.pageKey,
+                                  product: data['product'],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ],
@@ -535,9 +611,6 @@ class AppRouter {
                           ),
                         ),
                       ),
-
-                  
-                  
                     ],
                   ),
                 ],

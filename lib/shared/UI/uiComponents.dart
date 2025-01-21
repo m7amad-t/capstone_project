@@ -1,12 +1,12 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, unused_local_variable, unused_element, file_names
+// ignore_for_file: no_leading_underscores_for_local_identifiers, unused_local_variable, unused_element, file_names, non_constant_identifier_names
 
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_owner/pages/authed/productManagement/logic/models/productModel.dart';
+import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
-import 'package:shop_owner/style/appSizes/dynamicSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
-import 'package:shop_owner/utils/di/contextDI.dart';
+import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 Widget gap({double width = 0.0, double height = 0.0}) {
   return SizedBox(
@@ -25,8 +25,7 @@ Color getStockColor(int stok, TextTheme theme) {
   }
 }
 
-String trimName(ProductModel product , {int maxLength = 20}) {
-  
+String trimName(ProductModel product, {int maxLength = 20}) {
   String name = product.name;
   // first check if it contains enters
   if (product.name.contains('\n')) {
@@ -38,7 +37,7 @@ String trimName(ProductModel product , {int maxLength = 20}) {
   return name;
 }
 
-String trimDescription(ProductModel product , {int maxLength = 50}) {
+String trimDescription(ProductModel product, {int maxLength = 50}) {
   String description = product.description;
 
   // splet lines
@@ -62,7 +61,6 @@ Widget filterIcon() {
   );
 }
 
-
 Future<DateTimeRange?> showAppDateTimeRangePicker(
   BuildContext context,
   DateTimeRange? current,
@@ -74,52 +72,120 @@ Future<DateTimeRange?> showAppDateTimeRangePicker(
     end = current.end;
   }
 
-  final res = await showCalendarDatePicker2Dialog(
+  final result = await showBoardDateTimeMultiPicker(
+    useRootNavigator: true,
     context: context,
-    config: CalendarDatePicker2WithActionButtonsConfig(
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-      calendarType: CalendarDatePicker2Type.range,
-    ),
-    value: [start, end],
-    dialogSize: Size(
-      locator<DynamicSizes>().p90,
-      AppSizes.s400,
-    ),
+    pickerType: DateTimePickerType.date,
+    startDate: start,
+    endDate: end,
   );
 
-  if (res == null) return null;
-  if (res.length == 1 && res[0] != null) {
-    return DateTimeRange(start: res[0]!, end: res[0]!);
-  } else if (res.length == 2 && res[0] != null && res[1] != null) {
-    return DateTimeRange(start: res[0]!, end: res[1]!);
-  } else {
+  if (result == null) {
     return null;
   }
+
+  final selected = DateTimeRange(start: result.start, end: result.end);
+  return selected;
+
+  // final res = await showCalendarDatePicker2Dialog(
+  //   context: context,
+  //   config: CalendarDatePicker2WithActionButtonsConfig  (
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime.now(),
+  //     calendarType: CalendarDatePicker2Type.range,
+  //   ),
+
+  //   value: [start, end],
+
+  //   dialogSize: Size(
+  //     locator<DynamicSizes>().p90,
+  //     AppSizes.s400,
+  //   ),
+  // );
+
+  // if (res == null) return null;
+  // if (res.length == 1 && res[0] != null) {
+  //   return DateTimeRange(start: res[0]!, end: res[0]!);
+  // } else if (res.length == 2 && res[0] != null && res[1] != null) {
+  //   return DateTimeRange(start: res[0]!, end: res[1]!);
+  // } else {
+  //   return null;
+  // }
 }
 
+// -----------------------------
 Future<DateTime?> showAppDateTimePicker(
   BuildContext context,
   DateTime? current,
 ) async {
-  final res = await showCalendarDatePicker2Dialog(
+  final res = showBoardDateTimePicker(
     context: context,
-    config: CalendarDatePicker2WithActionButtonsConfig(
-      firstDate: DateTime.now(),
-      calendarType: CalendarDatePicker2Type.single,
-    ),
-    value: [current],
-    dialogSize: Size(
-      locator<DynamicSizes>().p90,
-      AppSizes.s400,
-    ),
+    pickerType: DateTimePickerType.date,
+    initialDate: current,
   );
 
-  if (res == null || res.isEmpty) {
-    return null;
-  }
-  return res[0];
+  return res;
+
+  // final res = await showCalendarDatePicker2Dialog(
+
+  //   context: context,
+  //   config: CalendarDatePicker2WithActionButtonsConfig(
+
+  //     firstDate: DateTime.now(),
+  //     calendarType: CalendarDatePicker2Type.single,
+  //   ),
+  //   value: [current],
+  //   dialogSize: Size(
+  //     locator<DynamicSizes>().p90,
+  //     AppSizes.s400,
+  //   ),
+  // );
+
+  // if (res == null || res.isEmpty) {
+  //   return null;
+  // }
+  // return res[0];
 }
 
 // Widget dateRangeSelector(ValueNotifier<DateTimeRange> value, )
 
+
+
+
+Widget AppChangeSelectedDateRangeButtonContent(BuildContext context) =>
+    Container(
+      padding: EdgeInsets.symmetric(vertical: AppPaddings.p12),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withAlpha(100),
+        borderRadius: BorderRadius.circular(AppSizes.s8),
+        border: Border.all(
+          color: AppColors.primary,
+        ),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        context.translate.change_selected_date_range,
+        style: TextTheme.of(context).bodyMedium!.copyWith(
+              color: AppColors.primary,
+            ),
+      ),
+    );
+
+Widget AppSelectDateRangeButtonContent(BuildContext context) =>
+    Container(
+      padding: EdgeInsets.symmetric(vertical: AppPaddings.p12),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(AppSizes.s8),
+        border: Border.all(
+          color: AppColors.primary,
+        ),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        context.translate.select_date_range,
+        style: TextTheme.of(context).bodyMedium!.copyWith(
+              color: AppColors.onPrimary, 
+            ),
+      ),
+    );

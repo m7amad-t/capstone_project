@@ -54,6 +54,8 @@ class KurdishMaterialLocalizations extends GlobalMaterialLocalizations {
     required super.longDateFormat,
     required super.yearMonthFormat,
     required super.decimalFormat,
+    
+
     required super.twoDigitZeroPaddedFormat,
   });
   static const LocalizationsDelegate<MaterialLocalizations> delegate =
@@ -711,6 +713,8 @@ const kuDateSymbols = {
   'WEEKENDRANGE': [4, 5],
   'FIRSTWEEKCUTOFFDAY': 3
 };
+
+
 const kuLocaleDatePatterns = {
   'd': 'd', // DAY
   'E': 'ccc', // ABBR_WEEKDAY

@@ -34,7 +34,7 @@ class FailedSnackBar extends AppSnackBarMessages {
       : super(
           title,
           message,
-          Icon(Icons.close_rounded, size:  _iconSize),
+          Icon(Icons.error_outline_rounded, size:  _iconSize),
           AppColors.error,
           ToastificationType.error,
         );

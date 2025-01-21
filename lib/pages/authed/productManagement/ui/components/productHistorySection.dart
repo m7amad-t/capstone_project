@@ -135,14 +135,14 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: AppPaddings.p12),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(AppSizes.s8),
                       ),
                       color: isReturned ? AppColors.primary : null,
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      "Returned Records",
+                      context.translate.returned,
                       style: textStyle.bodyMedium!.copyWith(
                         color: isReturned
                             ? AppColors.onPrimary
@@ -162,7 +162,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: AppPaddings.p12),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(AppSizes.s8),
                       ),
                       color: !isReturned ? AppColors.primary : null,
@@ -273,7 +273,6 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
   }
 
   Widget _selectDateRangeButton() {
-    final textStyle = Theme.of(context).textTheme;
     return Row(
       children: [
         Expanded(
@@ -283,25 +282,8 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
             builder: (context, value, child) {
               return InkWell(
                 onTap: _onDateRangePicker,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppSizes.s8),
-                    border: Border.all(color: AppColors.primary),
-                    color: value != null
-                        ? AppColors.primary.withAlpha(100)
-                        : AppColors.primary,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
-                    style: textStyle.bodyLarge!.copyWith(
-                      color: value == null
-                          ? AppColors.onPrimary
-                          : AppColors.primary,
-                    ),
-                  ),
-                ),
+                child: value !=  null? AppChangeSelectedDateRangeButtonContent(context)
+                    : AppSelectDateRangeButtonContent(context),
               );
             },
           ),
@@ -311,7 +293,6 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
   }
 
   Widget _selectDateRangeButtonForBoughted() {
-    final textStyle = Theme.of(context).textTheme;
     return Row(
       children: [
         Expanded(
@@ -321,25 +302,8 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
             builder: (context, value, child) {
               return InkWell(
                 onTap: _onDateRangePicker,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppSizes.s8),
-                    border: Border.all(color: AppColors.primary),
-                    color: value != null
-                        ? AppColors.primary.withAlpha(100)
-                        : AppColors.primary,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
-                    style: textStyle.bodyLarge!.copyWith(
-                      color: value == null
-                          ? AppColors.onPrimary
-                          : AppColors.primary,
-                    ),
-                  ),
-                ),
+                child: value != null ? AppChangeSelectedDateRangeButtonContent(context)
+                    : AppSelectDateRangeButtonContent(context),
               );
             },
           ),
@@ -367,10 +331,10 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
             children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(
+                  margin: const EdgeInsets.symmetric(
                     vertical: AppSizes.s6,
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: AppSizes.s8),
+                  padding:const  EdgeInsets.symmetric(horizontal: AppSizes.s8),
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     border: Border.all(color: AppColors.primary),
@@ -428,7 +392,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
     return BlocBuilder<ReturnedProductBloc, ReturnedProductBlocState>(
       builder: (context, state) {
         if (state is LoadingReturedProduct) {
-          return RepaintBoundary(
+          return const RepaintBoundary(
             child: AppLoadingCards(
               height: AppSizes.s200,
               cards: 1,
@@ -472,7 +436,7 @@ class _ProductHistorySectionState extends State<ProductHistorySection> {
     return BlocBuilder<BuyingProductBloc, BuyingProductBlocState>(
       builder: (context, state) {
         if (state is LoadingBoughtForProduct) {
-          return RepaintBoundary(
+          return const RepaintBoundary(
             child: AppLoadingCards(
               height: AppSizes.s200,
             ),

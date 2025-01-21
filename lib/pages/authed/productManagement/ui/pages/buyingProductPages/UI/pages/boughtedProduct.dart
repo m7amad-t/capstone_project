@@ -11,7 +11,6 @@ import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
-import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class Boughtedproducts extends StatefulWidget {
@@ -72,7 +71,9 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
       }
 
       if (_dateRange.value!.end == res.end &&
-          _dateRange.value!.start == res.start) return;
+          _dateRange.value!.start == res.start) {
+        return;
+      }
 
       _dateRange.value = res;
       context
@@ -101,7 +102,7 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
               curve: Curves.linear,
             );
           },
-          child: Icon(
+          child: const Icon(
             Icons.keyboard_arrow_up_rounded,
             size: AppSizes.s30,
           ),
@@ -112,15 +113,13 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextTheme.of(context);
 
     return Scaffold(
-     
       floatingActionButton: _floatingActionButton(),
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<BuyingProductsBloc>().add(ReloadBoughtHistory());
-          _dateRange.value = null; 
+          _dateRange.value = null;
         },
         child: SingleChildScrollView(
           controller: _scrollController,
@@ -138,32 +137,15 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+
+                      // date range picker button 
                       InkWell(
                         onTap: _onDateTimeRangePicker,
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical: AppPaddings.p10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(AppSizes.s8),
-                            border: Border.all(color: AppColors.primary),
-                            color: value != null
-                                ? AppColors.primary.withAlpha(100)
-                                : AppColors.primary,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
-                            style: textStyle.bodyLarge!.copyWith(
-                              color: value == null
-                                  ? AppColors.onPrimary
-                                  : AppColors.primary,
-
-
-                            ),
-                          ),
-                        ),
+                        child: value != null
+                            ? AppChangeSelectedDateRangeButtonContent(context)
+                            : AppSelectDateRangeButtonContent(context),
                       ),
-                      if (value != null) gap(height: AppSizes.s4),
+                      
                       if (value != null)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -173,25 +155,24 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
                               child: Row(
                                 children: [
                                   Text(
-                                      getAppDate(value.start) , 
-                                      textDirection: TextDirection.rtl,
-                                      ),
-                                      gap(width: AppPaddings.p10),
+                                    getAppDate(value.start),
+                                    textDirection: TextDirection.rtl,
+                                  ),
+                                  gap(width: AppPaddings.p10),
                                   Text(
-                                      context.translate.to , 
-                                      textDirection: TextDirection.rtl,
-                                      ),
-                                      gap(width: AppPaddings.p10),
-
+                                    context.translate.to,
+                                    textDirection: TextDirection.rtl,
+                                  ),
+                                  gap(width: AppPaddings.p10),
                                   Text(
-                                      getAppDate(value.end) , 
-                                      textDirection: TextDirection.rtl,
-                                      ),
+                                    getAppDate(value.end),
+                                    textDirection: TextDirection.rtl,
+                                  ),
                                 ],
                               ),
                             ),
                           ],
-                        ),
+                        ).paddingOnly(top : AppPaddings.p4),
                     ],
                   );
                 },
@@ -210,7 +191,7 @@ class _BoughtedproductsState extends State<Boughtedproducts> {
     return BlocBuilder<BuyingProductsBloc, BuyingProductsBlocState>(
       builder: (context, state) {
         if (state is LoadingBoughtForProducts) {
-          return AppLoadingCards(height: AppSizes.s200, duration: 1200);
+          return const AppLoadingCards(height: AppSizes.s200, duration: 1200);
         }
 
         List<ProductBoughtModel> records = [];

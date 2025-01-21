@@ -41,8 +41,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppRoutes.buyProductsFrom: context.translate.buying_product_from,
       AppRoutes.returnedProductsHistory: context.translate.returned_products,
       AppRoutes.saleHistory: context.translate.sale_history,
+      AppRoutes.addUser: context.translate.adding_new_user,
       AppRoutes.addExpesnesRecord: context.translate.incur_expense,
       AppRoutes.expensRecordHistory: context.translate.expense_history,
+      AppRoutes.totalSale: context.translate.total_sale,
+      AppRoutes.totalRevenue: context.translate.total_revenue,
+      AppRoutes.productAnalyticsList: context.translate.products,
+      AppRoutes.productAnalytics: context.translate.product_analytics,
+      AppRoutes.categoryAnalytics: context.translate.categories_analytics,
+      AppRoutes.expensesAnalytics: context.translate.expenses_analytics,
+      AppRoutes.trendingAnalytics: context.translate.trending_product,
+
+
     };
 
     for (final key in locations.keys) {

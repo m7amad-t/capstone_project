@@ -47,9 +47,24 @@
   "return_records": "سجلات الإرجاع",
   "bought_records": "سجلات الشراء",
   
+
+  "january": "يناير",
+  "february": "فبراير",
+  "march": "مارس",
+  "april": "أبريل",
+  "may": "مايو",
+  "june": "يونيو",
+  "july": "يوليو",
+  "august": "أغسطس",
+  "september": "سبتمبر",
+  "october": "أكتوبر",
+  "november": "نوفمبر",
+  "december": "ديسمبر", 
+
   "all": "الكل",
   "expired": "منتهي الصلاحية",
   "damaged": "تالف",
+  "total_damaged": "إجمالي التالف",
   "costumer_reason": "سبب العميل",
   "deffective": "معيب",
   "missing_parts": "أجزاء مفقودة",
@@ -119,6 +134,7 @@
   "note": "ملاحظة",
   
   "select_expire_date": "اختر تاريخ الانتهاء",
+  "selected_date": "التاريخ المحدد",
   
   "total_cost": "إجمالي التكلفة",
   "cost_per_product": "التكلفة لكل منتج",
@@ -169,7 +185,7 @@
 
   "analytics": "التحليلات", 
   "expenses" : "النفقات", 
-
+  "expense" : "مصروف",
 
   "go_home" : "العودة إلى الصفحة الرئيسية", 
   
@@ -223,7 +239,8 @@
   "expense_already_exist" : "المصروف موجود بالفعل",    
   "expense_added_successfuly" : "تمت إضافة المصروف بنجاح",    
   "faield_to_add_expense" : "فشل في إضافة المصروف",    
-  "ru_sure_wanna_delete_expense_type" : "هل أنت متأكد أنك تريد حذف نوع المصروف؟",    
+  "ru_sure_wanna_delete_expense_type" : "هل أنت متأكد أنك تريد حذف نوع المصروف؟", 
+  "ru_sure_wanna_delete_expense" : "هل أنت متأكد أنك تريد حذف المصروف؟",
   "faield_to_delete_expense_type" : "فشل في حذف نوع المصروف",    
   "expense_type_deleted_successfully" : "تم حذف نوع المصروف بنجاح",  
 
@@ -271,12 +288,10 @@
 
   "ru_sure_wanna_delete_user": "هل أنت متأكد أنك تريد حذف المستخدم",  
 
-
-  "failed_to_delete_user": "Failed to delete user", 
-  "cant_delete_ur_account": "Can not delete your account", 
-  "user_deleted_successfully": "User account deleted sucessfully", 
-                      
-
+  "failed_to_delete_user": "فشل في حذف المستخدم", 
+  "cant_delete_ur_account": "لا يمكن حذف حسابك", 
+  "user_deleted_successfully": "تم حذف المستخدم بنجاح", 
+  
   "expire_date": "تاريخ الانتهاء",  
   "change_expire_date": "تغيير تاريخ الانتهاء",  
 
@@ -290,6 +305,44 @@
   "dirham" : "درهم",  
   "euro" : "يورو",  
   "lira" : "ليرة",  
+
+
+
+  "year" : "السنة",  
+  "month" : "الشهر",  
+  "week" : "الأسبوع",  
+  "day" : "اليوم",  
+
+  "sale" : "البيع",  
+  "sold" : "تم البيع",  
+  "total_sale" : "إجمالي المبيعات",  
+
+  "revenue" : "الإيرادات",  
+  "total_revenue" : "إجمالي الإيرادات",  
+  "lost" : "الخسارة",  
+
+  "returned" : "تم إرجاعه",
+  "total_returned" : "إجمالي المرتجعات",
+
+
+  "trending" : "الشائع",
+  "trending_categories" : "الفئات الشائعة",
+  "trending_category" : "الفئة الشائعة",
+  "trending_products" : "المنتجات الشائعة",
+  "trending_product" : "المنتج الشائع",
+
+    
+  "product_analytics" : "تحليلات المنتج",
+  "category_analytics" : "تحليلات الفئة",
+  "categories_analytics" : "تحليلات الفئات",
+  "expenses_analytics" : "تحليلات المصروفات",
+
+
+
+  "adding_new_user" : "جاري إضافة مستخدم جديد",
+  "user_added_successfully" : "تمت إضافة المستخدم بنجاح",
+  "failed_to_add_user" : "فشل في إضافة المستخدم",
+
 
 
   "profile" : "الملف الشخصي"  

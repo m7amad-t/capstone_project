@@ -78,7 +78,7 @@ class _ExpensesRecordsPageState extends State<ExpensesRecordsPage> {
               extra: ExpensExtra(model: widget.expenses).extra,
             );
           },
-          child: Icon(
+          child: const  Icon(
             Icons.add,
             size: AppSizes.s30,
             color: AppColors.onPrimary,
@@ -143,7 +143,6 @@ class _ExpensesRecordsPageState extends State<ExpensesRecordsPage> {
   }
 
   Widget _selectDateRangeButton() {
-    final textStyle = Theme.of(context).textTheme;
     return Row(
       children: [
         Expanded(
@@ -153,27 +152,9 @@ class _ExpensesRecordsPageState extends State<ExpensesRecordsPage> {
             builder: (context, value, child) {
               return InkWell(
                 onTap: _onDateRangePicker,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppSizes.s8),
-                    border: Border.all(color: AppColors.primary),
-                    color: value != null
-                        ? AppColors.primary.withAlpha(100)
-                        : AppColors.primary,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    value == null
-                        ? context.translate.select_date_range
-                        : context.translate.change_selected_date_range,
-                    style: textStyle.bodyLarge!.copyWith(
-                      color: value == null
-                          ? AppColors.onPrimary
-                          : AppColors.primary,
-                    ),
-                  ),
-                ),
+                child: value != null
+                    ? AppChangeSelectedDateRangeButtonContent(context)
+                    : AppSelectDateRangeButtonContent(context),
               );
             },
           ),
@@ -186,7 +167,7 @@ class _ExpensesRecordsPageState extends State<ExpensesRecordsPage> {
     return BlocBuilder<ExpensesRecordsBloc, ExpensesRecordsBlocState>(
       builder: (context, state) {
         if (state is ExpensesRecordsLoading) {
-          return RepaintBoundary(
+          return const RepaintBoundary(
             child: AppLoadingCards(
               height: AppSizes.s150,
             ),
@@ -212,10 +193,15 @@ class _ExpensesRecordsPageState extends State<ExpensesRecordsPage> {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: records.length,
           itemBuilder: (context, index) {
-            return ExpensesRecordCard(record: records[index], expense: widget.expenses,).paddingOnly(
-              top: index == 0? AppSizes.s30 : AppSizes.s10,  // first item has top margin
-              bottom: index == records.length -1 ? AppSizes.s150 :0 , 
-            ); 
+            return ExpensesRecordCard(
+              record: records[index],
+              expense: widget.expenses,
+            ).paddingOnly(
+              top: index == 0
+                  ? AppSizes.s30
+                  : AppSizes.s10, // first item has top margin
+              bottom: index == records.length - 1 ? AppSizes.s150 : 0,
+            );
           },
         );
       },

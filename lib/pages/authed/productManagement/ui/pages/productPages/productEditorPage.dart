@@ -181,7 +181,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
     showSnackBar(
       message: SuccessSnackBar(
         title: title,
-        message: title,
+        message: "",
       ),
     );
   }
@@ -374,7 +374,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
         Expanded(
           flex: 3,
           child: Padding(
-            padding: EdgeInsets.only(top: AppSizes.s14),
+            padding:const  EdgeInsets.only(top: AppSizes.s14),
             child: Text(
               context.translate.product_name,
               style: _textStyle.bodySmall,
@@ -411,7 +411,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
         Expanded(
           flex: 3,
           child: Padding(
-            padding: EdgeInsets.only(top: AppSizes.s14),
+            padding: const EdgeInsets.only(top: AppSizes.s14),
             child: Text(
               context.translate.price,
               style: _textStyle.bodySmall,
@@ -584,7 +584,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
                           topLeft: Radius.circular(!isRTL ? 0 : AppSizes.s8),
                         ),
                       ),
-                      child: Icon(
+                      child:const  Icon(
                         Icons.add,
                         color: AppColors.onPrimary,
                         size: AppSizes.s24,
@@ -665,7 +665,7 @@ class _ProductEditorPageState extends State<ProductEditorPage> {
                           topLeft: Radius.circular(isRTL ? 0 : AppSizes.s8),
                         ),
                       ),
-                      child: Icon(
+                      child: const  Icon(
                         Icons.remove,
                         color: AppColors.onPrimary,
                         size: AppSizes.s24,

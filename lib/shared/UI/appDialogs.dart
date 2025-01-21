@@ -323,7 +323,7 @@ class AppDialogs extends AppDialogsBase {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                context.translate.ru_sure_wanna_delete_expense_type,
+                context.translate.ru_sure_wanna_delete_expense,
                 style: _textStyle.displayMedium!
                   ..copyWith(
                     color: AppColors.error,

@@ -614,7 +614,7 @@ class _ReturnParoductFromInvoicePageState
                       topLeft: Radius.circular(!isLTR ? 0 : AppSizes.s8),
                     ),
                   ),
-                  child: Icon(
+                  child: const  Icon(
                     Icons.add,
                     color: AppColors.onPrimary,
                     size: AppSizes.s24,
@@ -700,7 +700,7 @@ class _ReturnParoductFromInvoicePageState
                       topLeft: Radius.circular(isLTR ? 0 : AppSizes.s8),
                     ),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.remove,
                     color: AppColors.onPrimary,
                     size: AppSizes.s24,

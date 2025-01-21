@@ -143,7 +143,6 @@ class _ReturnedProducstHistoryPageState
   }
 
   Widget _selectDateRangeButton() {
-    final textStyle = Theme.of(context).textTheme;
     return Row(
       children: [
         Expanded(
@@ -153,25 +152,8 @@ class _ReturnedProducstHistoryPageState
             builder: (context, value, child) {
               return InkWell(
                 onTap: _onDateRangePicker,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppSizes.s8),
-                    border: Border.all(color: AppColors.primary),
-                    color: value != null
-                        ? AppColors.primary.withAlpha(100)
-                        : AppColors.primary,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
-                    style: textStyle.bodyLarge!.copyWith(
-                      color: value == null
-                          ? AppColors.onPrimary
-                          : AppColors.primary,
-                    ),
-                  ),
-                ),
+                child: value != null? AppChangeSelectedDateRangeButtonContent(context)
+                    : AppSelectDateRangeButtonContent(context), 
               );
             },
           ),
@@ -185,9 +167,8 @@ class _ReturnedProducstHistoryPageState
       builder: (context, state) {
         final textStyle = TextTheme.of(context);
 
-        print(state);
         if (state is LoadingReturedProducts) {
-          return AppLoadingCards(
+          return const AppLoadingCards(
             height: AppSizes.s180,
           );
         }
@@ -236,7 +217,7 @@ class _ReturnedProducstHistoryPageState
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(AppSizes.s8),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: AppColors.primary,
                         width: AppSizes.s1,
                       ),
@@ -306,10 +287,10 @@ class _ReturnedProducstHistoryPageState
             children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(
+                  margin: const EdgeInsets.symmetric(
                     vertical: AppSizes.s6,
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: AppSizes.s8),
+                  padding: const EdgeInsets.symmetric(horizontal: AppSizes.s8),
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     border: Border.all(color: AppColors.primary),

@@ -56,4 +56,16 @@ class AppRoutes {
 
 
 
+  // ---------------------- [[ analytics childs ]] -------------------------------
+  static String totalSale= "total_sales";
+  static String totalRevenue= "total_revenue";
+  static String productAnalytics= "product_analytics";
+  static String productAnalyticsList= "product_analytics_list";
+  static String categoryAnalytics= "category_analytics";
+  static String categoryAnalyticsList= "category_analytics_list";
+  static String expensesAnalytics= "expenses_analytics";
+  static String trendingAnalytics= "trending_analytics";
+
+
+
 }

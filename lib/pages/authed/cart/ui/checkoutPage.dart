@@ -7,7 +7,6 @@ import 'package:shop_owner/shared/UI/priceWidget.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/theme/appColors.dart';
-import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class CheckoutPage extends StatefulWidget {
@@ -141,7 +140,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(AppSizes.s8),
                     ),
                     child: BackdropFilter(
@@ -162,7 +161,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     decoration: BoxDecoration(
                       backgroundBlendMode: BlendMode.color,
                       color: AppColors.primary.withAlpha(30),
-                      borderRadius: BorderRadius.all(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(
                           AppSizes.s8,
                         ),

@@ -38,5 +38,15 @@ class AssetPaths{
 
 
 
+  // 
+
+  static const String sale = '$imageDir/sale.png';
+  static const String productAnalysis = '$imageDir/product_analysis.png';
+  static const String revenue = '$imageDir/revenue.png';
+  static const String catAnalysis = '$imageDir/cat_analysis.png';
+  static const String trending = '$imageDir/trending.png';
+  static const String expenses = '$imageDir/expenses.png';
+
+
 
 }

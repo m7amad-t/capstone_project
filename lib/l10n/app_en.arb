@@ -50,10 +50,24 @@
   "return_records": "Return records",
   "bought_records": "Bought records",
   
+
+  "january": "january",
+  "february": "february",
+  "march": "march",
+  "april": "april",
+  "may": "may",
+  "june": "june",
+  "july": "july",
+  "august": "august",
+  "september": "september",
+  "october": "october",
+  "november": "november",
+  "december": "december", 
   
   "all": "All",
   "expired": "Expired",
   "damaged": "Damaged",
+  "total_damaged": "Total damaged",
   "costumer_reason": "Costumer reason",
   "deffective": "Deffective",
   "missing_parts": "Missing parts",
@@ -112,6 +126,7 @@
   "note": "Note",
 
   "select_expire_date": "Select expire date",
+  "selected_date": "Selected date",
   
   "total_cost": "Total Cost",
   "cost_per_product": "Cost per product",
@@ -169,6 +184,7 @@
 
   "analytics" : "Analytics", 
   "expenses" : "Expneses", 
+  "expense" : "Expnese", 
 
 
   "go_home" : "Go Home", 
@@ -237,7 +253,9 @@
   "expense_already_exist" : "Expense already exist",    
   "expense_added_successfuly" : "Expense added successfully",    
   "faield_to_add_expense" : "Failed to add expense",    
-  "ru_sure_wanna_delete_expense_type" : "Are you sure you want to delete the expense type",    
+  "ru_sure_wanna_delete_expense_type" : "Are you sure you want to delete the expense type",   
+  "ru_sure_wanna_delete_expense" : "Are you sure you want to delete the expense?",    
+
   "faield_to_delete_expense_type" : "Failed to delete expense type",    
   "expense_type_deleted_successfully" : "Expense type deleted successfully",    
 
@@ -286,11 +304,14 @@
   "employee": "Employee",
   
   
+  "ru_sure_wanna_delete_user": "Are you sure you want to delete user", 
+  "failed_to_delete_user": "Failed to delete user", 
+  "cant_delete_ur_account": "You can not delete your account", 
+  "user_deleted_successfully": "User deleted successfully", 
   
   "username_is_taken": "Username is taken", 
   "enter_name": "Enter name", 
 
-  "ru_sure_wanna_delete_user": "Are you sure you want to delete user", 
                       
 
   "change_currency" : "Change currency",
@@ -304,6 +325,47 @@
   "euro" : "Euro",
   "lira" : "Lira",
   
+
+
+
+
+  "year" : "Year",
+  "month" : "Month",
+  "week" : "Week",
+  "day" : "Day",
+
+  "sale" : "Sale", 
+  "sold" : "Sold", 
+  "total_sale" : "Total of sale", 
+
+
+  "revenue" : "Revenue",
+  "total_revenue" : "Total of revenue",
+  "lost" : "Lost",
+
+
+  "returned" : "Returned",
+  "total_returned" : "Total returned",
+  
+  
+  "trending" : "Trending",
+  "trending_categories" : "Trending Categories",
+  "trending_category" : "Trending Category",
+  "trending_products" : "Trending Products",
+  "trending_product" : "Trending Product",
+  
+
+  
+  "product_analytics" : "Product analytics",
+  "category_analytics" : "Category analytics",
+  "categories_analytics" : "Categories analytics",
+  "expenses_analytics" : "Expenses analytics",
+
+
+  "adding_new_user" : "Adding new user",
+  "user_added_successfully" : "User added successfully",
+  "failed_to_add_user" : "Failed to add user",
+
 
   "profile" : "Profile"
 

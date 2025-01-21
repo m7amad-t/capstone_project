@@ -17,7 +17,7 @@
   "wrong_credintials": "وشەی نهێنی یان ناوی بەکارهێنەرت هەڵەیە",
   "home": "ماڵەوە",
   "enter_product_name" : "ناوی بەرهەم بنووسە",
-  "sale_history" : "مێژوی فرۆشتن",
+  "sale_history" : "مێژووی فرۆشتن",
   "select_date_range" : "مەودا هەڵبژێرە",
   "change_selected_date_range" : "مەودای هەڵبژێردراو بگۆڕە",
   "id" : "ID",
@@ -52,6 +52,7 @@
   "all": "هەمووی",
   "expired": "بەسەرچوو",
   "damaged": "تەلەف",
+  "total_damaged": "کۆی تەلەف",
   "costumer_reason": "هۆکای مشتەری",
   "deffective": "تێکچوو",
   "missing_parts": "پارچەی ونبووە",
@@ -59,7 +60,7 @@
   "no_data_found": "هیچ زانیاریەک نییە",
   "updating_product": "نوێکردنەوەی بەرهەم",
   
-  "product_name": "ناوی بەرههەم",
+  "product_name": "ناوی بەرهەم",
   "product": "بەرهەم",
   "pelase_enter_product_name": "تکایە ناوی بەرهەم بنووسە",
   
@@ -99,7 +100,7 @@
   
 
     
-  "updating_category": "نوێ کردنەوەی کاتیغۆری",
+  "updating_category": "نوێ کردنەوەی کاتیگۆری",
   "update_category": "نوێکردنەوەی کاتیگۆری",
   "category_updated_successfully": "کاتیگۆری نوێ کرایەوە",
   "failed_to_update_category": "نەتوانرا کاوتیگۆری نوێ بکرێتەوە",
@@ -125,6 +126,7 @@
   "note": "تێبینی",
 
   "select_expire_date": "ڕۆژی بەسەرچوون دیاری بکە",
+  "selected_date": "بەرواری دیاری کراو",
   
   "total_cost": "کۆی تێچوو",
   "cost_per_product": "تێچووی بەرهەم",
@@ -153,7 +155,7 @@
   "return_it": "گەڕاندنەوە", 
   "returning": "گەڕاندنەوە", 
   "returning_product": "گەڕاندەنەوەی بەرهەم", 
-  "product_returned_successfully": "بەسەرکوتووی گەڕاندرایەوە", 
+  "product_returned_successfully": "بەسەرکەوتووی گەڕاندرایەوە", 
   "failed_to_return_product": "نەتوانرا بگەڕێندرێتەوە", 
   
   
@@ -173,7 +175,7 @@
   "confirm_payment": "دڵنیا بوونەوە",
   "sellign_product": "فرۆشتنی بەرهەم",
   "initiating_transaction": "جێبەجێ کردنی فرۆشتن",
-  "sold_product_successfully": "فرۆشتن سەرکوتوو بوو",
+  "sold_product_successfully": "فرۆشتن سەرکەوتوو بوو",
   
   
   "add_product": "زیادکرنی بەرهەم",
@@ -181,6 +183,7 @@
 
   "analytics" : "شیکاری", 
   "expenses" : "خەرجیەکان", 
+  "expense" : "خەرجی", 
 
   "go_home" : "ماڵەوە", 
 
@@ -194,7 +197,7 @@
   "deleting_catgeory_confirmation" : "دڵنیای لە سڕینەوەی کاتیگۆریەکە؟", 
 
   
-  "product_deleted_successfully" : "بەرهەمەکە بەسەرکوتووی سڕایەوە",
+  "product_deleted_successfully" : "بەرهەمەکە بەسەرکەوتووی سڕایەوە",
   "category_deleted_successfully" : "کاتیگۆریەکە بەسەرکەوتووی سڕایەوە",
   "category_cant_deleted" : "ناتوانیت ئەم کاتیگۆریە بسڕیتەوە",
   "failed_to_delete_product" : "نەتوانرا بەرهەمەکە بسڕدرێتەوە",
@@ -238,6 +241,7 @@
 "expense_added_successfuly" : "خەرجیەکە بەسەرکەوتووی زیادکرا",    
 "faield_to_add_expense" : "نەتوانرا خەرجیەکە زیاد بکرێت",    
 "ru_sure_wanna_delete_expense_type" : "دڵنیاییت لە سڕینەوەی جۆری جەرخی؟",    
+"ru_sure_wanna_delete_expense" : "دڵنیاییت لە سڕینەوەی جەرخی؟",    
 "faield_to_delete_expense_type" : "نەتوانرا جۆری خەرخی بسڕدرێتەوە",    
 "expense_type_deleted_successfully" : "جۆری خەرجی سڕایەوە",    
 
@@ -284,15 +288,25 @@
   "admin": "ئەدمین",
   "employee": "کارمەند",
   
+  "january": "کانوونی دووەم",
+  "february": "شوبات",
+  "march": "ئازار",
+  "april": "نیسان",
+  "may": "ئایار",
+  "june": "حوزەیران",
+  "july": "تەممووز",
+  "august": "ئاب",
+  "september": "ئەیلوول",
+  "october": "تشرینی یەکەم",
+  "november": "تشرینی دووەم",
+  "december": "کانوونی یەکەم", 
 
 
   "username_is_taken": "ناوی بەکارهێنەر گیراوە", 
   "enter_name": "ناو بنووسە", 
                       
   "ru_sure_wanna_delete_user": "دڵنیای لە سڕینەوە بەکارهێنەەرەکە", 
-  "failed_to_delete_user": "نەتوانرا ئەم بەکارهێنەرە بسڕدرێتەوە", 
   "cant_delete_ur_account": "ناتوانیت هەژماریت خۆت بسڕیتەوە", 
-  "user_deleted_successfully": "دڵنیای لە سڕینەوە بەکارهێنەەرەکە", 
                       
 
   "change_currency" : "گۆڕینی دراو",
@@ -305,6 +319,50 @@
   "euro" : "یۆرۆ",
   "lira" : "لیرە",
   
+
+
+
+
+  "year" : "ساڵ",
+  "month" : "مانگ",
+  "week" : "هەفتە",
+  "day" : "ڕۆژ",
+
+  "sale" : "فرۆشتن", 
+  "sold" : "فرۆشراو", 
+  "total_sale" : "کۆی فرۆش", 
+
+
+  "revenue" : "قازانج",
+  "total_revenue" : "کۆی قازانج",
+  "lost" : "زەرەر",
+
+  "returned" : "گەڕاوە",
+  "total_returned" : "کۆی گەڕاوە",
+  
+  
+  "trending" : "خوازراو",
+  "trending_categories" : "کاتیگۆریەخوازراوەکان",
+  "trending_category" : "کاتیگۆری خوازراو",
+  "trending_products" : "بەرهەمە خوازراوەکان",
+  "trending_product" : "بەرهەمی خوازراو",
+  
+
+  "product_analytics" : "شیکاری بەرهەم",
+  "category_analytics" : "شیکاری کاتیگۆری",
+  "categories_analytics" : "شیکاری کاتیگۆریەکان",
+  "expenses_analytics" : "شیەکاری خەرجیەکان",
+
+
+
+  "adding_new_user" : "زیادکردنی بەکارهێنەری نوێ",
+  "user_added_successfully" : "بەکارهێنەری نوێ زیادکرا",
+  "failed_to_add_user" : "نەتوانرا بەکارهێنەری نوێ زیاد بکرێت",
+
+
+  "user_deleted_successfully" : "بەکارهێنەر سڕایەوە",
+  "failed_to_delete_user" : "نەتوان بەرکار‌هێنەر بسڕێتەوە",
+
   "profile" : "پڕۆفایل"
 
 

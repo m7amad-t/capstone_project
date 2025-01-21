@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/UI/uiHelper.dart';
 import 'package:shop_owner/shared/models/snackBarMessages.dart';
@@ -36,7 +37,10 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
 
       _service.addNewUser(locator<AuthedUser>(), event.user, event.password);
       locator<AppDialogs>().disposeAnyActiveDialogs();
-      GoRouter.of(event.context).pop();
+      // showSnackbar
+      showSnackBar(message: SuccessSnackBar(title: event.context.translate.new_user_created_sucessfully, message: "")); 
+      GoRouter.of(event.context).go(AppRoutes.profile); 
+
       emit(AuthUpdated(locator<AuthedUser>()));
     }
 
@@ -73,6 +77,7 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
 
       locator.registerSingleton<AuthedUser>(authed.update(newData));
       locator<AppDialogs>().disposeAnyActiveDialogs();
+      showSnackBar(message: SuccessSnackBar(title: event.context.translate.user_deleted_successfully, message: "")); 
 
       emit(AuthUpdated(locator<AuthedUser>()));
     }

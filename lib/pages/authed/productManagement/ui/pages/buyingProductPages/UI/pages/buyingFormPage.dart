@@ -75,7 +75,6 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
     _selectedCostUnitType.dispose();
     _stok.dispose();
     _itemQuantityInPackage.dispose();
-    _stok.dispose();
     super.dispose();
   }
 
@@ -751,7 +750,7 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
   Widget _expireDateSelectorSection() {
     return Row(
       children: [
-        // quantity controller
+        // expire date  controller
         Expanded(
           child: ValueListenableBuilder(
             valueListenable: _expireDate,
@@ -804,11 +803,12 @@ class _BuyingProductFormPageState extends State<BuyingProductFormPage> {
                       ),
                     ),
                   ),
+                  
                   if (value != null)
                     Row(
                       children: [
                         Text(
-                          context.translate.select_expire_date,
+                          context.translate.selected_date,
                           style: textStyle.displaySmall,
                         ),
                         gap(width: AppSizes.s10),

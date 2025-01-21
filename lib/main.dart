@@ -140,6 +140,19 @@ class _AppState extends State<App> {
               themeMode: themeState.mode,
               supportedLocales: L10n.all,
               locale: languageState.local,
+              
+              localeResolutionCallback: (locale, supportedLocales) {
+
+                if (locale == null) {
+                  return const Locale('en');
+                }
+
+                if (!supportedLocales.contains(locale)) {
+                  return const Locale('en');
+                }
+
+                return locale;
+              },
               localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
@@ -151,9 +164,6 @@ class _AppState extends State<App> {
               ],
               routerConfig: _router,
             );
-
-
-          
           },
         );
       },

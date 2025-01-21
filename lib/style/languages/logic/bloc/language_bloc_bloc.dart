@@ -15,8 +15,8 @@ class LanguageBloc extends HydratedBloc<LanguageBlocEvent, LanguageBlocState> {
   @override
   LanguageBlocState? fromJson(Map<String, dynamic> json) {
     final String key = json['language'];
-    if (key == 'kr') {
-      const Locale local = Locale('kr');
+    if (key == 'ku') {
+      const Locale local = Locale('ku');
       return const AppLanguageState(local: local);
     } else if (key == 'en') {
       const Locale local = Locale('en');
@@ -25,7 +25,7 @@ class LanguageBloc extends HydratedBloc<LanguageBlocEvent, LanguageBlocState> {
       const Locale local = Locale('ar');
       return const AppLanguageState(local: local);
     } else {
-      const Locale local = Locale('kr');
+      const Locale local = Locale('ku');
       return const AppLanguageState(local: local);
     }
   }

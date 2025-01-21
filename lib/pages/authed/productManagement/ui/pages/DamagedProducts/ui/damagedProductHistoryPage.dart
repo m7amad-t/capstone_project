@@ -9,7 +9,6 @@ import 'package:shop_owner/shared/UI/uiComponents.dart';
 import 'package:shop_owner/style/appSizes/appPaddings.dart';
 import 'package:shop_owner/style/appSizes/appSizes.dart';
 import 'package:shop_owner/style/dateFormat.dart';
-import 'package:shop_owner/style/theme/appColors.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
 class DamagedProductsHistoryPage extends StatefulWidget {
@@ -175,7 +174,7 @@ class _DamagedProductsHistoryPageState
       builder: (context, state) {
         final textStyle = TextTheme.of(context);
         if (state is LoadingDamagedProducts) {
-          return AppLoadingCards(height: AppSizes.s180);
+          return const  AppLoadingCards(height: AppSizes.s180);
         }
 
         if (state is FailedToLoadDamagedProducts) {
@@ -261,7 +260,6 @@ class _DamagedProductsHistoryPageState
   // }
 
   Widget _selectDateRangeButton() {
-    final textStyle = Theme.of(context).textTheme;
     return Row(
       children: [
         Expanded(
@@ -271,25 +269,8 @@ class _DamagedProductsHistoryPageState
             builder: (context, value, child) {
               return InkWell(
                 onTap: _onDateRangePicker,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: AppPaddings.p10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppSizes.s8),
-                    border: Border.all(color: AppColors.primary),
-                    color: value != null
-                        ? AppColors.primary.withAlpha(100)
-                        : AppColors.primary,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    value == null ? context.translate.select_date_range : context.translate.change_selected_date_range,
-                    style: textStyle.bodyLarge!.copyWith(
-                      color: value == null
-                          ? AppColors.onPrimary
-                          : AppColors.primary,
-                    ),
-                  ),
-                ),
+                child: value != null ? AppChangeSelectedDateRangeButtonContent(context)
+                    : AppSelectDateRangeButtonContent(context),
               );
             },
           ),

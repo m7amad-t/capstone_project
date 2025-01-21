@@ -41,7 +41,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ).getExtra,
           );
         },
-        child: Icon(
+        child:  const Icon(
           Icons.edit_note_rounded,
           size: AppSizes.s30,
         ),
@@ -89,7 +89,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ),
 
               // trailling gap
-              SizedBox(height: AppSizes.s200),
+              gap(height: AppSizes.s150), 
             ],
           ),
         ),
@@ -182,7 +182,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
     return Expanded(
       child: ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: AppSizes.s200,
           maxHeight: AppSizes.s50,
         ),

@@ -123,7 +123,7 @@ class _CategoryEditorPageState extends State<CategoryEditorPage> {
     showSnackBar(
       message: SuccessSnackBar(
         title: title,
-        message: title,
+        message: "",
       ),
     );
   }
