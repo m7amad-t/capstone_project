@@ -93,7 +93,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         onPressed: () {
           GoRouter.of(context).push(path);
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.history,
           color: AppColors.onPrimary,
           size: AppSizes.s35,
@@ -153,7 +153,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).primaryColor,
       leading: showBackButton
           ? IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back_ios_rounded,
                 color: AppColors.onPrimary,
                 size: AppSizes.s30,
@@ -162,7 +162,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             )
           : showHOSRB
               ? IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.history_rounded,
                     color: AppColors.onPrimary,
                     size: AppSizes.s30,

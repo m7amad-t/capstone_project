@@ -145,22 +145,12 @@ class _SaleHistoryPageState extends State<SaleHistoryPage> {
                     }
                     return Row(
                       children: [
-                        Expanded(
-                          flex: 1,
+                     
+                        Container(
+                          alignment: Alignment.center,
                           child: Text(
-                            'Selected Range',
+                            "${getAppDate(value.start)}     ${context.translate.to}     ${getAppDate(value.end)}",
                             style: textStyle.displaySmall,
-                          ),
-                        ),
-                        gap(width: AppPaddings.p10),
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "${getAppDate(value.start)}     to     ${getAppDate(value.end)}",
-                              style: textStyle.displaySmall,
-                            ),
                           ),
                         ),
                       ],

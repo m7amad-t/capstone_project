@@ -222,7 +222,7 @@ class _ReturnParoductFromInvoicePageState
                               gap(width: AppSizes.s10),
                               Expanded(
                                 child: _info(
-                                  context.translate.total_would_be,
+                                  context.translate.price,
                                   valueWidget: PriceWidget(
                                     price: value.product.price,
                                     style: _textStyle.displaySmall!.copyWith(
