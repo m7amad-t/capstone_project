@@ -64,18 +64,46 @@ dependencies:
   syncfusion_flutter_charts: ^28.1.39
   board_datetime_picker: ^2.3.0
   flutter_native_splash: ^2.4.4
+  
 
 dev_dependencies:
   intl_utils: ^2.0.0 # This helps to generate localization files
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: ^0.14.3
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/architech.png"
+  adaptive_icon_background: "assets/images/background.png" 
+  adaptive_icon_foreground: "assets/images/foreground.png"
+
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: true
+  color: "#d4e4ed"  # or any color you prefer
+  background_image: "assets/images/background.png"
+  image: "assets/images/architech.png"
+  branding: "assets/images/brand.png"
+
+# flutter_native_splash:
+  # android: true
+  # ios: true
+  # color: "#0e2548"  # or any color you prefer
+  # background_image: "assets/images/background.png"
+  # image: "assets/images/architech.png"
+  # branding: "assets/images/brand.png"
+  # branding_mode: bottom # you can use "bottom" or "center"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

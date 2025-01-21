@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shop_owner/shared/UI/appDialogs.dart';
 import 'package:shop_owner/shared/models/storeCurrency.dart';
 import 'package:shop_owner/utils/auth/AuthedUser.dart';
+import 'package:shop_owner/utils/auth/cloudAuth.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 import 'package:shop_owner/utils/extensions/l10nHelper.dart';
 
@@ -27,7 +28,9 @@ class CurrencyBloc extends Bloc<CurrencyBlocEvent, CurrencyBlocState> {
       locator.unregister<AuthedUser>();
       locator.registerSingleton<AuthedUser>(updated);
       locator<AppDialogs>().disposeAnyActiveDialogs();
+      final _service = CloudAuth(); 
 
+      _service.changeCurrency(event.newCurrency , locator<AuthedUser>()); 
     
 
       emit(CurrencyChanged(currency: locator<AuthedUser>().currency));

@@ -39,9 +39,10 @@ final class DeleteUser extends SystemUsersBlocEvent {
 final class UpdateUser extends SystemUsersBlocEvent {
   
   final User user ;
-  final Map<String, dynamic> updated;
+  final bool imageUpdated ; 
+  final Map<String, String?> updated;
 
-  const UpdateUser({required this.user, required this.updated, required super.context}); 
+  const UpdateUser({required this.user,required this.imageUpdated ,  required this.updated, required super.context}); 
 
   @override
   List<Object> get props => [user ,updated];

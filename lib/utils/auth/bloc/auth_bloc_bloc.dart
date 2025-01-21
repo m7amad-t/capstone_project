@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:shop_owner/router/routes.dart';
 import 'package:shop_owner/utils/auth/authService.dart';
 import 'package:shop_owner/utils/auth/AuthedUser.dart';
-import 'package:shop_owner/utils/auth/userModel.dart';
 import 'package:shop_owner/utils/di/contextDI.dart';
 
 part 'auth_bloc_event.dart';
@@ -17,19 +16,21 @@ class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState> {
   AuthBloc() : super(InitAuthState()) {
     // on logout event
     on<Logout>((event, emit) async {
+
       // emit lading state
-      emit(Loading());
 
       // remove user from secure storage
       await locator<AuthService>().deleteCredentials(locator<AuthedUser>().user);
+
+      emit(LoggedOut());
+      // navigate user back to login screen
+      GoRouter.of(event.context).go(AppRoutes.login);
 
       // aslo unregister user from locator
       if (locator.isRegistered<AuthedUser>()) {
         locator.unregister<AuthedUser>();
       }
-      emit(LoggedOut());
-      // navigate user back to login screen
-      GoRouter.of(event.context).go(AppRoutes.login);
+
     });
 
     // on auth user event

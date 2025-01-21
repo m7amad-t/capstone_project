@@ -343,6 +343,10 @@
   "user_added_successfully" : "تمت إضافة المستخدم بنجاح",
   "failed_to_add_user" : "فشل في إضافة المستخدم",
 
+  
+  "updating_profile" : "جارٍ تحديث الملف الشخصي",
+  "profile_updated" : "تم تحديث الملف الشخصي",
+
 
 
   "profile" : "الملف الشخصي"  

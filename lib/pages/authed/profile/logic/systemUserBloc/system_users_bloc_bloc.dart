@@ -20,9 +20,8 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
     final CloudAuth _service = CloudAuth();
 
     Future<void> onAddUser(AddNewUser event, emit) async {
-      
-      locator<AppDialogs>().showCostumTextLoading(
-          event.context.translate.createing_new_user);
+      locator<AppDialogs>()
+          .showCostumTextLoading(event.context.translate.createing_new_user);
 
       // Simulating network request
       await Future.delayed(const Duration(seconds: 2));
@@ -38,8 +37,11 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
       _service.addNewUser(locator<AuthedUser>(), event.user, event.password);
       locator<AppDialogs>().disposeAnyActiveDialogs();
       // showSnackbar
-      showSnackBar(message: SuccessSnackBar(title: event.context.translate.new_user_created_sucessfully, message: "")); 
-      GoRouter.of(event.context).go(AppRoutes.profile); 
+      showSnackBar(
+          message: SuccessSnackBar(
+              title: event.context.translate.new_user_created_sucessfully,
+              message: ""));
+      GoRouter.of(event.context).go(AppRoutes.profile);
 
       emit(AuthUpdated(locator<AuthedUser>()));
     }
@@ -77,14 +79,32 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
 
       locator.registerSingleton<AuthedUser>(authed.update(newData));
       locator<AppDialogs>().disposeAnyActiveDialogs();
-      showSnackBar(message: SuccessSnackBar(title: event.context.translate.user_deleted_successfully, message: "")); 
+      showSnackBar(
+          message: SuccessSnackBar(
+              title: event.context.translate.user_deleted_successfully,
+              message: ""));
 
       emit(AuthUpdated(locator<AuthedUser>()));
     }
 
     Future<void> onUpdateUser(UpdateUser event, emit) async {
+      if (event.updated.isEmpty) {
+        return;
+      }
+
+      bool isPassUpdated = event.updated.containsKey('password'); 
+      bool isNameUpdted = event.updated['name'] != event.user.name; 
+      
+      if(!isNameUpdted && !isPassUpdated && !event.imageUpdated) {
+        GoRouter.of(event.context).pop();
+        return; 
+      }
+
+
+        
+
       locator<AppDialogs>().showCostumTextLoading(
-        event.context.translate.deleting,
+        event.context.translate.updating_profile,
       );
 
       // Simulating network request
@@ -93,25 +113,34 @@ class SystemUsersBloc extends Bloc<SystemUsersBlocEvent, SystemUsersBlocState> {
       // add newuser locally ,
       final authed = locator<AuthedUser>();
 
-      if (event.user.uid == authed.user.uid) {
-        locator<AppDialogs>().disposeAnyActiveDialogs();
-        return;
-      }
-
-      List<User> newUsers = [];
+      List<User> users = [];
 
       for (final user in authed.users) {
         if (user.uid != event.user.uid) {
-          newUsers.add(user);
+          users.add(user);
         }
       }
+
+      final updatedUser = event.user.update(event.updated);
       final newData = {
-        'users': newUsers,
+        'users': [...users, updatedUser],
+        'user': updatedUser,
       };
       locator.unregister<AuthedUser>();
+
       locator.registerSingleton<AuthedUser>(authed.update(newData));
+
+      _service.updateUser(
+        event.user,
+        event.updated,
+      );
+
       locator<AppDialogs>().disposeAnyActiveDialogs();
-      // GoRouter.of(locator<BuildContext>()).pop();
+
+      showSnackBar(
+          message: SuccessSnackBar(
+              title: event.context.translate.profile_updated, message: ""));
+      GoRouter.of(event.context).pop();
       emit(AuthUpdated(locator<AuthedUser>()));
     }
 

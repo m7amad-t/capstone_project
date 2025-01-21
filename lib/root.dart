@@ -70,7 +70,7 @@ class _RootPageState extends State<RootPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: const CustomAppBar(),
-      endDrawer: appDrawer(context),
+      endDrawer: locator.isRegistered<AuthedUser>() ?  appDrawer(context) : null,
       body: widget.child,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(boxShadow: [
@@ -193,27 +193,5 @@ class _RootPageState extends State<RootPage> {
       ),
     );
 
-    // NavigationBar(
-    //   height: AppSizes.s60,
-    //   backgroundColor: Colors.transparent,
-    //   elevation: 0,
-    //   shadowColor: AppColors.primary,
-    //   selectedIndex: widget.child.currentIndex,
-    //   indicatorColor: AppColors.onPrimary,
-    //   onDestinationSelected: (index) {
-    //     widget.child.goBranch(index);
-    //   },
-    //   destinations: const [
-    //     NavigationDestination(
-    //       selectedIcon: Icon(Icons.home , color : AppColors.primary) ,
-    //       icon: Icon(Icons.home),
-    //       label: 'Home',
-    //     ),
-    //     NavigationDestination(
-    //       icon: Icon(Icons.inventory),
-    //       label: 'Products',
-    //     ),
-    //   ],
-    // ),
   }
 }

@@ -24,6 +24,7 @@ import 'package:shop_owner/pages/authed/productManagement/ui/pages/returnedProdu
 import 'package:shop_owner/pages/authed/productManagement/ui/productManagementPage.dart';
 import 'package:shop_owner/pages/authed/profile/ui/creatingUserPage.dart';
 import 'package:shop_owner/pages/authed/profile/ui/profilepage.dart';
+import 'package:shop_owner/pages/authed/profile/ui/updateProfile.dart';
 import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/categoriesAnalyticsPage.dart';
 import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/expensesAnalyticsPage.dart';
 import 'package:shop_owner/pages/authed/saleAnalytics/ui/pages/productAnalyticsPage.dart';
@@ -607,6 +608,16 @@ class AppRouter {
                         pageBuilder: (context, state) => NoTransitionPage(
                           key: state.pageKey,
                           child: CreateUserPage(
+                            key: state.pageKey,
+                          ),
+                        ),
+                      ),
+                      // update profile
+                      GoRoute(
+                        path: AppRoutes.updateProfile,
+                        pageBuilder: (context, state) => NoTransitionPage(
+                          key: state.pageKey,
+                          child: UpdateProfile(
                             key: state.pageKey,
                           ),
                         ),

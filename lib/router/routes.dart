@@ -53,6 +53,7 @@ class AppRoutes {
 
   // ---------------------- [[ profile childs ]] -------------------------------
   static String addUser= "add_user";
+  static String updateProfile= "update_profile";
 
 
 

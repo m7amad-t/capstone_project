@@ -363,6 +363,12 @@
   "user_deleted_successfully" : "بەکارهێنەر سڕایەوە",
   "failed_to_delete_user" : "نەتوان بەرکار‌هێنەر بسڕێتەوە",
 
+
+
+  "updating_profile" : "نوێ کردنەوەی زانیاری کەسی",
+  "profile_updated" : "زانیاری کەسی بەسەرکەوتووی نوێ کرایەوە",
+
+
   "profile" : "پڕۆفایل"
 
 

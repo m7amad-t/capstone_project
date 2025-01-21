@@ -1,4 +1,5 @@
 import 'package:shop_owner/pages/notAuthed/login/logic/model/loginModel.dart';
+import 'package:shop_owner/shared/models/storeCurrency.dart';
 import 'package:shop_owner/utils/auth/AuthedUser.dart';
 import 'package:shop_owner/utils/auth/userModel.dart';
 
@@ -153,6 +154,39 @@ class CloudAuth {
     }
 
     return null;
+  }
+
+  void changeCurrency (STORE_CURRENCY currency , AuthedUser user){
+
+
+    for(int i = 0 ;  i< _stores.length ; i++){
+
+      if(_stores[i]['id'] == user.id){
+        _stores[i]['currency'] = currency.sign; 
+      }
+
+    }
+
+
+
+  }
+ 
+  void updateUser (User user , Map<String , dynamic> update){
+
+
+    for(int i = 0 ;  i< _stores.length ; i++){
+      for(int j = 0 ; j<_stores[i]['users'].length ; j++){
+        if(_stores[i]['users'][j]['uid'] == user.uid){ 
+          for(final key in update.keys){
+            _stores[i]['users'][j][key] = update[key]; 
+          }
+        }
+      }
+
+    }
+
+
+
   }
 
   void addNewUser(AuthedUser authedUser, User user, String password) {

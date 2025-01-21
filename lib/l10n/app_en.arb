@@ -367,6 +367,10 @@
   "failed_to_add_user" : "Failed to add user",
 
 
+  "updating_profile" : "Updating profile",
+  "profile_updated" : "Profile updated",
+
+
   "profile" : "Profile"
 
 

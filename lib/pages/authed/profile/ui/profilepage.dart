@@ -25,7 +25,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late final User user;
+  late User user;
   late AuthedUser authedModel;
   late STORE_CURRENCY currency;
   @override
@@ -41,6 +41,17 @@ class _ProfilePageState extends State<ProfilePage> {
     final textStyle = TextTheme.of(context);
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          GoRouter.of(context)
+              .go("${AppRoutes.profile}/${AppRoutes.updateProfile}");
+        },
+        child: const Icon(
+          Icons.edit_note_rounded,
+          color: AppColors.onPrimary,
+          size: AppSizes.s30,
+        ),
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: AppPaddings.p10),
         child: Column(
@@ -56,7 +67,12 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
 
             gap(height: AppSizes.s30),
-            Text(user.name, style: textStyle.titleMedium),
+            BlocBuilder<SystemUsersBloc, SystemUsersBlocState>(
+              builder: (context, state) {
+                user = locator<AuthedUser>().user;
+                return Text(user.name, style: textStyle.titleMedium);
+              },
+            ),
             gap(height: AppSizes.s60),
 
             _currencySection(),
@@ -193,7 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: authedModel.users.length,
           itemBuilder: (context, index) {
-            if(authedModel.users[index].uid ==  user.uid){
+            if (authedModel.users[index].uid == user.uid) {
               return SizedBox.shrink();
             }
             final textStyle = TextTheme.of(context);
